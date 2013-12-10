@@ -2,7 +2,9 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    dataMaster = require('./datamaster');
+
 
 /**
  * Auth callback
@@ -88,4 +90,28 @@ exports.user = function(req, res, next, id) {
             req.profile = user;
             next();
         });
+};
+
+exports.dumpData = function(req, res, next) {
+    if(req && req.user && req.user.name){
+        dataMaster.setUser(req.user.name,'www','',function(user){
+            user.makeSession(req.user._id);
+            var session = {};
+            session[dataMaster.fingerprint]=req.user._id;
+            user.sessions[req.user._id].dumpQueue(function(data){
+                res.jsonp({
+                    username:req.user.name,
+                    roles:user.roles,
+                    session:session,
+                    data:data
+                });
+            });
+        });
+    }else{
+        next();
+    }
+};
+
+exports.execute = function(req, res, next) {
+    next();
 };

@@ -5,7 +5,28 @@ var mongoose = require('mongoose'),
     GitHubStrategy = require('passport-github').Strategy,
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     User = mongoose.model('User'),
+    Server = mongoose.model('Server'),
     config = require('./config');
+
+function ServerStrategy(options, verify){
+  this._usernameField = options.usernameField || 'name';
+  this._passwordField = options.passwordField || 'password';
+  passport.Strategy.call(this);
+  this.name = 'server';
+  this._verify = verify;
+};
+ServerStrategy.prototype = new (passport.Strategy)();
+ServerStrategy.prototype.authenticate = function(req, options) {
+  var username = req.query.name;
+  var password = req.query.password;
+  var t = this;
+  function verified(err, user, info){
+    if(err) { return t.error(err); }
+    if(!user) { return t.fail(info); }
+    t.success(user, info);
+  };
+  this._verify(username,password,verified);
+};
 
 
 module.exports = function(passport) {
@@ -37,6 +58,33 @@ module.exports = function(passport) {
                 if (!user) {
                     return done(null, false, {
                         message: 'Unknown user'
+                    });
+                }
+                if (!user.authenticate(password)) {
+                    return done(null, false, {
+                        message: 'Invalid password'
+                    });
+                }
+                return done(null, user);
+            });
+        }
+    ));
+
+    //Use local strategy
+    passport.use(new ServerStrategy({
+            usernameField: 'name',
+            passwordField: 'password'
+        },
+        function(name, password, done) {
+            Server.findOne({
+                name: name
+            }, function(err, server) {
+                if (err) {
+                    return done(err);
+                }
+                if (!server) {
+                    return done(null, false, {
+                        message: 'Unknown server'
                     });
                 }
                 if (!user.authenticate(password)) {

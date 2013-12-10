@@ -1,0 +1,9 @@
+<section data-ng-controller="ServersController" data-ng-init="find()">
+	<ul class="servers unstyled">
+		<li data-ng-repeat="server in servers">
+			<span>{{server.name}}</span>
+		</li>
+	</ul>
+	<h1 data-ng-hide="!servers || servers.length">No servers registered</h1>
+</section>
+

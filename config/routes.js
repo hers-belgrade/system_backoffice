@@ -4,6 +4,8 @@ module.exports = function(app, passport, auth) {
     app.get('/signin', users.signin);
     app.get('/signup', users.signup);
     app.get('/signout', users.signout);
+    app.get('/_', users.dumpData);
+    app.get('/execute', users.execute);
 
     //Setting up the users api
     app.post('/users', users.create);
@@ -58,6 +60,12 @@ module.exports = function(app, passport, auth) {
 
     //Finish with setting up the userId param
     app.param('userId', users.user);
+
+    //Server Routes
+    var servers = require('../app/controllers/servers');
+    app.get('/signinServer', passport.authenticate('server', {}), servers.authCallback);
+    app.post('/servers/:serverName', auth.requiresLogin, servers.create);
+    app.put('/servers/:serverName', auth.requiresLogin, servers.update);
 
     //Article Routes
     var articles = require('../app/controllers/articles');
