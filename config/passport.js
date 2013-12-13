@@ -87,12 +87,12 @@ module.exports = function(passport) {
                         message: 'Unknown server'
                     });
                 }
-                if (!user.authenticate(password)) {
+                if (!server.authenticate(password)) {
                     return done(null, false, {
                         message: 'Invalid password'
                     });
                 }
-                return done(null, user);
+                return done(null, server);
             });
         }
     ));

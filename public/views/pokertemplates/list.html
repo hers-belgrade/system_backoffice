@@ -1,0 +1,28 @@
+<section data-ng-controller="PokerTemplatesController" data-ng-init="list()">
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Capacity</th>
+      <th>Betting Policy</th>
+      <th>Fixed Limit Value</th>
+      <th>Big Blind</th>
+      <th>Speed</th>
+      <th>Flavor</th>
+      <th>Timeout</th>
+      <th>Bots</th>
+    </tr>
+    <tr data-ng-repeat="pt in pokertemplates">
+      <td>{{pt.name}}</td>
+      <td>{{pt.type}}</td>
+      <td>{{pt.capacity}}</td>
+      <td>{{pt.bettingpolicy}}</td>
+      <td>{{pt.fixedlimitvalue}}</td>
+      <td>{{pt.bigblind}}</td>
+      <td>{{pt.speed}}</td>
+      <td>{{pt.flavor}}</td>
+      <td>{{pt.timeoutValue}}</td>
+      <td>{{pt.bots}}</td>
+    </tr>
+  </table>
+</section>

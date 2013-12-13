@@ -1,0 +1,6 @@
+[submodule "node_modules/hersdata"]
+	path = node_modules/hersdata
+	url = git@github.com:hers-belgrade/hersdata
+[submodule "public/lib/hersangularclient"]
+	path = public/lib/hersangularclient
+	url = git@github.com:hers-belgrade/hersangularclient

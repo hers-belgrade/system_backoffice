@@ -64,8 +64,13 @@ module.exports = function(app, passport, auth) {
     //Server Routes
     var servers = require('../app/controllers/servers');
     app.get('/signinServer', passport.authenticate('server', {}), servers.authCallback);
-    app.post('/servers/:serverName', auth.requiresLogin, servers.create);
-    app.put('/servers/:serverName', auth.requiresLogin, servers.update);
+    app.get('/servers', auth.requiresLogin, servers.all);
+    app.post('/servers/:serverName', auth.requiresLogin, servers.save);
+
+    //PokerTemplate Routes
+    var pokertemplates = require('../app/controllers/pokertemplates');
+    app.get('/pokertemplates', auth.requiresLogin, pokertemplates.all);
+    app.post('/pokertemplates/:templateName', auth.requiresLogin, pokertemplates.save);
 
     //Article Routes
     var articles = require('../app/controllers/articles');

@@ -1,9 +1,20 @@
-<section data-ng-controller="ServersController" data-ng-init="find()">
-	<ul class="servers unstyled">
-		<li data-ng-repeat="server in servers">
-			<span>{{server.name}}</span>
-		</li>
-	</ul>
+<section>
+<div ng-include="'/views/servers/create.html'">
+</div>
+</section>
+<section data-ng-controller="ServersController" data-ng-init="list()">
+	<table class="servers">
+    <tr>
+      <th>Name</th>
+      <th>Password</th>
+      <th>Uptime</th>
+      <th>Ping</th>
+    </tr>
+		<tr data-ng-repeat="server in servers">
+			<td>{{server.name}}</td>
+			<td>{{server.password}}</td>
+		</tr>
+	</table>
 	<h1 data-ng-hide="!servers || servers.length">No servers registered</h1>
 </section>
 
