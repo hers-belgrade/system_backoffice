@@ -19,6 +19,7 @@ exports.authCallback = function(req, res, next){
       ['set',['cluster_interface',servname],servname]
     ]);
     dataMaster.element(['cluster']).createRemoteReplica(servname,'dcp',{host:req._remoteAddress,port:replicationport});
+    dataMaster.element(['cluster',servname]).go();
   }
   dataMaster.setUser(servname,'dcp',['dcp',servname].join(','));
   res.jsonp({name:servname,replicationPort:dataMaster.replicationPort});
@@ -27,9 +28,10 @@ exports.authCallback = function(req, res, next){
 exports.save = function(req, res) {
   var s = new Server(req.body);
   var so = s.toObject();
+  delete so._id;
   delete so.name;
   Server.findOneAndUpdate({name:req.body.name},so,{upsert:true,new:true},function(err,server){
-    console.log(err,server);
+    console.log(err,server,so);
     res.jsonp({name:server});
   });
 };
