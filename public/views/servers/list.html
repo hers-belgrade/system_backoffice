@@ -1,20 +1,57 @@
-<section>
-<div ng-include="'/views/servers/create.html'">
-</div>
+<section data-ng-controller="ServersController">
+  <div ng-include="'/views/servers/create.html'">
+  </div>
+  Memory usage:{{bostats.memoryusage}}
+  Memory available:{{bostats.memoryavailable}}
+  <section data-ng-init="list()">
+    <table class="servers registered">
+      <caption>Registered realms</caption>
+      <tr>
+        <th>Name</th>
+      </tr>
+      <tr data-ng-repeat="_realm in realms" ng-click="setRealm(_realm)">
+        <td>{{_realm.name}}</td>
+      </tr>
+    </table>
+  </section>
+  <section>
+    <table class="servers realtime">
+      <caption>Running realms</caption>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Health</th>
+        <th>Rooms</th>
+      </tr>
+      <tr data-ng-repeat="(name,rtrealm) in rtrealms">
+        <td>{{name}}</td>
+        <td>{{rtrealm.connection.address}}</td>
+        <td>{{rtrealm.connection.status}}</td>
+        <td><ul><li data-ng-repeat="(key,value) in rtrealm.status">{{key}}:{{value}}</li></td>
+        <td><ul><li data-ng-repeat="(key,value) in rtrealm.bots">{{key}}</li></td>
+      </tr>
+    </table>
+    <h4 data-ng-hide="servers">No servers registered</h4>
+  </section>
+  <section>
+    <table class="servers realtime">
+      <caption>Registered nodes</caption>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Health</th>
+        <th>Rooms</th>
+      </tr>
+      <tr data-ng-repeat="(name,node) in nodes">
+        <td>{{name}}</td>
+        <td>{{node.connection.address}}</td>
+        <td>{{node.connection.status}}</td>
+        <td><ul><li data-ng-repeat="(key,value) in node.status">{{key}}:{{value}}</li></td>
+        <td><ul><li data-ng-repeat="(key,value) in node.rooms">{{key}}</li></td>
+      </tr>
+    </table>
+    <h4 data-ng-hide="servers">No servers registered</h4>
+  </section>
 </section>
-<section data-ng-controller="ServersController" data-ng-init="list()">
-	<table class="servers">
-    <tr>
-      <th>Name</th>
-      <th>Password</th>
-      <th>Uptime</th>
-      <th>Ping</th>
-    </tr>
-		<tr data-ng-repeat="server in servers">
-			<td>{{server.name}}</td>
-			<td>{{server.password}}</td>
-		</tr>
-	</table>
-	<h1 data-ng-hide="!servers || servers.length">No servers registered</h1>
-</section>
-

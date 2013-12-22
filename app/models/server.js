@@ -7,6 +7,7 @@ var ServerSchema = new Schema({
     type: String,
     unique: true
   },
+  domain: String,
   hashed_password: String,
   salt: String
 });

@@ -4,7 +4,40 @@
 var express = require('express')
     fs = require('fs'),
     passport = require('passport'),
-    logger = require('mean-logger');
+    logger = require('mean-logger');/*,
+    memwatch = require('memwatch'),
+    util = require('util');*/
+
+
+/*
+memwatch.on('leak',function(info){
+  console.log('memleak',info);
+});
+var hd;
+memwatch.on('stats',function(stats){
+  var newed=!hd;
+  if(!hd){
+    hd = new memwatch.HeapDiff();
+  }
+  //console.log(stats);
+  if(!newed){
+    var he = hd.end();
+    //console.log(util.inspect(he,false,null,false));
+    hd = null;
+    var hec = he.change;
+    if(hec.size_bytes>100000){
+      console.log('!');
+      var hecd = hec.details;
+      for(var i in hecd){
+        var hecde = hecd[i];
+        if(hecde.size_bytes>50000){
+          console.log(hecde);
+        }
+      }
+    }
+  }
+});
+*/
 
 /**
  * Main application entry file.

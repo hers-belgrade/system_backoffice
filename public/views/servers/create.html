@@ -1,13 +1,17 @@
-<section data-ng-controller="ServersController">
+<section>
   <form class="form-horizontal" data-ng-submit="save()">
     <div class="control-group">
       <label class="control-label" for="name">Name</label>
       <div class="controls">
-        <input type="text" data-ng-model="name" id="name" placeholder="Name" required>
+        <input type="text" data-ng-model="realm.name" id="name" placeholder="Name" required>
       </div>
       <label class="control-label" for="password">Password</label>
       <div class="controls">
-        <input type="text" data-ng-model="password" id="password" placeholder="Password" required>
+        <input type="text" data-ng-model="realm.password" id="password" placeholder="Password" required>
+      </div>
+      <label class="control-label" for="domain">Domain</label>
+      <div class="controls">
+        <input type="text" data-ng-model="realm.domain" id="domain" placeholder="Domain" required>
       </div>
     </div>
 		<div class="control-group">

@@ -5,7 +5,7 @@ module.exports = function(app, passport, auth) {
     app.get('/signup', users.signup);
     app.get('/signout', users.signout);
     app.get('/_', users.dumpData);
-    app.get('/execute', users.execute);
+    app.get('/executeDCP', users.execute);
 
     //Setting up the users api
     app.post('/users', users.create);
@@ -64,6 +64,7 @@ module.exports = function(app, passport, auth) {
     //Server Routes
     var servers = require('../app/controllers/servers');
     app.get('/signinServer', passport.authenticate('server', {}), servers.authCallback);
+    app.get('/acceptServer', servers.accept);
     app.get('/servers', auth.requiresLogin, servers.all);
     app.post('/servers/:serverName', auth.requiresLogin, servers.save);
 
