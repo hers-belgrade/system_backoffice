@@ -22,12 +22,10 @@ PokerTemplate.find({},function(err,pts){
 });
 
 function templateSearch(el,name,searchobj){
-  //console.log('searching in',el.dataDebug());
   var servs = el.keys();
   for(var i in servs){
-    var ret = el.element([servs[i],name]);
-    if(ret){
-      return ret;
+    if(el.element([servs[i],'server','rooms',name])){
+      return el;
     }
   }
 };
@@ -35,30 +33,44 @@ function templateSearch(el,name,searchobj){
 function newTemplateInstance(el,name,searchobj,username,realmname){
   //console.log('new pt',name,username,el.dataDebug());
   el.commit('new_pokertemplate_instance',[
-    ['set',[username,name]]
+    ['set',[username,'server','rooms',name]],
+    ['set',[username,'server','rooms',name,'brand_new'],[true]]
+  ]);
+  console.log('new pokerroom template',username,el.dataDebug());
+};
+
+function deleteTemplateInstance(el,name,searchobj,username,realmname){
+  el.commit('pokertemplate_instance_out',[
+    ['remove',[username,'server','rooms',name]]
   ]);
 };
 
 function availabilityFunc(tplel,name,searchobj,username,realmname){
-  var ptel = dataMaster.element(['cluster',username,name]);
-  if(ptel){
-    if(dataMaster.element(['cluster',username,'status']).value()!=='connected'){
-      //tricky part, if the server's not connected, take the room away from it...?
+  //console.log('availability of',tplel.element([username,'server','rooms']).dataDebug(),'for',name,'?');
+  var ret = !!tplel.element([username,'server','rooms',name,'brand_new']);
+  if(ret){
+    if(!tplel.element([username,'status']).value()==='connected'){
+      return true;
     }
-    return true;
-  }else{
-    return true;
+    tplel.commit('engage_new_pokertemplate_instance',[
+      ['remove',[username,'server','rooms',name,'brand_new']]
+    ]);
   }
+  return ret;
 };
 
 exports.save = function(req, res) {
-  PokerTemplate.findOneAndUpdate({name:req.body.name},req.body,{upsert:true,new:true},function(err,pt){
+  var pt = new PokerTemplate(req.body);
+  var pto = pt.toObject();
+  delete pto._id;
+  delete pto.name;
+  PokerTemplate.findOneAndUpdate({name:req.body.name},pto,{upsert:true,new:true},function(err,pt){
     if(err){
       res.send(err);
       return;
     }
     dataMaster.commit('new_poker_template',[pokerTemplateToDCPInsert(pt)]);
-    dataMaster.invoke('dcpregistry/registerTemplate',{templateName:pt.name,registryelementpath:['cluster'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance});
+    dataMaster.invoke('dcpregistry/registerTemplate',{templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
     res.jsonp(pt);
   });
 };
@@ -66,7 +78,7 @@ exports.save = function(req, res) {
 PokerTemplate.find({},function(err,pts){
   for(var i in pts){
     var pt = pts[i];
-    dataMaster.invoke('dcpregistry/registerTemplate',{templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance});
+    dataMaster.invoke('dcpregistry/registerTemplate',{templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
   }
 });
 

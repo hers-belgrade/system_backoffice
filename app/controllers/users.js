@@ -96,22 +96,26 @@ exports.user = function(req, res, next, id) {
 exports.dumpData = function(req, res, next) {
     if(req && req.user && req.user.name){
         dataMaster.setUser(req.user.name,'www',req.user.roles,function(user){
+          if(!user){
+            res.jsonp({});
+            return;
+          }
           var sessid = req.query[dataMaster.fingerprint];
           if(!sessid){
             sessid=~~(Math.random()*1000000);
           }
-            user.makeSession(sessid);
-            var session = {};
-            session[dataMaster.fingerprint]=sessid;
-            var _res = res;
-            user.sessions[sessid].dumpQueue(function(data){
-                _res.jsonp({
-                    username:req.user.name,
-                    roles:user.roles,
-                    session:session,
-                    data:data
-                });
-            });
+          user.makeSession(sessid);
+          var session = {};
+          session[dataMaster.fingerprint]=sessid;
+          var _res = res;
+          user.sessions[sessid].dumpQueue(function(data){
+              _res.jsonp({
+                  username:req.user.name,
+                  roles:user.roles,
+                  session:session,
+                  data:data
+              });
+          });
         });
     }else{
         next();

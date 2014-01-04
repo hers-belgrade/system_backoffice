@@ -1,24 +1,5 @@
 <div class="navbar-inner" data-ng-controller="HeaderController">
-    <ul class="nav">
-        <li>
-            <a class="brand" href="/">PPW</a>
-        </li>
-        <li data-ng-repeat="item in menu" data-ng-show="global.user" ui-route="/{{item.link}}" ng-class="{active: $uiRoute}">
-            <ul class="nav" ng-show="item.submenu">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            {{item.title}} <b class="caret"></b>
-          </a>
-                <ul class="dropdown-menu">
-                  <li data-ng-repeat="subitem in item.submenu" ui-route="/{{subitem.link}}" ng-class="{active: $uiRoute}">
-                    <a href="#!/{{subitem.link}}">{{subitem.title}}</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-            <a href="#!/{{item.link}}" ng-hide="item.submenu">{{item.title}}</a>
-        </li>
-    </ul>
+
     <ul class="nav pull-right" data-ng-hide="global.authenticated">
         <li><a href="signup">Signup</a>
         </li>

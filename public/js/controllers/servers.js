@@ -32,7 +32,7 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
         rooms : follower.follow('cluster').follow('nodes').follow(name).follow('server').follow('rooms').collections
       };
     },deactivator:function(name){
-      delete $scope.servers[name];
+      delete this[name];
     }});
 
     $scope.list = function() {

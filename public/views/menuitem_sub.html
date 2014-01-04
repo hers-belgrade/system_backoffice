@@ -1,0 +1,14 @@
+<a href="#" ng-show="item.submenu" class="dropdown-toggle">
+	<i class="{{item.icon}}"></i>
+	<span class="menu-text"> {{item.title}} </span>
+	<b class="arrow icon-angle-down"></b>
+</a>
+<ul class="submenu">
+  <li data-ng-repeat="subitem in item.submenu" ui-route="/{{subitem.link}}" ng-class="{active: $uiRoute}">
+    <a href="#!/{{subitem.link}}">
+    	<i class="{{subitem.icon}}"></i>
+    	{{subitem.title}}
+    </a>
+  </li>
+</ul>
+

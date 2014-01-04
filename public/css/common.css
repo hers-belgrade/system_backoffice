@@ -4,7 +4,6 @@
 }
 
 .content {
-    margin-top:50px;
     width:100%
 }
 
@@ -23,3 +22,6 @@ footer {
 footer p {
     padding:5px 0 12px 10px
 }
+.menu-min .sidebar-shortcuts-large {
+	width:176px;
+	}

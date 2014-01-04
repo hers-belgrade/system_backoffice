@@ -36,3 +36,34 @@ script(type="text/javascript").
 if (req.host=='localhost')
     //Livereload script rendered 
     script(type='text/javascript', src='http://localhost:35729/livereload.js')	
+
+//Ace Theme
+
+//[if !IE]><!
+script(type="text/javascript").
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/jquery.min.noie.js')
+script(type="text/javascript").
+  window.jQuery || document.write("<script src='/lib/bootstrap/docs/assets/js/jquery-2.0.3.min.js'>"+"<"+"/script>");
+//<![endif]
+
+//[if IE]><!
+  script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/jquery.min.ie.js')
+  script(type="text/javascript").
+    window.jQuery || document.write("<script src='/lib/bootstrap/docs/assets/js/jquery-1.10.2.min.js'>"+"<"+"/script>"); 
+//<![endif]
+
+script(type='text/javascript').
+  if("ontouchend" in document) document.write("<script src='/lib/bootstrap/docs/assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/bootstrap.min.js')
+
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/jquery-ui-1.10.3.custom.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/jquery.ui.touch-punch.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/jquery.slimscroll.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/jquery.easy-pie-chart.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/jquery.sparkline.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/flot/jquery.flot.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/flot/jquery.flot.pie.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/flot/jquery.flot.resize.min.js')
+
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/ace-elements.min.js')
+script(type='text/javascript', src='/lib/bootstrap/docs/assets/js/ace.min.js')

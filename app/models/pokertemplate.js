@@ -10,6 +10,7 @@ var PokerTemplateSchema = new Schema({
   capacity: Number,
   bettingpolicy: String,
   fixedlimitvalue: Number,
+  ante: Number,
   bigblind: Number,
   speed: String,
   flavor: String,

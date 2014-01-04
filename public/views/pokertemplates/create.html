@@ -1,13 +1,12 @@
-<section data-ng-controller="PokerTemplatesController">
-  <form name="form" class="form-horizontal" data-ng-submit="save()">
+  <form name="form" class="form-horizontal" data-ng-submit="save()" data-ng-show="setup.editable">
     <div class="control-group">
       <label class="control-label" for="name">Name</label>
       <div class="control">
-        <input type="text" data-ng-model="name" placeholder="Name" required>
+        <input type="text" data-ng-model="template.name" placeholder="Name" required>
       </div>
       <label class="control-label" for="type">Type</label>
       <div class="control">
-        <select data-ng-model="type" name="type" id="type" placeholder="Type" required>
+        <select data-ng-model="template.type" name="type" id="type" placeholder="Type" required>
           <option value="CashTable">CashTable</option>
           <option value="SitNGo">SitNGo</option>
           <option value="ScheduledTournament">Scheduled Tournament</option>
@@ -15,7 +14,7 @@
       </div>
       <label class="control-label" for="capacity">Capacity</label>
       <div class="control">
-        <select data-ng-model="capacity" name="capacity" id="capacity" placeholder="Capacity" required>
+        <select data-ng-model="template.capacity" name="capacity" id="capacity" placeholder="Capacity" required>
           <option value="2">Heads Up</option>
           <option value="6">Six Max</option>
           <option value="9">Nine Seater</option>
@@ -24,23 +23,27 @@
       </div>
       <label class="control-label" for="bettingpolicy">Betting Policy</label>
       <div class="control">
-        <select data-ng-model="bettingpolicy" name="bettingpolicy" id="bettingpolicy" placeholder="Betting Policy" required>
+        <select data-ng-model="template.bettingpolicy" name="bettingpolicy" id="bettingpolicy" placeholder="Betting Policy" required>
           <option value="NL">No Limit</option>
           <option value="PL">Pot Limit</option>
           <option value="FL">Fixed Limit</option>
         </select>
       </div>
-      <label class="control-label" for="fixedlimitvalue" data-ng-show="needFLValue(bettingpolicy)">Fixed Limit Value</label>
-      <div class="control" data-ng-show="needFLValue(bettingpolicy)">
-        <input type="number" min="{{bigblind}}" step="{{bigblind}}" data-ng-model="fixedlimitvalue" name="fixedlimitvalue" id="fixedlimitvalue" placeholder="Fixed Limit Value" data-ng-required="needFLValue(bettingpolicy)">
+      <label class="control-label" for="fixedlimitvalue" data-ng-show="needFLValue(template.bettingpolicy)">Fixed Limit Value</label>
+      <div class="control" data-ng-show="needFLValue(template.bettingpolicy)">
+        <input type="number" min="{{bigblind}}" step="{{bigblind}}" data-ng-model="template.fixedlimitvalue" name="fixedlimitvalue" id="fixedlimitvalue" placeholder="Fixed Limit Value" data-ng-required="needFLValue(bettingpolicy)">
+      </div>
+      <label class="control-label" for="ante">Ante</label>
+      <div class="control">
+        <input type="number" data-ng-model="template.ante" name="ante" id="ante" placeholder="Ante">
       </div>
       <label class="control-label" for="bigblind">Big Blind</label>
       <div class="control">
-        <input type="number" data-ng-model="bigblind" name="bigblind" id="bigblind" placeholder="Big Blind" required>
+        <input type="number" data-ng-model="template.bigblind" name="bigblind" id="bigblind" placeholder="Big Blind" required>
       </div>
       <label class="control-label" for="speed">Speed</label>
       <div class="control">
-        <select data-ng-model="speed" name="speed" id="speed" placeholder="Speed" required>
+        <select data-ng-model="template.speed" name="speed" id="speed" placeholder="Speed" required>
           <option value="Standard">Standard</option>
           <option value="Fast">Fast</option>
           <option value="Turbo">Turbo</option>
@@ -48,7 +51,7 @@
       </div>
       <label class="control-label" for="flavor">Flavor</label>
       <div class="control">
-        <select data-ng-model="flavor" name="flavor" id="flavor" placeholder="Flavor" required>
+        <select data-ng-model="template.flavor" name="flavor" id="flavor" placeholder="Flavor" required>
           <option value="HoldEm">HoldEm</option>
           <option value="Omaha">Omaha</option>
           <option value="OmahaHILO">OmahaHILO</option>
@@ -56,17 +59,17 @@
       </div>
       <label class="control-label" for="timeoutValue">Timeout</label>
       <div class="control">
-        <input type="number" value="30" data-ng-model="timeoutValue" name="timeoutValue" id="timeoutValue">
+        <input type="number" value="30" data-ng-model="template.timeoutValue" name="timeoutValue" id="timeoutValue">
       </div>
       <label class="control-label" for="bots">Number of Bots Allowed</label>
       <div class="control">
-        <input type="number" max="{{capacity}}" data-ng-model="bots" name="bots" id="bots">
+        <input type="number" max="{{capacity}}" data-ng-model="template.bots" name="bots" id="bots">
       </div>
     </div>
 		<div class="control-group">
 			<div class="controls">
-				<input type="submit" class="btn">
+				<button data-ng-click="setup.editable=false" class="btn">Cancel</button>
+				<input type="submit" class="btn" value="Save">
 			</div>
 		</div>
   </form>
-</section>
