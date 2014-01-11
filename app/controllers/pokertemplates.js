@@ -36,7 +36,7 @@ function newTemplateInstance(el,name,searchobj,username,realmname){
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
-  console.log('new pokerroom template',username,el.dataDebug());
+  console.log('new pokerroom template',username,el.element([username]).dataDebug());
 };
 
 function deleteTemplateInstance(el,name,searchobj,username,realmname){

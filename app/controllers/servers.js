@@ -6,9 +6,9 @@ var mongoose = require('mongoose'),
 
 dataMaster.commit('servers_init',[
   ['set',['cluster_interface'],'dcp'],
-  ['set',['cluster'],'dcp'],
+  ['set',['cluster']],
   ['set',['cluster','realms'],'dcp'],
-  ['set',['cluster','nodes'],'dcp']
+  ['set',['cluster','nodes']]
 ]);
 
 var portMap = {};
@@ -18,7 +18,7 @@ function ReplicateServer(type,servname,servaddress){
   var actions = [], replicationport=portMap[servaddress];
   var servcontel = dataMaster.element(['cluster',type,servname]);
   if(!servcontel){
-    actions.push(['set',['cluster',type,servname],'dcp']);
+    actions.push(['set',['cluster',type,servname]]);
   }else{
     var servstatusel = servcontel.element(['status']);
     if(servstatusel){

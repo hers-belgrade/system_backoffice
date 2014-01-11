@@ -23,7 +23,7 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
           searchfunc = po.searchfunc || function(el,name){return el.element([name])},
           newfunc = po.newfunc || function(el,name){
             el.commit('new_resource',[
-              ['set',[name],'dcp']
+              ['set',[name]]//,'dcp']
             ]);
           };
         var datael = _this.data.element(registryelementpath);
