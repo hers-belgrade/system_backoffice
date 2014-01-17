@@ -70,7 +70,7 @@ exports.save = function(req, res) {
       return;
     }
     dataMaster.commit('new_poker_template',[pokerTemplateToDCPInsert(pt)]);
-    dataMaster.invoke('dcpregistry/registerTemplate',{templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
     res.jsonp(pt);
   });
 };
@@ -78,7 +78,7 @@ exports.save = function(req, res) {
 PokerTemplate.find({},function(err,pts){
   for(var i in pts){
     var pt = pts[i];
-    dataMaster.invoke('dcpregistry/registerTemplate',{templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
   }
 });
 

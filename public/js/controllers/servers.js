@@ -7,7 +7,7 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
     $scope.rtrealms = {};
 
     $scope.save = function() {
-      var server = new Servers(this.server);
+      var server = new Servers(this.realm);
       console.log('server',server);
       server.$save(function(response){
         console.log(response);
@@ -22,7 +22,7 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
         rooms : follower.follow('cluster').follow('realms').follow(name).follow('server').follow('rooms').collections
       };
     },deactivator:function(name){
-      delete $scope.servers[name];
+      delete this[name];
     }});
     follower.follow('cluster').follow('nodes').listenToCollections($scope.nodes,{activator:function(name){
       console.log('new server',name);

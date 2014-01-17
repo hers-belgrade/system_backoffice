@@ -6,6 +6,7 @@ var PokerTemplateSchema = new Schema({
     type: String,
     unique: true
   },
+  class: String,
   type: String,
   capacity: Number,
   bettingpolicy: String,

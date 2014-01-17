@@ -44,6 +44,9 @@ function ReplicateServer(type,servname,servaddress){
       //console.log('dataMaster should removeKey',username,realmname,key);
       dataMaster.removeKey(username,realmname,key);
     });
+    ret.destroyed.attach(function(){
+      console.log('dataMaster removed',user.realmname,user.realmname);
+    });
     return ret;
   }};
   var servel = dataMaster.element(['cluster',type,servname,'server']);
@@ -87,7 +90,7 @@ exports.authCallback = function(req, res, next){
   var servname = req.user.name;
   var servdomain = req.user.domain;
   var realmtemplatename = servname+'Realm';
-  dataMaster.invoke('dcpregistry/registerTemplate',{templateName:realmtemplatename,registryelementpath:['cluster','realms'],availabilityfunc:portAvailability});
+  dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:realmtemplatename,registryelementpath:['cluster','realms'],availabilityfunc:portAvailability});
   dataMaster.invoke('dcpregistry/newNameForTemplate',{templateName:realmtemplatename,type:'realms',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
     if(errcode==='OK'){
       var servname = errparams[0];
@@ -173,7 +176,7 @@ exports.accept = function(req,res) {
   if(!portMap[req.connection.remoteAddress]){
     portMap[req.connection.remoteAddress] = 16100;
   };
-  dataMaster.invoke('dcpregistry/registerTemplate',{templateName:'DCPNode',registryelementpath:['cluster','nodes'],availabilityfunc:portAvailability});
+  dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:'DCPNode',registryelementpath:['cluster','nodes'],availabilityfunc:portAvailability});
   dataMaster.invoke('dcpregistry/newNameForTemplate',{templateName:'DCPNode',type:'nodes',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
     if(errcode==='OK'){
       var servname = errparams[0];

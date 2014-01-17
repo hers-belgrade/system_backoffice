@@ -1,4 +1,5 @@
 angular.module('mean.pokertemplates').controller('PokerTemplatesController',['$scope', 'PokerTemplates', 'follower', function($scope, PokerTemplates, follower){
+  $scope.setup = {editable:false};
   $scope.template = {};
   $scope.needFLValue = function(bettingpolicy){
     return bettingpolicy==='FL';
@@ -63,6 +64,10 @@ angular.module('mean.pokertemplates').controller('PokerTemplatesController',['$s
   };
   $scope.setTemplate = function(t){
     $scope.template = t;
-    $scope.setup = {editable : true};
+    $scope.setup.editable = true;
+  };
+  $scope.createNew = function(){
+    $scope.setTemplate({});
+    $scope.setup.editable = true;
   };
 }]);
