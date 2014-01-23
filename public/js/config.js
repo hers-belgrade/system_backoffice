@@ -20,6 +20,9 @@ angular.module('mean').config(['$routeProvider',
         when('/pokertemplates', {
             templateUrl: 'views/pokertemplates/list.html'
         }).
+        when('/slottemplates', {
+            templateUrl: 'views/slottemplates/list.html'
+        }).
         when('/', {
             templateUrl: 'views/index.html'
         }).

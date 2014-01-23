@@ -25,3 +25,16 @@ footer p {
 .menu-min .sidebar-shortcuts-large {
 	width:176px;
 	}
+
+.left {
+  float:left;
+}
+.ngViewport.ng-scope{
+      height: auto !important;
+          overflow-y: hidden;
+}
+
+.ngTopPanel.ng-scope, .ngHeaderContainer{
+      width: auto !important;
+}
+

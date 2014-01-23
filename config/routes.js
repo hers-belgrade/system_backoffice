@@ -73,6 +73,11 @@ module.exports = function(app, passport, auth) {
     app.get('/pokertemplates', auth.requiresLogin, pokertemplates.all);
     app.post('/pokertemplates/:templateName', auth.requiresLogin, pokertemplates.save);
 
+    //SlotTemplateRoutes
+    var slottemplates = require('../app/controllers/slottemplates');
+    app.get('/slottemplates', auth.requiresLogin, slottemplates.all);
+    app.post('/slottemplates/:templateName', auth.requiresLogin, slottemplates.save);
+
     //Article Routes
     var articles = require('../app/controllers/articles');
     app.get('/articles', articles.all);

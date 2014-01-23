@@ -4,4 +4,8 @@
 node_modules/
 public/lib/*
 !public/lib/ace
+!public/lib/ng-grid
+!public/lib/hers-utils
 test/coverage/
+*.vim
+*.sw*

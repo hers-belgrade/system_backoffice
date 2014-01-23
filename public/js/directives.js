@@ -36,8 +36,8 @@ angular.module('mean.charting').directive('piechart',function() {
     }
   }
 });
-function histogramDataFromLabeledSeries(ls){
-  var data=[],options={bars:{show:true,barWidth:0.5,align:'center'},xaxis:{min:0,ticks:[]}};
+function histogramDataFromLabeledSeries(ls, color){
+  var data=[],options={bars:{fill:1,show:true,barWidth:0.5,align:'center',fillColor: color},xaxis:{min:0,ticks:[]}};
   var cnt = 0;
   for (var i in ls){
     var d = ls[i];
@@ -46,16 +46,15 @@ function histogramDataFromLabeledSeries(ls){
     cnt++;
   }
   options.xaxis.max=cnt;
-  return [[data],options];
+  return [data,options];
 };
 angular.module('mean.charting').directive('histogram',function() {
   return {
     restrict: 'E',
     link: function(scope,elem,attrs){
       scope.$watch(attrs.ngModel,function(val){
-        var hd = histogramDataFromLabeledSeries(val);
-        console.log(elem);
-        $.plot(elem,hd[0],hd[1]);
+        var hd = histogramDataFromLabeledSeries(val,elem.css('color'));
+        $.plot(elem,[{data:hd[0], color:elem.css('border-color')}],hd[1]);
         elem.show();
       },true);
     }
