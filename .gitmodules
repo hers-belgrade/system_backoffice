@@ -4,3 +4,6 @@
 [submodule "public/lib/hersangularclient"]
 	path = public/lib/hersangularclient
 	url = git@github.com:hers-belgrade/hersangularclient
+[submodule "public/lib/ng-grid"]
+	path = public/lib/ng-grid
+	url = https://github.com/angular-ui/ng-grid.git
