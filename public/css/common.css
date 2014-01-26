@@ -37,4 +37,10 @@ footer p {
 .ngTopPanel.ng-scope, .ngHeaderContainer{
       width: auto !important;
 }
+.hr.dotted, .hr-dotted {
+	border-top-style:dotted;
+	}
+div.infobox {
+	width:188px;
+	}
 
