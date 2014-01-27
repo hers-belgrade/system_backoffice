@@ -51,6 +51,7 @@ angular.module('mean.slottemplates').controller('SlotTemplatesController',['$sco
     cp.symbolweightsmults = JSON.stringify(cp.symbolweightsmults);
     cp.scatter = JSON.stringify(cp.scatter);
     var pt = new SlotTemplates(cp);
+
     pt.$save(function(response){
       var rn = response.name;
 
@@ -126,11 +127,13 @@ angular.module('mean.slottemplates').controller('SlotTemplatesController',['$sco
     }});
   };
   $scope.setTemplate = function(t){
+		if (!t['class']) t['class'] = 'Slot';
     $scope.template = t;
     $scope.setup.editable = true;
   };
   $scope.createNew = function(){
     $scope.setTemplate({
+			class: 'Slot',
       symbolweightsmults : [],
       scatter: {
         probability: 0,

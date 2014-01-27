@@ -1,5 +1,4 @@
 <form name="form" class="form-horizontal" data-ng-submit="save($event)" data-ng-show="setup.editable">
-  <input type="hidden" data-ng-model="template.class" value="Slot">
   <label class="control-label" for="name">Name</label>
   <div class="control">
     <input type="text" name="name" data-ng-model="template.name" placeholder="Name" required>
@@ -46,7 +45,7 @@
   </div>
   <div class="control" data-ng-repeat="t in [] | range:template.columns">
     <label  class="control-label" class="left"> {{t+1}} x free spins </label>
-    <input type="number" step="1" min="1" data-ng-model="template.scatter[t]" placeholder="{{t+1}} x free spins">
+    <input type="number" step="1" min="0" data-ng-model="template.scatter[t]" placeholder="{{t+1}} x free spins">
   </div>
   </fieldset>
   <span>
