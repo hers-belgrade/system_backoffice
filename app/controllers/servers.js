@@ -11,6 +11,10 @@ dataMaster.commit('servers_init',[
   ['set',['cluster','nodes']]
 ]);
 
+var realmReplicationPort = 16021;
+dataMaster.realmReplicationPort = realmReplicationPort;
+dataMaster.element(['cluster_interface']).openReplication(realmReplicationPort);
+
 var portMap = {};
 
 function ReplicateServer(type,servname,servaddress){
@@ -28,6 +32,8 @@ function ReplicateServer(type,servname,servaddress){
   actions.push(
     ['set',['cluster',type,servname,'address'],[servaddress,undefined,'dcp']],
     ['set',['cluster_interface',servname],servname],
+    ['set',['cluster_interface',servname,'type'],[type.substr(0,type.length-1),undefined,'dcp']],
+    ['set',['cluster_interface',servname,'address'],[servaddress,undefined,'dcp']],
     ['set',['cluster_interface',servname,'replicationPort'],[replicationport,undefined,'dcp']]
   );
   dataMaster.commit('new_server',actions);
@@ -95,7 +101,7 @@ exports.authCallback = function(req, res, next){
     if(errcode==='OK'){
       var servname = errparams[0];
       console.log(servname,'should be logged in');
-      res.jsonp({name:servname,domain:servdomain,replicationPort:dataMaster.replicationPort});
+      res.jsonp({name:servname,domain:servdomain,replicationPort:dataMaster.realmReplicationPort});
     }
   });
 };
@@ -148,15 +154,13 @@ function findAndEngage(type,servreplica,autocreate){
 };
 
 dataMaster.newReplica.attach(function(servreplica){
-  console.log('incoming replica',servreplica.replicaToken);
+  console.log('incoming (node) replica',servreplica.replicaToken);
   var reptype = servreplica.replicaToken.type;
   if(reptype){
     findAndEngage(reptype,servreplica,true);
   }else{
-    if(!findAndEngage('realms',servreplica)){
-      if(!findAndEngage('nodes',servreplica)){
-        //console.log(servreplica.replicaToken,'could not be engaged');
-      }
+    if(!findAndEngage('nodes',servreplica)){
+      //console.log(servreplica.replicaToken,'could not be engaged');
     }
   }
   console.log('replica processed',servreplica.replicaToken);
@@ -170,6 +174,16 @@ dataMaster.newReplica.attach(function(servreplica){
     ]);
   }
   */
+});
+
+dataMaster.element(['cluster_interface']).newReplica.attach(function(servreplica){
+  console.log('incoming (realm) replica',servreplica.replicaToken);
+  var reptype = servreplica.replicaToken.type;
+  if(reptype){
+    findAndEngage(reptype,servreplica,true);
+  }else{
+    findAndEngage('realms',servreplica);
+  }
 });
 
 exports.accept = function(req,res) {
