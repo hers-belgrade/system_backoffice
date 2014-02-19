@@ -6,55 +6,49 @@ var mongoose = require('mongoose'),
 
 dataMaster.commit('servers_init',[
   ['set',['cluster_interface'],'dcp'],
+  ['set',['cluster_interface','servers'],'dcp'],
   ['set',['cluster']],
   ['set',['cluster','realms'],'dcp'],
   ['set',['cluster','nodes']]
 ]);
 
-var realmReplicationPort = 16021;
+dataMaster.element(['cluster_interface']).attach(__dirname+'/dcpregistry',{targetdata:dataMaster});
+
+var nodeReplicationPort = 16020, realmReplicationPort = 16021;
+dataMaster.nodeReplicationPort = nodeReplicationPort;
 dataMaster.realmReplicationPort = realmReplicationPort;
-dataMaster.element(['cluster_interface']).openReplication(realmReplicationPort);
+dataMaster.element(['cluster_interface']).openReplication(nodeReplicationPort);
+dataMaster.element(['cluster_interface','servers']).openReplication(realmReplicationPort);
 
 var portMap = {};
 
 function ReplicateServer(type,servname,servaddress){
   console.log('ReplicateServer',type,servname,servaddress);
-  var actions = [], replicationport=portMap[servaddress];
+  var clusteractions = [], 
+    clusterinterfaceactions = [], 
+    replicationport=portMap[servaddress];
   var servcontel = dataMaster.element(['cluster',type,servname]);
   if(!servcontel){
-    actions.push(['set',['cluster',type,servname]]);
+    clusteractions.push(['set',[type,servname]]);
   }else{
     var servstatusel = servcontel.element(['status']);
     if(servstatusel){
       console.log('how come there is a status on',servname,'?');
     }
   }
-  actions.push(
-    ['set',['cluster',type,servname,'address'],[servaddress,undefined,'dcp']],
-    ['set',['cluster_interface',servname],servname],
-    ['set',['cluster_interface',servname,'type'],[type.substr(0,type.length-1),undefined,'dcp']],
-    ['set',['cluster_interface',servname,'address'],[servaddress,undefined,'dcp']],
-    ['set',['cluster_interface',servname,'replicationPort'],[replicationport,undefined,'dcp']]
+  clusteractions.push(
+    ['set',[type,servname,'address'],[servaddress,undefined,'dcp']]
   );
-  dataMaster.commit('new_server',actions);
+  clusterinterfaceactions.push(
+    ['set',[servname],servname],
+    ['set',[servname,'type'],[type.substr(0,type.length-1),undefined,'dcp']],
+    ['set',[servname,'address'],[servaddress,undefined,'dcp']],
+    ['set',[servname,'replicationPort'],[replicationport,undefined,'dcp']]
+  );
+  dataMaster.element(['cluster']).commit('new_server',clusteractions);
+  dataMaster.element(['cluster_interface','servers']).commit('new_server',clusterinterfaceactions);
   servcontel = dataMaster.element(['cluster',type,servname]);
   servcontel.createRemoteReplica('server','dcp','dcp',{address:servaddress,port:replicationport});
-  servcontel.element(['server']).userFactory = {create:function(data,username,realmname,roles){
-    console.log(servname,'creates a new user',username,realmname);
-    var ret = new hersdata.KeyRing(data,username,realmname,roles);
-    ret.newKey.attach(function(key){
-      //console.log('dataMaster should setKey',username,realmname,key);
-      dataMaster.setKey(username,realmname,key);
-    });
-    ret.keyRemoved.attach(function(key){
-      //console.log('dataMaster should removeKey',username,realmname,key);
-      dataMaster.removeKey(username,realmname,key);
-    });
-    ret.destroyed.attach(function(){
-      console.log('dataMaster removed',user.realmname,user.realmname);
-    });
-    return ret;
-  }};
   var servel = dataMaster.element(['cluster',type,servname,'server']);
   servel.go(function(status){
     //console.log(servname,status);
@@ -96,8 +90,8 @@ exports.authCallback = function(req, res, next){
   var servname = req.user.name;
   var servdomain = req.user.domain;
   var realmtemplatename = servname+'Realm';
-  dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:realmtemplatename,registryelementpath:['cluster','realms'],availabilityfunc:portAvailability});
-  dataMaster.invoke('dcpregistry/newNameForTemplate',{templateName:realmtemplatename,type:'realms',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
+  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:realmtemplatename,registryelementpath:['cluster','realms'],availabilityfunc:portAvailability});
+  dataMaster.invoke('cluster_interface/dcpregistry/newNameForTemplate',{templateName:realmtemplatename,type:'realms',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
     if(errcode==='OK'){
       var servname = errparams[0];
       console.log(servname,'should be logged in');
@@ -153,7 +147,7 @@ function findAndEngage(type,servreplica,autocreate){
   }
 };
 
-dataMaster.newReplica.attach(function(servreplica){
+dataMaster.element(['cluster_interface']).newReplica.attach(function(servreplica){
   console.log('incoming (node) replica',servreplica.replicaToken);
   var reptype = servreplica.replicaToken.type;
   if(reptype){
@@ -176,7 +170,7 @@ dataMaster.newReplica.attach(function(servreplica){
   */
 });
 
-dataMaster.element(['cluster_interface']).newReplica.attach(function(servreplica){
+dataMaster.element(['cluster_interface','servers']).newReplica.attach(function(servreplica){
   console.log('incoming (realm) replica',servreplica.replicaToken);
   var reptype = servreplica.replicaToken.type;
   if(reptype){
@@ -190,12 +184,12 @@ exports.accept = function(req,res) {
   if(!portMap[req.connection.remoteAddress]){
     portMap[req.connection.remoteAddress] = 16100;
   };
-  dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:'DCPNode',registryelementpath:['cluster','nodes'],availabilityfunc:portAvailability});
-  dataMaster.invoke('dcpregistry/newNameForTemplate',{templateName:'DCPNode',type:'nodes',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
+  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:'DCPNode',registryelementpath:['cluster','nodes'],availabilityfunc:portAvailability});
+  dataMaster.invoke('cluster_interface/dcpregistry/newNameForTemplate',{templateName:'DCPNode',type:'nodes',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
     if(errcode==='OK'){
       var servname = errparams[0];
       console.log(servname,'should be logged in');
-      res.jsonp({name:servname,replicationPort:dataMaster.replicationPort});
+      res.jsonp({name:servname,replicationPort:dataMaster.nodeReplicationPort});
     }
   });
 };

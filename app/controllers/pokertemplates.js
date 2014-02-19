@@ -7,13 +7,13 @@ function pokerTemplateToDCPInsert(pt){
   var to = pt.toObject();
   delete to.__v;
   delete to._id;
-  return ['set',['templates','pokerroom',to.name],[JSON.stringify(to),undefined,'dcp']];
+  return ['set',['cluster_interface','templates','pokerroom',to.name],[JSON.stringify(to),undefined,'dcp']];
 }
 
 PokerTemplate.find({},function(err,pts){
   var actions = [
-    ['set',['templates'],'dcp'],
-    ['set',['templates','pokerroom'],'dcp']
+    ['set',['cluster_interface','templates'],'dcp'],
+    ['set',['cluster_interface','templates','pokerroom'],'dcp']
   ];
   for(var i in pts){
     actions.push(pokerTemplateToDCPInsert(pts[i]));
@@ -22,12 +22,15 @@ PokerTemplate.find({},function(err,pts){
 });
 
 function templateSearch(el,name,searchobj){
-  var servs = el.keys();
-  for(var i in servs){
-    if(el.element([servs[i],'server','rooms',name])){
-      return el;
+  //console.log('is there any',el.dataDebug());
+  var ret;
+  el.traverseElements(function(_name,_el){
+    if(_el.element(['server','rooms',name])){
+      ret = el;
+      return true;
     }
-  }
+  });
+  return ret;
 };
 
 function newTemplateInstance(el,name,searchobj,username,realmname){
@@ -36,7 +39,7 @@ function newTemplateInstance(el,name,searchobj,username,realmname){
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
-  console.log('new pokerroom template',username,el.element([username]).dataDebug());
+  //console.log('new pokerroom template',username,el.element([username]).dataDebug());
 };
 
 function deleteTemplateInstance(el,name,searchobj,username,realmname){
@@ -70,7 +73,7 @@ exports.save = function(req, res) {
       return;
     }
     dataMaster.commit('new_poker_template',[pokerTemplateToDCPInsert(pt)]);
-    dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
     res.jsonp(pt);
   });
 };
@@ -78,7 +81,7 @@ exports.save = function(req, res) {
 PokerTemplate.find({},function(err,pts){
   for(var i in pts){
     var pt = pts[i];
-    dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
   }
 });
 

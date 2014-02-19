@@ -26,7 +26,7 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
               ['set',[name]]//,'dcp']
             ]);
           };
-        var datael = _this.data.element(registryelementpath);
+        var datael = _this.self.targetdata.element(registryelementpath);
         if(!datael){
           console.log('no element on',registryelementpath);
           return;
@@ -34,7 +34,7 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
         var ret=1, resourceel, elname;
         while(true){
           elname = templateName+ret;
-          console.log('Trying',elname);
+          //console.log('Trying',elname);
           resourceel = searchfunc(datael,elname,searchobj,username,realmname);
           if(!resourceel){
             newfunc(datael,elname,searchobj,username,realmname);
@@ -56,7 +56,7 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
           registryelementpath = po.registryelementpath || [],
           searchfunc = po.searchfunc || function(el,name){return el.element([name])},
           deletefunc = po.deletefunc || function(el,name){el.remove(name);};
-        var datael = _this.data.element(registryelementpath);
+        var datael = _this.self.targetdata.element(registryelementpath);
         if(!datael){
           console.log('no element on',registryelementpath);
           return;
@@ -103,6 +103,7 @@ function revokeNameForTemplate(paramobj,statuscb,username,realmname){
 revokeNameForTemplate.params='originalobj';
 
 function init(){
+  this.self.targetdata = this.self.targetdata || this.data;
   this.self.templates = {};
 }
 

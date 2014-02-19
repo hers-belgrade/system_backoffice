@@ -7,13 +7,13 @@ function slotTemplateToDCPInsert(pt){
   var to = pt.toObject();
   delete to.__v;
   delete to._id;
-  return ['set',['templates','slotgames',to.name],[JSON.stringify(to),undefined,'dcp']];
+  return ['set',['cluster_interface','templates','slotgames',to.name],[JSON.stringify(to),undefined,'dcp']];
 }
 
 SlotTemplate.find({},function(err,pts){
   var actions = [
-    ['set',['templates'],'dcp'],
-    ['set',['templates','slotgames'],'dcp']
+    ['set',['cluster_interface','templates'],'dcp'],
+    ['set',['cluster_interface','templates','slotgames'],'dcp']
   ];
   for(var i in pts){
     actions.push(slotTemplateToDCPInsert(pts[i]));
@@ -69,7 +69,7 @@ exports.save = function(req, res) {
       return;
     }
     dataMaster.commit('new_slot_template',[slotTemplateToDCPInsert(pt)]);
-    dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
     res.jsonp(pt);
   });
 };
@@ -77,7 +77,7 @@ exports.save = function(req, res) {
 SlotTemplate.find({},function(err,pts){
   for(var i in pts){
     var pt = pts[i];
-    dataMaster.functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
   }
 });
 
