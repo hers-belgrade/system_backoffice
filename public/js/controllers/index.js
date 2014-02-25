@@ -60,10 +60,11 @@ angular.module('mean.system').controller('IndexController', ['$scope', 'Global',
         rf.listenToScalar(this,'class',{setter:function(classname){
           if(rpf){rpf.destroy();}
           rpf = rf.listenToScalar(this,'playing',{setter:function(val,oldval){
-            incLSCounter(this.ctx.serverplayers,this.servername,val||0);
-            decLSCounter(this.ctx.serverplayers,this.servername,oldval||0);
-            incLSCounter(this.ctx.gameclassplayers,classname,val||0);
-            decLSCounter(this.ctx.gameclassplayers,classname,oldval||0);
+            var delta = ((val||0)-(oldval||0));
+            incLSCounter(this.ctx.serverplayers,this.servername,delta||0);
+            //decLSCounter(this.ctx.serverplayers,this.servername,oldval||0);
+            incLSCounter(this.ctx.gameclassplayers,classname,delta||0);
+            //decLSCounter(this.ctx.gameclassplayers,classname,oldval||0);
             console.log(val,oldval,$scope.gameclassplayers);
           }});
         }});

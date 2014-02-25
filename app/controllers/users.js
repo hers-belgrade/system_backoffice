@@ -4,7 +4,11 @@
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     dataMaster = require('./datamaster'),
-    util = require('util');
+    UserBase = require('hersdata').UserBase,
+    _BC_ = new(require('hersdata').BigCounter)(),
+    randomBytes = require('crypto').randomBytes,
+    util = require('util'),
+    Timeout = require('herstimeout');
 
 
 /**
@@ -94,32 +98,79 @@ exports.user = function(req, res, next, id) {
 };
 
 exports.dumpData = function(req, res, next) {
-    if(req && req.user && req.user.name){
-        dataMaster.setUser(req.user.name,'www',req.user.roles,function(user){
-          if(!user){
-            res.jsonp({});
-            return;
+  if(req && req.user && req.user.username){
+    var user = dataMaster.setFollower(req.user.username,dataMaster.realmName,req.user.roles);
+    user.sessionStatus = function(){
+      var ret = {};
+      for(var i in this.sessions){
+        ret[i] = this.sessions[i].queue.length;
+      }
+      return ret;
+    };
+    user.makeSession = function(sess){
+      if(!sess){
+        console.trace();
+        console.log('no session to make');
+        process.exit(0);
+      }
+      if(this.sessions[sess]){return;}
+      //console.log('new cs',this.followingpaths);
+      var _s = new ConsumerSession(this,dataMaster,sess);
+      var t = this;
+      this.sessions[sess] = _s;
+    };
+    user.push = function(item){
+      //console.log(u.username,'got',item,this.sessions);
+      for(var i in this.sessions){
+        this.sessions[i].push(item);
+        /*
+        var s = this.sessions[i];
+        if(s.queue){
+          if(_now-s.lastAccess>15000){
+            s.destroy();
+            delete this.sessions[i];
+          }else{
+            s.lastAccess = _now;
+            if(s.sockio){
+              s.sockio.emit('_',item);
+            }else{
+              s.queue.push(item);
+            }
           }
-          var sessid = req.query[dataMaster.fingerprint];
-          if(!sessid){
-            sessid=~~(Math.random()*1000000);
-          }
-          user.makeSession(sessid);
-          var session = {};
-          session[dataMaster.fingerprint]=sessid;
-          var _res = res;
-          user.sessions[sessid].dumpQueue(function(data){
-              _res.jsonp({
-                  username:req.user.name,
-                  roles:user.roles,
-                  session:session,
-                  data:data
-              });
-          });
-        });
-    }else{
-        next();
+        }else{
+          //should never get here
+          delete this.sessions[i];
+        }
+        */
+      }
+    };
+    //console.log('recognized',user.username,user.realmname,user.keys);
+    if(!user){
+      res.jsonp({none:null});
+      return;
     }
+    var sessid = req.query[dataMaster.fingerprint];
+    if(!sessid){
+      _BC_.inc();
+      sessid=_BC_.toString()+randomBytes(8).toString('hex');
+      console.log('created',sessid,'on',user.username);
+    }
+    //console.log(user.sessions);
+    user.makeSession(sessid);
+    var session = {};
+    session[dataMaster.fingerprint]=sessid;
+    var _res = res;
+    res.jsonp({
+      username:req.user.username,
+      roles:user.roles,
+      session:session,
+      data:user.sessions[sessid] ? user.sessions[sessid].retrieveQueue() : []
+    });
+    res = null;
+  }else{
+    console.log('dumpData with no username?');
+    next();
+  }
 };
 
 function executeOneOnUser(user,command,params,cb){
@@ -161,15 +212,24 @@ function executeOnUser(user,session,commands,res){
           if(cmdsdone===cmdstodo){
             var s = user.sessions[session];
             if(!s){
-              _res.jsonp({errorcode:'NO_SESSION',errorparams:[session]});
+              console.log('no',session,'in',user.username);
+              if(_res.jsonp){
+                _res.jsonp({errorcode:'NO_SESSION',errorparams:[session]});
+                _res = null;
+              }else{
+                _res.emit('=',{errorcode:'NO_SESSION',errorparams:[session]});
+              }
               return;
             }
             var so = {};
             so[dataMaster.fingerprint] = session;
-            s.dumpQueue(function(data){
-              ret.data=data;
-              __res.jsonp(ret);
-            },true);
+            ret.data=s ? s.retrieveQueue() : [];
+            if(_res.jsonp){
+              _res.jsonp(ret);
+              _res = null;
+            }else{
+              _res.emit('=',ret);
+            }
           }
         };
       })(i,res));
@@ -178,23 +238,104 @@ function executeOnUser(user,session,commands,res){
 
 exports.execute = function(req, res, next) {
   //console.log(req.user,'executing');
-    if(!(req.query && req.query.commands)){
-      res.jsonp({});
+  if(!(req.query && req.query.commands)){
+    res.jsonp({none:null});
+    return;
+  }
+  try{
+    var commands = JSON.parse(req.query.commands);
+    //console.log(commands);
+    if(commands.length%2){
+      res.jsonp({errorcode:'invalid_command_count',errorparams:commands});
       return;
     }
-    try{
-      var commands = JSON.parse(req.query.commands);
-      //console.log(commands);
-      if(commands.length%2){
-        res.jsonp({errorcode:'invalid_command_count',errorparams:commands});
-        return;
+    var user = UserBase.setUser(req.user.username,dataMaster.realmName,req.user.roles);
+    if(user){
+      executeOnUser(user,req.query[dataMaster.fingerprint],commands,res);
+    }else{
+      res.jsonp({none:null});
+      res = null;
+    }
+  }
+  catch(e){
+    //console.log(e.stack);
+    res.jsonp({errorcode:'JSON',errorparams:[e,commands]});
+  }
+};
+
+
+exports.setup = function(app){
+  var io = require('socket.io').listen(app, { log: false });
+  console.log('socket.io listening');
+  io.set('authorization', function(handshakeData, callback){
+    var username = handshakeData.query.username;
+    var sess = handshakeData.query[dataMaster.fingerprint];
+    console.log('sock.io incoming',username,sess);
+    if(username && sess){
+      var u = UserBase.findUser(username,dataMaster.realmName);
+      if(!u){
+        callback(null,false);
+      }else{
+        handshakeData.username = username;
+        handshakeData.session = sess;
+        callback(null,true);
       }
-      dataMaster.setUser(req.user.name,'www',req.user.roles,function(user){
-        executeOnUser(user,req.query[dataMaster.fingerprint],commands,res);
-      });
+    }else{
+      callback(null,false);
     }
-    catch(e){
-      //console.log(e.stack);
-      res.jsonp({errorcode:'JSON',errorparams:[e,commands]});
-    }
+  });
+  io.sockets.on('connection',function(sock){
+    var username = sock.handshake.username,
+      session = sock.handshake.session,
+      u = UserBase.findUser(username,dataMaster.realmName);
+    u.makeSession(session);
+    u.sessions[session].setSocketIO(sock);
+    sock.on('!',function(data){
+      executeOnUser(u,session,data,sock);
+    });
+  });
+};
+
+
+function ConsumerSession(u,coll,session){
+  this.queue = [];
+  var t = this;
+  u.describe(function(item){
+    t.push(item);
+  });
+  this.user = u;
+};
+ConsumerSession.initTxn = JSON.stringify([JSON.stringify([]),JSON.stringify([null,'init'])]);
+ConsumerSession.prototype.destroy = function(){
+  for(var i in this){
+    delete this[i];
+  }
+};
+ConsumerSession.prototype.retrieveQueue = function(){
+  this.lastAccess = Timeout.now();
+  if(this.queue.length){
+    //console.log(this.session,'splicing',this.queue);
+    return this.queue.splice(0);
+  }else{
+    //console.log('empty q');
+    return [];
+  }
+};
+ConsumerSession.prototype.setSocketIO = function(sock){
+  this.sockio = sock;
+  var t = this;
+  sock.on('disconnect',function(){
+    delete t.sockio;
+  });
+  while(this.queue.length){
+    //console.log('dumping q',this.queue);
+    sock.emit('_',this.queue.shift());
+  }
+};
+ConsumerSession.prototype.push = function(item){
+  if(this.sockio){
+    this.sockio.emit('_',item);
+  }else{
+    this.queue.push(item);
+  }
 };
