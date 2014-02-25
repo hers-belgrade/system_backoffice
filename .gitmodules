@@ -7,3 +7,6 @@
 [submodule "public/lib/ng-grid"]
 	path = public/lib/ng-grid
 	url = https://github.com/angular-ui/ng-grid.git
+[submodule "node_modules/herstimeout"]
+	path = node_modules/herstimeout
+	url = git@github.com:hers-belgrade/herstimeout

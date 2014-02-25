@@ -14,6 +14,5 @@ var SlotTemplateSchema = new Schema({
   max_bet_per_line: Number,
   max_paylines: Number,
   symbolweightsmults: String,
-  scatter: String,
 });
 mongoose.model('SlotTemplate', SlotTemplateSchema);

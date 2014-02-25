@@ -1,11 +1,12 @@
 .DS_Store
 .nodemonignore
 .sass-cache/
-node_modules/
+node_modules/*
 public/lib/*
 !public/lib/ace
 !public/lib/ng-grid
 !public/lib/hers-utils
+!node_modules/herstimeout
 test/coverage/
 *.vim
 *.sw*

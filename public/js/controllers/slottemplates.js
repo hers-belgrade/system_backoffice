@@ -1,4 +1,5 @@
-angular.module('mean.slottemplates').controller('SlotTemplatesController',['$scope', 'SlotTemplates', 'follower', function($scope, SlotTemplates, follower){
+angular.module('mean.slottemplates')
+.controller('SlotTemplatesController',['$scope', 'SlotTemplates', 'follower', function($scope, SlotTemplates, follower){
   $scope.setup = {editable:false};
   $scope.template = {};
 
@@ -17,29 +18,53 @@ angular.module('mean.slottemplates').controller('SlotTemplatesController',['$sco
   function getRowDef (index) {
     return {
       field:index+'', 
-      displayName:(index+' x mult'),
+      displayName:(index+' x reward'),
       editableCellTemplate:'<input style="width:90%;" type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" min="0" step="1">'
     };
   }
 
+
+	var ininitalization = true;
+	function check_this_out() {
+		console.log('!!!!!!!!!!!!!!!!!!!!!!!');
+		return true;
+	}
+
   $scope.$watch ('template.columns', function (nv,ov) {
-    if (nv == ov) return;
+		if (!ininitalization && nv === ov) return;
+
+		var columns = nv;
+		ininitalization = false;
     var p = [
     {field:'index',
       displayName:'Symbol',
-      enableCellEdit: false
+      enableCellEdit: false,
+			cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()"><slottemplate-symbol stsvalue="row.getProperty(col.field)"></slottemplate-symbol></div>'
     },
     {
       field:'weight', 
       displayName:'Weight',
       editableCellTemplate:'<input style="width:90%;" type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" min="0" step="0.01">'
     }];
-    if (nv){
-      for (var i = 0; i < nv; i++){
+
+    if (columns){
+      for (var i = 0; i < columns; i++){
         p.push (getRowDef(i+1));
       }
     }
     $scope.gridColumnDefs = p;
+
+
+		///reconfigure scatter and joker mults if required
+		if ($scope.template && $scope.template.symbolweightsmults) {
+			for (var i = 0; i < $scope.template.symbolweightsmults.length; i++) {
+				var sm = $scope.template.symbolweightsmults[i];
+				for (var j = 0; j < columns; j++) {
+					if ('undefined' === typeof(sm[(j+1)+''])) sm[(j+1)+''] = 0;
+				}
+			}
+		}
+
   });
 
   $scope.save = function(){
@@ -49,14 +74,12 @@ angular.module('mean.slottemplates').controller('SlotTemplatesController',['$sco
     }
     delete cp.index;
     cp.symbolweightsmults = JSON.stringify(cp.symbolweightsmults);
-    cp.scatter = JSON.stringify(cp.scatter);
     var pt = new SlotTemplates(cp);
 
     pt.$save(function(response){
       var rn = response.name;
 
       response.symbolweightsmults = JSON.parse(response.symbolweightsmults);
-      response.scatter = JSON.parse(response.scatter);
       var done = false;
       if(rn){
         for(var i in $scope.templates){
@@ -73,21 +96,12 @@ angular.module('mean.slottemplates').controller('SlotTemplatesController',['$sco
       $scope.setup.editable = false;
     });
   };
+
   $scope.list = function(){
     SlotTemplates.query(function(pts){
       for (var i in pts) {
         if (pts[i].symbolweightsmults) {
-          /// razmisli, mozda ne bi bilo lose da ovo odvojis ...
           pts[i].symbolweightsmults = JSON.parse(pts[i].symbolweightsmults);
-        }
-
-        if (pts[i].scatter) {
-          pts[i].scatter = JSON.parse(pts[i].scatter);
-        }else{
-          pts[i].scatter = { probability: 0 }
-          for (var j = 0 ; j < pts[i].columns; j++) {
-            pts[i].scatter[j+1] = 0;
-          }
         }
       }
       $scope.templates = pts;
@@ -131,33 +145,65 @@ angular.module('mean.slottemplates').controller('SlotTemplatesController',['$sco
     $scope.template = t;
     $scope.setup.editable = true;
   };
+
+
+	////CREATE NEW ACTIONS...
   $scope.createNew = function(){
     $scope.setTemplate({
 			class: 'Slot',
       symbolweightsmults : [],
-      scatter: {
-        probability: 0,
-      }
     });
+
+		this.addSymbol();
+		this.addSymbol();
     $scope.setup.editable = true;
-
-    $scope.addSymbol = function (e){
-      e.preventDefault();
-      e.stopPropagation();
-      var ts = { weight:1,index:$scope.template.symbolweightsmults.length };
-      if ($scope.template.columns) {
-        for (var i = 0 ; i < $scope.template.columns; i++){
-          ts[(i+1)+''] = 0;
-        }
-      }
-      $scope.template.symbolweightsmults.push (ts);
-    },
-    $scope.removeSymbol = function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (!$scope.template.symbolweightsmults.length) return;
-      $scope.template.symbolweightsmults.pop();
-    }
-
   };
-}]);
+
+	$scope.addSymbol = function (e){
+		if (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		var ts = { weight:1,index:$scope.template.symbolweightsmults.length };
+
+		if ($scope.template.columns) {
+			for (var i = 0 ; i < $scope.template.columns; i++){
+				ts[(i+1)+''] = 0;
+			}
+		}
+		$scope.template.symbolweightsmults.push (ts);
+	};
+
+	$scope.removeSymbol = function (e) {
+		e.preventDefault();
+		e.stopPropagation();
+		if (!$scope.template.symbolweightsmults.length) return;
+		$scope.template.symbolweightsmults.pop();
+	}
+}])
+.directive ('slottemplateSymbol', function () {
+	///TODO: think if I should move rewards to separate column in ng-grid ...
+	return {
+		scope: {
+			sts_value: '=stsvalue'
+		},
+		controller:function ($scope) {
+			$scope.text = '';
+			var t = $scope.sts_value;
+			switch (t) {
+				case 0 :
+				$scope.text = 'Scatter (reward: free spins)';
+				break;
+				case 1:
+				$scope.text = 'Joker (reward: extra mult)';
+				break;
+				default:
+				$scope.text = t+' (reward: mult)';
+			}
+		},
+		restrict: 'E',
+		replace:false,
+		template: '<span ng-cell-text>{{text}}</span>'
+	}
+});
+;

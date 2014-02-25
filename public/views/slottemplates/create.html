@@ -35,45 +35,15 @@
   <label class="control-label" for="max_bet_per_line">Max. bet per line</label>
   <div class="control">
     <input type="number" step="1" min="1" name="max_bet_per_line" data-ng-model="template.max_bet_per_line" placeholder="Max. bet per line" required>
-  </div>
+	</div>
 
-  <fieldset>
-  <legend>Scatter data</legend>
-  <div class="control" ng-repeat-start>
-    <label  class="control-label" class="left"> Probability </label>
-    <input type="number" step="0.01" min="0" max="0.9" data-ng-model="template.scatter.probability" placeholder="Scatter prob.">
-  </div>
-  <div class="control" data-ng-repeat="t in [] | range:template.columns">
-    <label  class="control-label" class="left"> {{t+1}} x free spins </label>
-    <input type="number" step="1" min="0" data-ng-model="template.scatter[t]" placeholder="{{t+1}} x free spins">
-  </div>
-  </fieldset>
   <span>
   </span>
   <fieldset>
 
   <button class='btn' data-ng-click="addSymbol($event)" data-ng-repeat-end data-ng-disabled="!template.columns">Add symbol</button>
-  <button class='btn' data-ng-click="removeSymbol($event)" data-ng-repeat-end data-ng-disabled="template.symbolweightsmults && template.symbolweightsmults.length == 0">Remove symbol</button>
+	<button class='btn' data-ng-click="removeSymbol($event)" data-ng-repeat-end data-ng-disabled="template.symbolweightsmults && template.symbolweightsmults.length <= 2">Remove symbol</button>
   <div class="gridStyle" ng-grid="gridSettings"></div>
-
-
-
-  <!--
-  <legend>Symbol data</legend>
-
-    <fieldset data-ng-repeat = "s in template.symbolweightsmults">
-    <legend> Symbol {{$index+1}}</legend>
-      <div class="control">
-        <label  class="control-label" class="left"> Weight</label>
-        <input type="number" step="0.01" min="0.01" data-ng-model="s.weight" placeholder="Weight">
-      </div>
-      <div class="control" data-ng-repeat="t in [] | range:template.columns">
-        <label  class="control-label" class="left"> {{t+1}} x mult</label>
-        <input type="number" step="1" min="1" data-ng-model="s[t+1]" placeholder="{{t+1}} x mult">
-      </div>
-    </fieldset>
-  -->
-
 
   </fieldset>
 		<div class="control-group">

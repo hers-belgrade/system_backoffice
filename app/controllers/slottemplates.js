@@ -22,16 +22,21 @@ SlotTemplate.find({},function(err,pts){
 });
 
 function templateSearch(el,name,searchobj){
-  var servs = el.keys();
-  for(var i in servs){
-    if(el.element([servs[i],'server','rooms',name])){
-      return el;
+  var ret;
+  el.traverseElements(function(_name,_el){
+    if(_el.element(['server','rooms',name])){
+      ret = el;
+      return true;
     }
-  }
+  });
+  return ret;
 };
 
 function newTemplateInstance(el,name,searchobj,username,realmname){
   el.commit('new_slottemplate_instance',[
+		['set',[username]],
+		['set',[username, 'server']],
+		['set',[username, 'server', 'rooms']],
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
