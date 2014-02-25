@@ -1,7 +1,8 @@
 .DS_Store
 .nodemonignore
 .sass-cache/
-node_modules/
+node_modules/*
+!node_modules/herstimeout
 public/lib/*
 !public/lib/ace
 !public/lib/ng-grid

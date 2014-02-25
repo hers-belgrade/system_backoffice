@@ -48,10 +48,10 @@ function ReplicateServer(type,servname,servaddress){
   dataMaster.element(['cluster']).commit('new_server',clusteractions);
   dataMaster.element(['cluster_interface','servers']).commit('new_server',clusterinterfaceactions);
   servcontel = dataMaster.element(['cluster',type,servname]);
-  servcontel.createRemoteReplica('server','dcp','dcp',{address:servaddress,port:replicationport});
+  servcontel.createRemoteReplica('server','dcp','dcp',{address:servaddress,port:replicationport},true);
   var servel = dataMaster.element(['cluster',type,servname,'server']);
   servel.go(function(status){
-    //console.log(servname,status);
+    console.log(servname,status);
     servcontel.commit('status_change',[
       ['set',['status'],[status,undefined,'dcp']]
     ]);
@@ -59,23 +59,12 @@ function ReplicateServer(type,servname,servaddress){
   });
 };
 
-function portAvailableOn(servaddress){
-};
-
 var portAvailability = function(el,name,searchobj){
   console.log('checking',el.dataDebug());
   var servaddress = searchobj.servaddress;
   var st = el.element(['status']);
   if(st){
-    if(st.value()==='connected'){
-      return false;
-    }else{
-      var addr = el.element(['address']);
-      if(addr&&addr.value()!==servaddress){
-        return false;
-      }
-      return true;
-    }
+    return st.value()==='disconnected';
   }
   console.log(el.dataDebug(),'has no status',portMap[servaddress]);
   portMap[servaddress]++;

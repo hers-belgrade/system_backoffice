@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
 var errors = {
   'OK' : {message:'Counter for [templateName] is [counter]',params:['counter','templateName']},
   'TEMPLATE_NOT_REGISTERED' : {message:'Template name [templateName] is not registered',params:['templateName']},
-  'TEMPLATE_INSTANCE_NOT_REVOKED' : {message:'Instance [instanceName] could not be revoked for template name [templateName]', params:['templateName','instanceName']}
+  'TEMPLATE_INSTANCE_NOT_REVOKED' : {message:'Instance [instanceName] could not be revoked for template name [templateName]', params:['templateName','instanceName']},
+  'UNDEFINED' : {message:'Template name [templateName] could not be resolved at the time',params:['templateName']}
 };
 
 var counters = {};
@@ -36,6 +37,7 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
           elname = templateName+ret;
           //console.log('Trying',elname);
           resourceel = searchfunc(datael,elname,searchobj,username,realmname);
+          //console.log('got',resourceel);
           if(!resourceel){
             newfunc(datael,elname,searchobj,username,realmname);
             resourceel = searchfunc(datael,elname,searchobj,username,realmname);
@@ -82,7 +84,12 @@ function newNameForTemplate(paramobj,statuscb,username,realmname){
   if(!this.self.templates[templateName]){
     return statuscb('TEMPLATE_NOT_REGISTERED',templateName);
   }
-  return statuscb('OK',this.self.templates[templateName].find(paramobj,username,realmname),templateName);
+  var ret = this.self.templates[templateName].find(paramobj,username,realmname);
+  if(ret){
+    return statuscb('OK',ret,templateName);
+  }else{
+    return statuscb('UNDEFINED',templateName);
+  }
 };
 newNameForTemplate.params='originalobj';
 

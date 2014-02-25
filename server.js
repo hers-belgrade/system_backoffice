@@ -80,11 +80,12 @@ var app = express();
 require('./config/express')(app, passport, db);
 
 //Bootstrap routes
-require('./config/routes')(app, passport, auth);
+var server = require('http').createServer(app);
+require('./config/routes')(server,app, passport, auth);
 
 //Start the app by listening on <port>
 var port = process.env.PORT || config.port;
-app.listen(port);
+server.listen(port);
 console.log('Express app started on port ' + port);
 
 //Initializing logger

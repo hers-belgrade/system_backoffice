@@ -19,18 +19,36 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
       this[name] = {
         connection : follower.follow('cluster').follow('realms').follow(name).scalars,
         status : follower.follow('cluster').follow('realms').follow(name).follow('server').scalars,
-        rooms : follower.follow('cluster').follow('realms').follow(name).follow('server').follow('rooms').collections
+        rooms : follower.follow('cluster').follow('realms').follow(name).follow('server').follow('rooms').collections.length
       };
     },deactivator:function(name){
       delete this[name];
     }});
-    follower.follow('cluster').follow('nodes').listenToCollections($scope.nodes,{activator:function(name){
+    var nf = follower.follow('cluster').follow('nodes');
+    nf.listenToCollections($scope.nodes,{activator:function(name){
       console.log('new server',name);
-      this[name] = {
-        connection : follower.follow('cluster').follow('nodes').follow(name).scalars,
-        status : follower.follow('cluster').follow('nodes').follow(name).follow('server').scalars,
-        rooms : follower.follow('cluster').follow('nodes').follow(name).follow('server').follow('rooms').collections
+      var nnf = nf.follow(name),
+        snnf = nnf.follow('server');
+        rsnnf = snnf.follow('rooms');
+      var obj = {
+        connection : nnf.scalars,
+        status : snnf.scalars,
+        rooms : {}
       };
+      this[name] = obj;
+      rsnnf.listenToCollections(obj.rooms,{activator:function(name){
+        rsnnf.follow(name).listenToScalar(this,'templatename',{setter:function(tn,otn){
+          if(tn){
+            if(!this[tn]){
+              this[tn] = 1;
+            }else{
+              this[tn]++;
+            }
+          }else{
+            this[otn]--;
+          }
+        }});
+      }});
     },deactivator:function(name){
       delete this[name];
     }});
