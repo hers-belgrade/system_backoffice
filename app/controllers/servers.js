@@ -2,14 +2,19 @@ var mongoose = require('mongoose'),
     _ = require('underscore'),
     Server = mongoose.model('Server'),
     dataMaster = require('./datamaster'),
-    hersdata = require('hersdata');
+    hersdata = require('hersdata'),
+    Timeout = require('herstimeout');
 
 dataMaster.commit('servers_init',[
   ['set',['cluster_interface'],'dcp'],
   ['set',['cluster_interface','servers'],'dcp'],
   ['set',['cluster']],
   ['set',['cluster','realms'],'dcp'],
-  ['set',['cluster','nodes']]
+  ['set',['cluster','nodes']],
+  ['set',['stats'],'dcp'],
+  ['set',['stats','players'],[0,undefined,'dcp']],
+  ['set',['stats','players_by_server'],'dcp'],
+  ['set',['stats','players_by_gameclass'],'dcp'],
 ]);
 
 dataMaster.element(['cluster_interface']).attach(__dirname+'/dcpregistry',{targetdata:dataMaster});
@@ -21,6 +26,7 @@ dataMaster.element(['cluster_interface']).openReplication(nodeReplicationPort);
 dataMaster.element(['cluster_interface','servers']).openReplication(realmReplicationPort);
 
 var portMap = {};
+var roomsHook = new (hersdata.HookCollection);
 
 function ReplicateServer(type,servname,servaddress){
   console.log('ReplicateServer',type,servname,servaddress);
@@ -45,6 +51,8 @@ function ReplicateServer(type,servname,servaddress){
     ['set',[servname,'address'],[servaddress,undefined,'dcp']],
     ['set',[servname,'replicationPort'],[replicationport,undefined,'dcp']]
   );
+  var statsel = dataMaster.element(['stats']);
+  statsel.commit('new_server',[['set',[servname],'dcp']]);
   dataMaster.element(['cluster']).commit('new_server',clusteractions);
   dataMaster.element(['cluster_interface','servers']).commit('new_server',clusterinterfaceactions);
   servcontel = dataMaster.element(['cluster',type,servname]);
@@ -56,6 +64,36 @@ function ReplicateServer(type,servname,servaddress){
       ['set',['status'],[status,undefined,'dcp']]
     ]);
     //console.log(servname,status,servcontel.dataDebug());
+  });
+  servel.replicationInitiated.attach(function(){
+    var sn = servname, se = statsel;
+    servel.waitFor([['memoryusage','memoryavailable','network_in','network_out','CPU','exec_delay','exec_queue','dcp_branches','dcp_leaves']],function(map){
+      var actions = [];
+      for(var i in map){
+        actions.push(['set',[sn,i],[map[i],undefined,'dcp']]);
+      }
+      se.commit('system_change',actions);
+    });
+    servel.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
+      //console.log(roomname,map,oldmap);
+      var oldplaying = oldmap ? oldmap.playing : 0;
+      var actions = [
+        ['set',['players'],[se.element(['players']).value()+map.playing-oldplaying,undefined,'dcp']]
+      ];
+      var gcse = se.element(['players_by_gameclass',map.class]);
+      if(!gcse){
+        actions.push(['set',['players_by_gameclass',map.class],[map.playing-oldplaying,undefined,'dcp']]);
+      }else{
+        actions.push(['set',['players_by_gameclass',map.class],[gcse.value()+map.playing-oldplaying,undefined,'dcp']]);
+      }
+      var sse = se.element(['players_by_server',sn]);
+      if(!sse){
+        actions.push(['set',['players_by_server',sn],[map.playing-oldplaying,undefined,'dcp']]);
+      }else{
+        actions.push(['set',['players_by_server',sn],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
+      }
+      Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
+    });
   });
 };
 

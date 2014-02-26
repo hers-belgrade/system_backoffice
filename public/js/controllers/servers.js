@@ -24,7 +24,7 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
     },deactivator:function(name){
       delete this[name];
     }});
-    var nf = follower.follow('cluster').follow('nodes');
+    var nf = follower.follow('stats');
     nf.listenToCollections($scope.nodes,{activator:function(name){
       console.log('new server',name);
       var nnf = nf.follow(name),
@@ -32,7 +32,7 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
         rsnnf = snnf.follow('rooms');
       var obj = {
         connection : nnf.scalars,
-        status : snnf.scalars,
+        status : nnf.scalars,
         rooms : {}
       };
       this[name] = obj;

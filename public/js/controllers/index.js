@@ -7,6 +7,14 @@ function findLSCounter(ls,label){
     }
   }
 };
+function setLSCounter(ls,label,val){
+  var c = findLSCounter(ls,label);
+  if(!c){
+    ls.push({label:label,data:val});
+  }else{
+    c.data=val;
+  }
+};
 function incLSCounter(ls,label,step){
   step = step || 1;
   var c = findLSCounter(ls,label);
@@ -42,6 +50,7 @@ angular.module('mean.system').controller('IndexController', ['$scope', 'Global',
     $scope.global = Global;
     $scope.realms = [];
     $scope.servers = [];
+    $scope.players = [];
     $scope.serverplayers = [];
     $scope.gameclassplayers = [];
     $scope.rooms = {};
@@ -50,8 +59,20 @@ angular.module('mean.system').controller('IndexController', ['$scope', 'Global',
     },deactivator:function(username,realmname){
       decLSCounter(this,realmname);
     }});
-    var nf = follower.follow('cluster').follow('nodes');
-    nf.listenToCollections($scope,{activator:function(servername){
+    var sf = follower.follow('stats'),
+      spf = sf.follow('players_by_server'),
+      gcpf = sf.follow('players_by_gameclass');
+    sf.listenToScalar($scope,'players',{setter:function(val,oldval){
+      setLSCounter(this.players,'players',val);
+    }});
+    spf.listenToScalars($scope,{setter:function(name,val,oldval){
+      setLSCounter(this.serverplayers,name,val);
+    }});
+    gcpf.listenToScalars($scope,{setter:function(name,val,oldval){
+      setLSCounter(this.gameclassplayers,name,val);
+    }});
+      /*
+    sf.listenToCollections($scope,{activator:function(servername){
       var rsf = nf.follow(servername).follow('server').follow('rooms');
       rsf.listenToCollections({ctx:this,servername:servername},{activator:function(roomname){
         var rf = rsf.follow(roomname);
@@ -71,4 +92,5 @@ angular.module('mean.system').controller('IndexController', ['$scope', 'Global',
       },deactivator:function(name){
       }});
     }});
+    */
 }]);

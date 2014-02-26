@@ -333,8 +333,18 @@ ConsumerSession.prototype.setSocketIO = function(sock){
   }
 };
 ConsumerSession.prototype.push = function(item){
+  var _n = Timeout.now();
   if(this.sockio){
-    this.sockio.emit('_',item);
+    if(_n-this.lastAccess<100){
+      this.queue.push(item);
+    }else{
+      if(this.queue.length===0){
+        this.sockio.emit('_',item);
+      }else{
+        this.queue.push(item);
+        this.sockio.emit('_',this.queue.splice(0));
+      }
+    }
   }else{
     this.queue.push(item);
   }
