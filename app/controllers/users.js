@@ -11,6 +11,57 @@ var mongoose = require('mongoose'),
     Timeout = require('herstimeout');
 
 
+function produceUser(req){
+  var user = dataMaster.setFollower(req.user.username,dataMaster.realmName,req.user.roles,function(item){
+      for(var i in this.sessions){
+        if(!this.sessions[i].push){
+          delete this.sessions[i];
+        }
+        if(this.sessions[i].push(item)===false){
+          delete this.sessions[i];
+        }
+      }
+    });
+  if(!user.makeSession){
+    user.makeSession = function(sess){
+      if(!sess){
+        console.trace();
+        console.log('no session to make');
+        process.exit(0);
+      }
+      if(this.sessions[sess]){return;}
+      //console.log('new cs',this.followingpaths);
+      var _s = new ConsumerSession(this,dataMaster,sess);
+      var t = this;
+      this.sessions[sess] = _s;
+    };
+    user.commitTransaction = function(params,statuscb){
+      dataMaster.commit(params.txnalias,params.txns);
+      statuscb('OK',[]);
+    };
+    user.takeLobby = function(params,statuscb){
+      if(!this.lobby){
+        var lobby = {};
+        dataMaster.element(['rooms']).waitFor(['*',['name','class','servername']],function(roomname,map){
+          if(!lobby[map.class]){
+            lobby[map.class] = [];
+          }else{
+            if(lobby[map.class].length>=30){
+              return;
+            }
+          }
+          var a = lobby[map.class];
+          a.push([map.name,map.servername]);
+        });
+        this.lobby = lobby;
+      }
+      statuscb('OK',this.lobby);
+    };
+  }
+  return user;
+}
+
+
 /**
  * Auth callback
  */
@@ -50,6 +101,7 @@ exports.signout = function(req, res) {
  * Session
  */
 exports.session = function(req, res) {
+  var user = produceUser(req);
     res.redirect('/');
 };
 
@@ -99,52 +151,7 @@ exports.user = function(req, res, next, id) {
 
 exports.dumpData = function(req, res, next) {
   if(req && req.user && req.user.username){
-    var user = dataMaster.setFollower(req.user.username,dataMaster.realmName,req.user.roles);
-    user.sessionStatus = function(){
-      var ret = {};
-      for(var i in this.sessions){
-        ret[i] = this.sessions[i].queue.length;
-      }
-      return ret;
-    };
-    user.makeSession = function(sess){
-      if(!sess){
-        console.trace();
-        console.log('no session to make');
-        process.exit(0);
-      }
-      if(this.sessions[sess]){return;}
-      //console.log('new cs',this.followingpaths);
-      var _s = new ConsumerSession(this,dataMaster,sess);
-      var t = this;
-      this.sessions[sess] = _s;
-    };
-    user.push = function(item){
-      //console.log(u.username,'got',item,this.sessions);
-      for(var i in this.sessions){
-        this.sessions[i].push(item);
-        /*
-        var s = this.sessions[i];
-        if(s.queue){
-          if(_now-s.lastAccess>15000){
-            s.destroy();
-            delete this.sessions[i];
-          }else{
-            s.lastAccess = _now;
-            if(s.sockio){
-              s.sockio.emit('_',item);
-            }else{
-              s.queue.push(item);
-            }
-          }
-        }else{
-          //should never get here
-          delete this.sessions[i];
-        }
-        */
-      }
-    };
-    //console.log('recognized',user.username,user.realmname,user.keys);
+    var user = produceUser(req);
     if(!user){
       res.jsonp({none:null});
       return;
@@ -174,17 +181,19 @@ exports.dumpData = function(req, res, next) {
 };
 
 function executeOneOnUser(user,command,params,cb){
-    switch(command){
-      case '_':
-        break;
-      case 'follow':
-        user.follow(params.path.slice());
-        cb('OK',params.path);
-        break;
-      default:
-        user.invoke(command,params,cb);
-        break;
+  //console.log('executing',command);
+  if(command==='_'){return;}
+  if(command.charAt(0)===':'){
+    command = command.substring(1);
+    //console.log('user function',command);
+    var method = user[command];
+    if(!method){
+      cb('NO_FUNCTIONALITY',method);
     }
+    method.call(user,params,cb);
+    return;
+  }
+  user.invoke(dataMaster,command,params,cb);
 }
 
 
@@ -237,7 +246,6 @@ function executeOnUser(user,session,commands,res){
 };
 
 exports.execute = function(req, res, next) {
-  //console.log(req.user,'executing');
   if(!(req.query && req.query.commands)){
     res.jsonp({none:null});
     return;
@@ -249,7 +257,7 @@ exports.execute = function(req, res, next) {
       res.jsonp({errorcode:'invalid_command_count',errorparams:commands});
       return;
     }
-    var user = UserBase.setUser(req.user.username,dataMaster.realmName,req.user.roles);
+    var user = produceUser(req);
     if(user){
       executeOnUser(user,req.query[dataMaster.fingerprint],commands,res);
     }else{
@@ -258,7 +266,8 @@ exports.execute = function(req, res, next) {
     }
   }
   catch(e){
-    //console.log(e.stack);
+    console.log(e.stack);
+    console.log(e);
     res.jsonp({errorcode:'JSON',errorparams:[e,commands]});
   }
 };
@@ -298,12 +307,13 @@ exports.setup = function(app){
 
 
 function ConsumerSession(u,coll,session){
+  this.user = u;
+  this.session = session;
   this.queue = [];
   var t = this;
   u.describe(function(item){
     t.push(item);
   });
-  this.user = u;
 };
 ConsumerSession.initTxn = JSON.stringify([JSON.stringify([]),JSON.stringify([null,'init'])]);
 ConsumerSession.prototype.destroy = function(){
@@ -313,8 +323,8 @@ ConsumerSession.prototype.destroy = function(){
 };
 ConsumerSession.prototype.retrieveQueue = function(){
   this.lastAccess = Timeout.now();
-  if(this.queue.length){
-    //console.log(this.session,'splicing',this.queue);
+  if(this.queue && this.queue.length){
+    console.log(this.session,'splicing',this.queue.length);
     return this.queue.splice(0);
   }else{
     //console.log('empty q');
@@ -322,6 +332,7 @@ ConsumerSession.prototype.retrieveQueue = function(){
   }
 };
 ConsumerSession.prototype.setSocketIO = function(sock){
+  //console.log('setSocketIO, queue len',this.queue.length);
   this.sockio = sock;
   var t = this;
   sock.on('disconnect',function(){
@@ -333,19 +344,23 @@ ConsumerSession.prototype.setSocketIO = function(sock){
   }
 };
 ConsumerSession.prototype.push = function(item){
-  var _n = Timeout.now();
-  if(this.sockio){
-    if(_n-this.lastAccess<100){
-      this.queue.push(item);
-    }else{
-      if(this.queue.length===0){
-        this.sockio.emit('_',item);
-      }else{
-        this.queue.push(item);
-        this.sockio.emit('_',this.queue.splice(0));
-      }
+  var n = Timeout.now();
+  if(n-this.lastAccess>10000){
+    for(var i in this){
+      delete this[i];
     }
-  }else{
-    this.queue.push(item);
+    return false;
   }
+  if(this.sockio){
+    //console.log('emitting',item);
+    this.lastAccess = n;
+    this.sockio.emit('_',item);
+  }else{
+    if(!this.queue){
+      return false;
+    }
+    this.queue.push(item);
+    //console.log(this.user.username,this.session,'queue len',this.queue.length);
+  }
+  return true;
 };
