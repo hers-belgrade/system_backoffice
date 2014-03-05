@@ -43,4 +43,105 @@ footer p {
 div.infobox {
 	width:188px;
 	}
-
+.navbar .navbar-inner {
+	background-color:#333333;
+	}
+.breadcrumbs {
+	background-color:#3a3a3a;
+	border-bottom-color:#4f4f4f;
+	}
+.breadcrumb > li {
+	text-shadow:0 1px 0 #000000;
+	}
+.breadcrumb > li > a {
+	color:white;
+	}
+.breadcrumb > li, .breadcrumb > li.active {
+	color:white;
+	}
+.page-content {
+	background-color:#282828;
+	}
+.page-content .page-header:first-child h1 {
+	color: #9deeff;
+	}
+.page-content .page-header:first-child h1 small {
+	color: #3f8695;
+	}
+.page-content .page-header:first-child {
+	border-bottom-color:#4f4f4f;
+	}
+.sidebar-shortcuts {
+	background-color:#282828;	
+	}
+.sidebar {
+	border-right-color:#4f4f4f;
+	background-color:#3a3a3a;
+	}
+.sidebar:before {
+	border-right-color:#4f4f4f;
+	background-color:#3a3a3a;
+	}
+.nav-list > li {
+	border-top-color:#8f8f8f;
+	border-bottom-color:#000;
+	}	
+.nav-list > li > a {
+	background-color:#595959;
+	color:white;
+	text-shadow: 1px 1px 0px #000 !important;
+	}
+.nav-list > li > .submenu > li > a {
+	background-color:#4f4f4f;
+	color:white;
+	text-shadow: 1px 1px 0px #000 !important;
+	}		
+.nav-list > li > a:hover,
+.nav-list > li.active > a,
+.nav-list > li > .submenu > li > a:hover,
+.nav-list > li > .submenu > li.active > a,
+.navlist a:focus
+ {
+	text-shadow: none !important;
+	}
+.navlist > li > a:focus {
+	outline:none;
+	}	
+.nav-list > li > .submenu > li > a:hover,
+.nav-list > li > .submenu > li.active > a {
+	background-color:white;
+	}		
+.nav-list > li .submenu {
+	border-top-color:#000;
+	}
+.nav-list > li > .submenu:before {
+	border-left-color:#8f8f8f;
+	}	
+.nav-list > li > .submenu > li:first-child > a {
+	border-top-color:#8f8f8f
+	}	
+.nav-list > li .submenu > li a > [class*="icon-"]:first-child {
+	background-color:#8f8f8f;
+	color:white;
+	}
+.sidebar-collapse {	
+background-color: #1e1e1e;
+border-bottom-color: #8f8f8f;
+}
+.sidebar-collapse:before {
+	border-top-color:#8f8f8f;
+	}
+.sidebar-collapse > [class*="icon-"] {
+	background-color:#4f4f4f;
+	border-color:#8f8f8f;
+	color:white;
+		text-shadow: 1px 1px 0px #000;
+	}
+.navbar .brand {
+	padding-top:0;
+	padding-bottom:0;
+	}
+.brand i.icon-leaf {
+	font-size:37px;
+	line-height:45px;
+	}

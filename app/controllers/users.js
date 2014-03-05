@@ -312,6 +312,7 @@ function ConsumerSession(u,coll,session){
   this.queue = [];
   var t = this;
   u.describe(function(item){
+    console.log(t.session,'describe',item);
     t.push(item);
   });
 };

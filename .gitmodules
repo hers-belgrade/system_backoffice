@@ -10,3 +10,6 @@
 [submodule "node_modules/herstimeout"]
 	path = node_modules/herstimeout
 	url = git@github.com:hers-belgrade/herstimeout
+[submodule "public/lib/fabric.js"]
+	path = public/lib/fabric.js
+	url = git@github.com:hers-belgrade/fabric.js

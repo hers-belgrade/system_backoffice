@@ -13,7 +13,6 @@ dataMaster.commit('servers_init',[
   ['set',['cluster','nodes']],
   ['set',['stats'],'dcp'],
   ['set',['stats','players'],[0,undefined,'dcp']],
-  ['set',['stats','players_by_server'],'dcp'],
   ['set',['stats','players_by_gameclass'],'dcp'],
 ]);
 
@@ -52,7 +51,12 @@ function ReplicateServer(type,servname,servaddress){
     ['set',[servname,'replicationPort'],[replicationport,undefined,'dcp']]
   );
   var statsel = dataMaster.element(['stats']);
-  statsel.commit('new_server',[['set',[servname],'dcp']]);
+  if(!dataMaster.element(['stats',type])){
+    dataMaster.element(['stats']).commit('new_stats_server_type',[
+      ['set',[type],'dcp']
+    ]);
+  }
+  statsel.commit('new_server',[['set',[type,servname],'dcp']]);
   dataMaster.element(['cluster']).commit('new_server',clusteractions);
   dataMaster.element(['cluster_interface','servers']).commit('new_server',clusterinterfaceactions);
   servcontel = dataMaster.element(['cluster',type,servname]);
@@ -63,19 +67,21 @@ function ReplicateServer(type,servname,servaddress){
     servcontel.commit('status_change',[
       ['set',['status'],[status,undefined,'dcp']]
     ]);
+    statsel.commit('status_change',[
+      ['set',[type,servname,'status'],[status,undefined,'dcp']]
+    ]);
     //console.log(servname,status,servcontel.dataDebug());
   });
   servel.replicationInitiated.attach(function(){
-    var sn = servname, se = statsel;
+    var sn = servname, se = statsel, _type = type;
     servel.waitFor([['memoryusage','memoryavailable','network_in','network_out','CPU','exec_delay','exec_queue','dcp_branches','dcp_leaves']],function(map){
       var actions = [];
       for(var i in map){
-        actions.push(['set',[sn,i],[map[i],undefined,'dcp']]);
+        actions.push(['set',[_type,sn,i],[map[i],undefined,'dcp']]);
       }
       se.commit('system_change',actions);
     });
     servel.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
-      //console.log(roomname,map,oldmap);
       var oldplaying = oldmap ? oldmap.playing : 0;
       var actions = [
         ['set',['players'],[se.element(['players']).value()+map.playing-oldplaying,undefined,'dcp']]
@@ -86,11 +92,11 @@ function ReplicateServer(type,servname,servaddress){
       }else{
         actions.push(['set',['players_by_gameclass',map.class],[gcse.value()+map.playing-oldplaying,undefined,'dcp']]);
       }
-      var sse = se.element(['players_by_server',sn]);
+      var sse = se.element([_type,sn,'players']);
       if(!sse){
-        actions.push(['set',['players_by_server',sn],[map.playing-oldplaying,undefined,'dcp']]);
+        actions.push(['set',[_type,sn,'players'],[map.playing-oldplaying,undefined,'dcp']]);
       }else{
-        actions.push(['set',['players_by_server',sn],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
+        actions.push(['set',[_type,sn,'players'],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
       }
       Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
     });

@@ -87,23 +87,7 @@
     <h4 data-ng-hide="rtrealms">No servers registered</h4>
   </section>
   <section>
-    <table class="servers realtime">
-      <caption>Registered nodes</caption>
-      <tr>
-        <th>Name</th>
-        <th>Address</th>
-        <th>Status</th>
-        <th>Health</th>
-        <th>Rooms</th>
-      </tr>
-      <tr data-ng-repeat="(name,node) in nodes">
-        <td>{{name}}</td>
-        <td>{{node.connection.address}}</td>
-        <td>{{node.connection.status}}</td>
-        <td><ul><li data-ng-repeat="(key,value) in node.status">{{key}}:{{value}}</li></td>
-        <td><ul><li data-ng-repeat="(key,value) in node.rooms">{{key}}:{{value}}</li></td>
-      </tr>
-    </table>
+    <serverindicator data-ng-repeat="(name,node) in nodes"></serverindicator>
     <h4 data-ng-hide="nodes">No servers registered</h4>
   </section>
 </section>

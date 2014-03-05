@@ -1,7 +1,8 @@
 angular.module('mean.servers').controller('ServersController', ['$scope', '$routeParams', '$location', 'Global', 'Servers', 'follower', function($scope, $routeParams, $location, Global, Servers, follower) {
     $scope.global = Global;
     $scope.bostats = follower.scalars;
-    $scope.nodes = {};
+    $scope.nodestats = {};
+    $scope.realmstats = {};
     $scope.realms = {};
     $scope.realm = {};
     $scope.rtrealms = {};
@@ -24,9 +25,17 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
     },deactivator:function(name){
       delete this[name];
     }});
-    var nf = follower.follow('stats');
-    nf.listenToCollections($scope.nodes,{activator:function(name){
-      console.log('new server',name);
+    var rf = follower.follow('stats').follow('realms');
+    rf.listenToCollections($scope.realmstats,{activator:function(name){
+      console.log('new realm',name);
+      var nnf = rf.follow(name);
+      this[name] = nnf.scalars;
+    },deactivator:function(name){
+      delete this[name];
+    }});
+    var nf = follower.follow('stats').follow('nodes');
+    nf.listenToCollections($scope.nodestats,{activator:function(name){
+      console.log('new node',name);
       var nnf = nf.follow(name),
         snnf = nnf.follow('server');
         rsnnf = snnf.follow('rooms');
