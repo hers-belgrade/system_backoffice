@@ -72,12 +72,15 @@ function serverFollower(servname,follower,canvas){
       var color;
       switch(val){
         case 'connected':
+          stats.set({opacity:1});
           color='green';
           break;
         case 'disconnected':
+          stats.set({opacity:.5});
           color='red';
           break;
         default:
+          stats.set({opacity:.5});
           color='default';
           break;
       }
@@ -103,6 +106,30 @@ function serverFollower(servname,follower,canvas){
       [80,'dflt'],
       [1000,'red']
     ],suffix:'%'});
+    triStateValue(stats.memory_usage,{follower:follower,scalarname:'memoryusage',range:[
+      [200,'green'],
+      [500,'dflt'],
+      [1000000,'red']
+    ],preferences:{
+      up:'red',
+      down:'green'
+    },suffix:'MB'});
+    triStateValue(stats.memory_available,{follower:follower,scalarname:'memoryavailable',range:[
+      [400,'red'],
+      [500,'dflt'],
+      [1000000,'green']
+    ],preferences:{
+      up:'green',
+      down:'red'
+    },suffix:'MB'});
+    triStateValue(stats.queue,{follower:follower,scalarname:'exec_queue',range:[
+      [200,'green'],
+      [400,'dflt'],
+      [1000000,'red']
+    ],preferences:{
+      up:'red',
+      down:'green'
+    },suffix:''});
     triStateValue(stats.delay,{follower:follower,scalarname:'exec_delay',range:[
       [80,'green'],
       [200,'dflt'],

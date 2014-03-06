@@ -426,9 +426,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="63.134548"
-     inkscape:cy="77.648058"
+     inkscape:zoom="0.99999999"
+     inkscape:cx="12.5014"
+     inkscape:cy="171.90674"
      inkscape:document-units="px"
      inkscape:current-layer="server_status"
      showgrid="false"
@@ -438,9 +438,10 @@
      fit-margin-bottom="0"
      inkscape:window-width="1416"
      inkscape:window-height="942"
-     inkscape:window-x="158"
-     inkscape:window-y="79"
-     inkscape:window-maximized="0" />
+     inkscape:window-x="122"
+     inkscape:window-y="35"
+     inkscape:window-maximized="0"
+     showguides="false" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -470,23 +471,23 @@
       <text
          sodipodi:linespacing="125%"
          id="server_name_default"
-         y="21"
+         y="18.746094"
          x="39.255371"
-         style="font-size:25px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
          xml:space="preserve">Server name</text>
       <text
          xml:space="preserve"
-         style="font-size:25px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
          x="39.255371"
-         y="21"
+         y="18.746094"
          id="server_name_green"
          sodipodi:linespacing="125%">Server name</text>
       <text
          sodipodi:linespacing="125%"
          id="server_name_red"
-         y="21"
+         y="18.746094"
          x="39.255371"
-         style="font-size:25px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+         style="font-size:20px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
          xml:space="preserve">Server name</text>
     </g>
     <g
@@ -500,7 +501,7 @@
          id="server_connected"
          width="1000"
          height="125"
-         transform="translate(-265,-102)"
+         transform="translate(-174.5,-103)"
          style="display:inline" />
       <use
          x="0"
@@ -533,23 +534,23 @@
           <text
              sodipodi:linespacing="125%"
              id="cpu_usage_value_default"
-             y="51.205414"
-             x="97.064316"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="49.650002"
+             x="102.825"
+             style="font-size:25px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">100%</text>
           <text
              xml:space="preserve"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="97.064316"
-             y="51.205414"
+             style="font-size:25px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="102.825"
+             y="49.650002"
              id="cpu_usage_value_green"
              sodipodi:linespacing="125%">100%</text>
           <text
              sodipodi:linespacing="125%"
              id="cpu_usage_value_red"
-             y="51.205414"
-             x="97.064316"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="49.650002"
+             x="102.825"
+             style="font-size:25px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">100%</text>
         </g>
         <g
@@ -573,14 +574,148 @@
         </g>
       </g>
       <g
+         inkscape:label="memory_usage"
+         id="memory_usage"
+         inkscape:groupmode="layer">
+        <text
+           sodipodi:linespacing="125%"
+           id="memory_usage_label"
+           y="36.873047"
+           x="184.41895"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+           xml:space="preserve">MEMORY USED</text>
+        <use
+           transform="translate(184,41)"
+           height="125"
+           width="1000"
+           id="memory_usage_indicator"
+           xlink:href="#indicator"
+           y="0"
+           x="0" />
+        <g
+           id="memory_usage_value">
+          <text
+             sodipodi:linespacing="125%"
+             id="memory_usage_value_default"
+             y="55.748001"
+             x="200.43401"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             xml:space="preserve">10000 MB</text>
+          <text
+             xml:space="preserve"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="202.612"
+             y="55.748001"
+             id="memory_usage_value_green"
+             sodipodi:linespacing="125%">2000 MB</text>
+          <text
+             sodipodi:linespacing="125%"
+             id="memory_usage_value_red"
+             y="55.748001"
+             x="202.612"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             xml:space="preserve">2000 MB</text>
+        </g>
+      </g>
+      <g
          inkscape:groupmode="layer"
-         id="delay"
-         inkscape:label="delay">
+         id="memory_available"
+         inkscape:label="memory_available">
         <text
            xml:space="preserve"
-           style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
-           x="188.21381"
-           y="46.80957"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+           x="289.41895"
+           y="36.87793"
+           id="memory_available_label"
+           sodipodi:linespacing="125%">MEMORY AVAILABLE</text>
+        <use
+           x="0"
+           y="0"
+           xlink:href="#indicator"
+           id="memory_available_indicator"
+           width="1000"
+           height="125"
+           transform="translate(289,41)" />
+        <g
+           id="memory_available_value">
+          <text
+             xml:space="preserve"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="305.43399"
+             y="55.748001"
+             id="memory_available_value_default"
+             sodipodi:linespacing="125%">10000 MB</text>
+          <text
+             sodipodi:linespacing="125%"
+             id="memory_available_value_green"
+             y="55.748001"
+             x="305.43399"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             xml:space="preserve">10000 MB</text>
+          <text
+             xml:space="preserve"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="305.43399"
+             y="55.748001"
+             id="memory_available_value_red"
+             sodipodi:linespacing="125%">10000 MB</text>
+        </g>
+      </g>
+      <g
+         style="display:inline"
+         inkscape:label="queue"
+         id="queue"
+         inkscape:groupmode="layer">
+        <text
+           sodipodi:linespacing="125%"
+           id="queue_label"
+           y="36.282227"
+           x="399.64355"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+           xml:space="preserve">QUEUE</text>
+        <use
+           transform="translate(399,41)"
+           height="125"
+           width="1000"
+           id="queue_indicator"
+           xlink:href="#indicator"
+           y="0"
+           x="0" />
+        <g
+           id="queue_value">
+          <text
+             sodipodi:linespacing="125%"
+             id="queue_value_default"
+             y="55.748001"
+             x="417.612"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             xml:space="preserve">88888</text>
+          <text
+             xml:space="preserve"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="417.612"
+             y="55.748001"
+             id="queue_value_green"
+             sodipodi:linespacing="125%">88888</text>
+          <text
+             sodipodi:linespacing="125%"
+             id="queue_value_red"
+             y="55.748001"
+             x="417.612"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             xml:space="preserve">88888</text>
+        </g>
+      </g>
+      <g
+         inkscape:groupmode="layer"
+         id="delay"
+         inkscape:label="delay"
+         style="display:inline">
+        <text
+           xml:space="preserve"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+           x="479.40918"
+           y="37"
            id="delay_label"
            sodipodi:linespacing="125%">DELAY</text>
         <use
@@ -590,28 +725,28 @@
            id="delay_indicator"
            width="1000"
            height="125"
-           transform="translate(188.29953,54)" />
+           transform="translate(479,41)" />
         <g
            id="delay_value">
           <text
              xml:space="preserve"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="217.02"
-             y="77.580002"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="497.612"
+             y="55.748001"
              id="delay_value_default"
              sodipodi:linespacing="125%">2000 ms</text>
           <text
              sodipodi:linespacing="125%"
              id="delay_value_green"
-             y="77.580002"
-             x="217.02"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="55.748001"
+             x="499.612"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">2000 ms</text>
           <text
              xml:space="preserve"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="217.02"
-             y="77.080002"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="497.612"
+             y="55.748001"
              id="delay_value_red"
              sodipodi:linespacing="125%">2000 ms</text>
         </g>
@@ -619,16 +754,17 @@
       <g
          inkscape:label="dcp_leaves"
          id="dcp_leaves"
-         inkscape:groupmode="layer">
+         inkscape:groupmode="layer"
+         style="display:inline">
         <text
            sodipodi:linespacing="125%"
            id="dcp_leaves_label"
-           y="46.80957"
-           x="389.11377"
-           style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+           y="36.873047"
+           x="579.40918"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
            xml:space="preserve">DCP LEAVES</text>
         <use
-           transform="translate(389,54)"
+           transform="translate(579,41)"
            height="125"
            width="1000"
            id="dcp_leaves_indicator"
@@ -640,35 +776,36 @@
           <text
              sodipodi:linespacing="125%"
              id="dcp_leaves_value_default"
-             y="77.580002"
-             x="418.09"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="55.748001"
+             x="597.05402"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">999999</text>
           <text
              xml:space="preserve"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="418.09"
-             y="77.580002"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="597.05402"
+             y="55.748001"
              id="dcp_leaves_value_green"
              sodipodi:linespacing="125%">999999</text>
           <text
              sodipodi:linespacing="125%"
              id="dcp_leaves_value_red"
-             y="77.080002"
-             x="418.09"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="55.748001"
+             x="597.05402"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">999999</text>
         </g>
       </g>
       <g
          inkscape:groupmode="layer"
          id="dcp_branches"
-         inkscape:label="dcp_branches">
+         inkscape:label="dcp_branches"
+         style="display:inline">
         <text
            xml:space="preserve"
-           style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
-           x="564.11377"
-           y="46.80957"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+           x="669.40918"
+           y="36.873047"
            id="dcp_branches_label"
            sodipodi:linespacing="125%">DCP BRANCHES</text>
         <use
@@ -678,28 +815,28 @@
            id="dcp_branches_indicator"
            width="1000"
            height="125"
-           transform="translate(564,54)" />
+           transform="translate(669,41)" />
         <g
            id="dcp_branches_value">
           <text
              xml:space="preserve"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="592.39001"
-             y="77.580002"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="685.43402"
+             y="55.748001"
              id="dcp_branches_value_default"
              sodipodi:linespacing="125%">10000</text>
           <text
              sodipodi:linespacing="125%"
              id="dcp_branches_value_green"
-             y="77.580002"
-             x="592.39001"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="55.748001"
+             x="685.43402"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">10000</text>
           <text
              xml:space="preserve"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="592.39001"
-             y="77.080002"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="685.43402"
+             y="55.748001"
              id="dcp_branches_value_red"
              sodipodi:linespacing="125%">10000</text>
         </g>
@@ -712,12 +849,12 @@
         <text
            sodipodi:linespacing="125%"
            id="players_label"
-           y="46.80957"
-           x="721.10645"
-           style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+           y="36.873047"
+           x="764.4043"
+           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
            xml:space="preserve">PLAYERS</text>
         <use
-           transform="translate(721,54)"
+           transform="translate(764,41)"
            height="125"
            width="1000"
            id="players_indicator"
@@ -729,23 +866,23 @@
           <text
              sodipodi:linespacing="125%"
              id="players_value_default"
-             y="77.580002"
-             x="752.39001"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="55.748001"
+             x="780.43402"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">10000</text>
           <text
              xml:space="preserve"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="752.39001"
-             y="77.580002"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             x="780.43402"
+             y="55.748001"
              id="players_value_green"
              sodipodi:linespacing="125%">10000</text>
           <text
              sodipodi:linespacing="125%"
              id="players_value_red"
-             y="77.080002"
-             x="752.39001"
-             style="font-size:30px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+             y="55.748001"
+             x="780.43402"
+             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">10000</text>
         </g>
       </g>
@@ -766,7 +903,7 @@
              height="91"
              width="1"
              id="rect4785"
-             style="fill:#a29f98;fill-opacity:1;stroke:none" />
+             style="fill:#505050;fill-opacity:1;stroke:none" />
         </g>
         <g
            id="border_middle">
@@ -776,16 +913,16 @@
              width="800"
              height="1"
              x="184"
-             y="85"
+             y="62"
              rx="0"
              ry="0.0093394062" />
           <rect
-             style="fill:#a29f98;fill-opacity:1;stroke:none"
+             style="fill:#505050;fill-opacity:1;stroke:none"
              id="rect4920"
              width="800"
              height="1"
              x="184"
-             y="86"
+             y="63"
              rx="0"
              ry="0" />
         </g>
@@ -793,35 +930,52 @@
            id="border_small_1">
           <rect
              y="31"
-             x="365"
-             height="50"
+             x="386"
+             height="25"
              width="1"
              id="rect4952"
              style="fill:#000000;fill-opacity:1;stroke:none" />
           <rect
-             style="fill:#a29f98;fill-opacity:1;stroke:none"
+             style="fill:#505050;fill-opacity:1;stroke:none"
              id="rect4954"
              width="1"
-             height="50"
-             x="366"
+             height="25"
+             x="387"
              y="31" />
         </g>
         <g
            id="border_small_2">
           <rect
              style="fill:#000000;fill-opacity:1;stroke:none"
-             id="rect4986"
+             id="rect4038"
              width="1"
-             height="50"
-             x="698"
+             height="25"
+             x="565"
              y="31" />
           <rect
              y="31"
-             x="699"
-             height="50"
+             x="566"
+             height="25"
              width="1"
-             id="rect4988"
-             style="fill:#a29f98;fill-opacity:1;stroke:none" />
+             id="rect4040"
+             style="fill:#505050;fill-opacity:1;stroke:none" />
+        </g>
+        <g
+           id="border_small_3">
+          <rect
+             y="31"
+             x="745"
+             height="25"
+             width="1"
+             id="rect4044"
+             style="fill:#000000;fill-opacity:1;stroke:none" />
+          <rect
+             style="fill:#505050;fill-opacity:1;stroke:none"
+             id="rect4046"
+             width="1"
+             height="25"
+             x="746"
+             y="31" />
         </g>
       </g>
     </g>
@@ -842,7 +996,7 @@
          id="red_up"
          width="1000"
          height="125"
-         transform="translate(-183,-100)" />
+         transform="translate(-112.5,-106.5)" />
       <use
          x="0"
          y="0"
@@ -850,7 +1004,7 @@
          id="red_down"
          width="1000"
          height="125"
-         transform="translate(-207,-100)" />
+         transform="translate(-131.5,-106.5)" />
       <use
          x="0"
          y="0"
@@ -858,7 +1012,7 @@
          id="green_up"
          width="1000"
          height="125"
-         transform="translate(-231,-100)" />
+         transform="translate(-150.5,-106.5)" />
       <use
          x="0"
          y="0"
@@ -866,7 +1020,7 @@
          id="green_down"
          width="1000"
          height="125"
-         transform="translate(-255,-100)" />
+         transform="translate(-169.5,-106.5)" />
     </g>
   </g>
   <g
@@ -878,7 +1032,7 @@
        inkscape:groupmode="layer"
        id="static_1"
        inkscape:label="static_1"
-       style="display:none">
+       style="display:inline">
       <g
          id="server_bg_static">
         <rect
@@ -943,147 +1097,147 @@
             <g
                id="g16">
               <polygon
-                 points="400.234,226.418 400.234,208.847 401.658,208.847 401.658,226.418 400.234,226.418 "
+                 points="401.658,226.418 400.234,226.418 400.234,226.418 400.234,208.847 401.658,208.847 "
                  id="polygon18"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g20">
               <polygon
-                 points="368.438,214.582 369.775,214.104 375.914,230.617 374.578,231.094 368.438,214.582 "
+                 points="374.578,231.094 368.438,214.582 368.438,214.582 369.775,214.104 375.914,230.617 "
                  id="polygon22"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g24">
               <polygon
-                 points="340.564,230.617 341.654,229.721 353.189,243.183 352.1,244.078 340.564,230.617 "
+                 points="352.1,244.078 340.564,230.617 340.564,230.617 341.654,229.721 353.189,243.183 "
                  id="polygon26"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g28">
               <polygon
-                 points="319.973,255.016 320.685,253.812 336.227,262.597 335.515,263.803 319.973,255.016 "
+                 points="335.515,263.803 319.973,255.016 319.973,255.016 320.685,253.812 336.227,262.597 "
                  id="polygon30"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g32">
               <polygon
-                 points="309.147,284.844 309.394,283.472 327.072,286.521 326.824,287.896 309.147,284.844 "
+                 points="326.824,287.896 309.147,284.844 309.147,284.844 309.394,283.472 327.072,286.521 "
                  id="polygon34"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g36">
               <polygon
-                 points="309.147,315.123 326.824,312.07 327.072,313.443 309.394,316.496 309.147,315.123 "
+                 points="309.394,316.496 309.147,315.123 309.147,315.123 326.824,312.07 327.072,313.443 "
                  id="polygon38"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g56">
               <polygon
-                 points="474.822,313.441 475.072,312.068 492.745,315.123 492.494,316.496 474.822,313.441 "
+                 points="492.494,316.496 474.822,313.441 474.822,313.441 475.072,312.068 492.745,315.123 "
                  id="polygon58"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g60">
               <polygon
-                 points="474.824,286.519 492.496,283.473 492.745,284.846 475.069,287.892 474.824,286.519 "
+                 points="475.069,287.892 474.824,286.519 474.824,286.519 492.496,283.473 492.745,284.846 "
                  id="polygon62"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g64">
               <polygon
-                 points="465.663,262.593 481.207,253.813 481.918,255.019 466.375,263.799 465.663,262.593 "
+                 points="466.375,263.799 465.663,262.593 465.663,262.593 481.207,253.813 481.918,255.019 "
                  id="polygon66"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g68">
               <polygon
-                 points="448.698,243.176 460.234,229.721 461.326,230.619 449.791,244.074 448.698,243.176 "
+                 points="449.791,244.074 448.698,243.176 448.698,243.176 460.234,229.721 461.326,230.619 "
                  id="polygon70"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g72">
               <polygon
-                 points="425.976,230.611 432.115,214.105 433.457,214.582 427.314,231.09 425.976,230.611 "
+                 points="427.314,231.09 425.976,230.611 425.976,230.611 432.115,214.105 433.457,214.582 "
                  id="polygon74"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g76">
               <polygon
-                 points="384.281,210.315 385.279,210.143 386.858,218.912 385.859,219.084 384.281,210.315 "
+                 points="385.859,219.084 384.281,210.315 384.281,210.315 385.279,210.143 386.858,218.912 "
                  id="polygon78"
                  style="fill:#696969" />
             </g>
             <g
                id="g80">
               <polygon
-                 points="353.96,221.306 354.84,220.808 359.385,228.517 358.508,229.016 353.96,221.306 "
+                 points="358.508,229.016 353.96,221.306 353.96,221.306 354.84,220.808 359.385,228.517 "
                  id="polygon82"
                  style="fill:#696969" />
             </g>
             <g
                id="g84">
               <polygon
-                 points="329.31,241.782 329.961,241.021 336.925,246.744 336.275,247.505 329.31,241.782 "
+                 points="336.275,247.505 329.31,241.782 329.31,241.782 329.961,241.021 336.925,246.744 "
                  id="polygon86"
                  style="fill:#696969" />
             </g>
             <g
                id="g88">
               <polygon
-                 points="313.297,269.279 313.645,268.347 322.188,271.389 321.843,272.322 313.297,269.279 "
+                 points="321.843,272.322 313.297,269.279 313.297,269.279 313.645,268.347 322.188,271.389 "
                  id="polygon90"
                  style="fill:#696969" />
             </g>
             <g
                id="g92">
               <polygon
-                 points="307.856,300.477 307.856,299.487 316.951,299.487 316.951,300.477 307.856,300.477 "
+                 points="316.951,300.477 307.856,300.477 307.856,300.477 307.856,299.487 316.951,299.487 "
                  id="polygon94"
                  style="fill:#696969" />
             </g>
             <g
                id="g112">
               <polygon
-                 points="484.938,300.479 484.938,299.487 494.035,299.49 494.033,300.479 484.938,300.479 "
+                 points="494.033,300.479 484.938,300.479 484.938,300.479 484.938,299.487 494.035,299.49 "
                  id="polygon114"
                  style="fill:#696969" />
             </g>
             <g
                id="g116">
               <polygon
-                 points="479.697,271.393 488.246,268.348 488.594,269.28 480.046,272.325 479.697,271.393 "
+                 points="480.046,272.325 479.697,271.393 479.697,271.393 488.246,268.348 488.594,269.28 "
                  id="polygon118"
                  style="fill:#696969" />
             </g>
             <g
                id="g120">
               <polygon
-                 points="464.963,246.747 471.928,241.023 472.584,241.784 465.611,247.505 464.963,246.747 "
+                 points="465.611,247.505 464.963,246.747 464.963,246.747 471.928,241.023 472.584,241.784 "
                  id="polygon122"
                  style="fill:#696969" />
             </g>
             <g
                id="g124">
               <polygon
-                 points="442.5,228.522 447.051,220.808 447.93,221.306 443.379,229.016 442.5,228.522 "
+                 points="443.379,229.016 442.5,228.522 442.5,228.522 447.051,220.808 447.93,221.306 "
                  id="polygon126"
                  style="fill:#696969" />
             </g>
             <g
                id="g128">
               <polygon
-                 points="415.031,218.916 416.613,210.143 417.609,210.316 416.029,219.088 415.031,218.916 "
+                 points="416.029,219.088 415.031,218.916 415.031,218.916 416.613,210.143 417.609,210.316 "
                  id="polygon130"
                  style="fill:#696969" />
             </g>
@@ -1092,7 +1246,7 @@
              id="g132">
             <text
                xml:space="preserve"
-               style="font-size:12px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
                x="333.13574"
                y="316.20541"
                id="text8338"
@@ -1210,33 +1364,33 @@
       <g
          id="red_up_static">
         <rect
-           ry="3.7880719"
-           y="101"
-           x="184"
-           height="23"
-           width="23"
+           ry="2.4704816"
+           y="107.5"
+           x="113.5"
+           height="15"
+           width="15"
            id="rect4796"
            style="fill:#f64343;fill-opacity:1;fill-rule:evenodd;stroke:none" />
         <path
            style="fill:#ffffff;fill-opacity:1;stroke:none"
            id="rect2834"
-           d="m 195.5,104 -8.5,8.5 4.25,0 0,8.5 8.5,0 0,-8.5 4.25,0 -8.5,-8.5 z"
+           d="m 121,110 -5,5 2.5,0 0,5 5,0 0,-5 2.5,0 -5,-5 z"
            inkscape:connector-curvature="0" />
       </g>
       <g
          id="red_down_static">
         <rect
            style="fill:#f64343;fill-opacity:1;fill-rule:evenodd;stroke:none"
-           id="rect4828"
-           width="23"
-           height="23"
-           x="208"
-           y="101"
-           ry="3.7880719" />
+           id="rect3995"
+           width="15"
+           height="15"
+           x="132.5"
+           y="107.5"
+           ry="2.4704816" />
         <path
            inkscape:connector-curvature="0"
-           d="m 219.5,121 -8.5,-8.5 4.25,0 0,-8.5 8.5,0 0,8.5 4.25,0 -8.5,8.5 z"
-           id="path4830"
+           d="m 140,120 -5,-5 2.5,0 0,-5 5,0 0,5 2.5,0 -5,5 z"
+           id="path3997"
            style="fill:#ffffff;fill-opacity:1;stroke:none" />
       </g>
       <g
@@ -1244,31 +1398,31 @@
         <rect
            style="fill:#72e785;fill-opacity:1;fill-rule:evenodd;stroke:none"
            id="rect4798"
-           width="23"
-           height="23"
-           x="232"
-           y="101"
-           ry="3.7880719" />
+           width="15"
+           height="15"
+           x="151.5"
+           y="107.5"
+           ry="2.4704816" />
         <path
            inkscape:connector-curvature="0"
-           d="m 243.5,104 -8.5,8.5 4.25,0 0,8.5 8.5,0 0,-8.5 4.25,0 -8.5,-8.5 z"
-           id="path4839"
+           d="m 159,110 -5,5 2.5,0 0,5 5,0 0,-5 2.5,0 -5,-5 z"
+           id="path4004"
            style="fill:#ffffff;fill-opacity:1;stroke:none" />
       </g>
       <g
          id="green_down_static">
         <rect
-           ry="3.7880719"
-           y="101"
-           x="256"
-           height="23"
-           width="23"
-           id="rect4850"
+           ry="2.4704816"
+           y="107.5"
+           x="170.5"
+           height="15"
+           width="15"
+           id="rect4012"
            style="fill:#72e785;fill-opacity:1;fill-rule:evenodd;stroke:none" />
         <path
            style="fill:#ffffff;fill-opacity:1;stroke:none"
-           id="path4854"
-           d="m 267.5,121 -8.5,-8.5 4.25,0 0,-8.5 8.5,0 0,8.5 4.25,0 -8.5,8.5 z"
+           id="path4014"
+           d="m 178.00001,120 -5,-5 2.5,0 0,-5 5,0 0,5 2.5,0 -5,5 z"
            inkscape:connector-curvature="0" />
       </g>
       <g
@@ -1276,7 +1430,7 @@
         <g
            inkscape:label="Layer 1"
            id="connected"
-           transform="matrix(0.29686736,0,0,0.27160743,196.49897,-14.815538)">
+           transform="matrix(0.22265052,0,0,0.20370557,126.87423,18.388345)">
           <path
              inkscape:connector-curvature="0"
              style="fill:#28a000;fill-opacity:1;stroke:none"
@@ -1298,7 +1452,7 @@
         <g
            inkscape:label="Layer 1"
            id="disconnected"
-           transform="matrix(0.28865393,0,0,0.24567656,219.80875,-2.7758543)">
+           transform="matrix(0.21649045,0,0,0.18425742,147.60657,27.418107)">
           <path
              style="fill:#e20306;fill-opacity:1;stroke:none"
              d="m 294.0672,439.16106 c 1.23955,-0.69831 3.48783,-1.70158 6.19869,-1.72054 4.16524,-0.0291 7.64989,2.67607 7.64989,2.67607 5.67178,6.69201 15.81327,19.01153 21.5222,25.67194 l -11.73635,1.63983"
@@ -1370,51 +1524,53 @@
          x="325.6041"
          y="104.50011" />
       <rect
-         style="fill:none;stroke:#000000;stroke-width:1.0000689;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="red_up_static_area"
-         width="21.999931"
-         height="21.999931"
-         x="184.50003"
-         y="101.50003"
+         width="16.999798"
+         height="16.999796"
+         x="112.5001"
+         y="106.5001"
          ry="0" />
       <rect
          ry="0"
-         y="101.50003"
-         x="208.50003"
-         height="21.999931"
-         width="21.999931"
+         y="106.5001"
+         x="131.50011"
+         height="16.999796"
+         width="16.999798"
          id="red_down_static_area"
-         style="fill:none;stroke:#000000;stroke-width:1.0000689;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <rect
-         style="fill:none;stroke:#000000;stroke-width:1.0000689;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="green_up_static_area"
-         width="21.999931"
-         height="21.999931"
-         x="232.50003"
-         y="101.50003"
+         width="16.999798"
+         height="16.999796"
+         x="150.50011"
+         y="106.5001"
          ry="0" />
       <rect
          ry="0"
-         y="101.50003"
-         x="256.50003"
-         height="21.999931"
-         width="21.999931"
+         y="106.5001"
+         x="169.50011"
+         height="16.999796"
+         width="16.999798"
          id="green_down_static_area"
-         style="fill:none;stroke:#000000;stroke-width:1.0000689;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       <rect
-         style="fill:none;stroke:#000000;stroke-width:0.99992752;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="connected_static_area"
-         width="19.000072"
-         height="19.000072"
-         x="280.49997"
-         y="104.49996" />
+         width="16.999798"
+         height="16.999796"
+         x="188.50011"
+         y="106.5001"
+         ry="0" />
       <rect
-         y="104.49996"
-         x="301.49997"
-         height="19.000072"
-         width="19.000072"
+         ry="0"
+         y="106.5001"
+         x="207.50011"
+         height="16.999796"
+         width="16.999798"
          id="disconnected_static_area"
-         style="fill:none;stroke:#000000;stroke-width:0.99992752;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
   </g>
 </svg>
