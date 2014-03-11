@@ -157,7 +157,6 @@ exports.setup = function(app){
     u.sessions[session].setSocketIO(sock);
     sock.on('!',function(data){
       dataMaster.functionalities.sessionuserfunctionality.f.executeOnUser({user:u,session:session,commands:data},function(errc,errp,errm){
-        console.log('sockio',arguments);
         sock.emit('=',errc==='OK' ? errp[0] : {errorcode:errc,errorparams:errp,errormessage:errm});
       });
     });
