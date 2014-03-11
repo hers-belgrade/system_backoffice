@@ -50,6 +50,7 @@ function deleteTemplateInstance(el,name,searchobj,username,realmname){
 };
 
 function availabilityFunc(tplel,name,searchobj,username,realmname){
+  console.log('slotTemplate availability',username,realmname);
   //console.log('availability of',tplel.element([username,'server','rooms']).dataDebug(),'for',name,'?');
   var ret = !!tplel.element([username,'server','rooms',name,'brand_new']);
   if(ret){

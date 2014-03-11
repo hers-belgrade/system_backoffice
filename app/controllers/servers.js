@@ -122,15 +122,15 @@ exports.authCallback = function(req, res, next){
   };
   var servname = req.user.name;
   var servdomain = req.user.domain;
-  var realmtemplatename = servname+'Realm';
+  var realmtemplatename = '*'+servname+'Realm';
   dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:realmtemplatename,registryelementpath:['cluster','realms'],availabilityfunc:portAvailability});
-  dataMaster.invoke('cluster_interface/dcpregistry/newNameForTemplate',{templateName:realmtemplatename,type:'realms',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
+  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.newNameForTemplate({templateName:realmtemplatename,type:'realms',servaddress:req.connection.remoteAddress},function(errcode,errparams){
     if(errcode==='OK'){
       var servname = errparams[0];
       console.log(servname,'should be logged in');
       res.jsonp({name:servname,domain:servdomain,replicationPort:dataMaster.realmReplicationPort});
     }
-  });
+  },req.user);
 };
 
 exports.save = function(req, res) {
@@ -217,12 +217,12 @@ exports.accept = function(req,res) {
   if(!portMap[req.connection.remoteAddress]){
     portMap[req.connection.remoteAddress] = 16100;
   };
-  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:'DCPNode',registryelementpath:['cluster','nodes'],availabilityfunc:portAvailability});
-  dataMaster.invoke('cluster_interface/dcpregistry/newNameForTemplate',{templateName:'DCPNode',type:'nodes',servaddress:req.connection.remoteAddress},'backoffice','dcp','dcp',function(errcode,errparams){
+  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:'*Node',registryelementpath:['cluster','nodes'],availabilityfunc:portAvailability});
+  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.newNameForTemplate({templateName:'*Node',type:'nodes',servaddress:req.connection.remoteAddress},function(errcode,errparams){
     if(errcode==='OK'){
       var servname = errparams[0];
       console.log(servname,'should be logged in');
       res.jsonp({name:servname,replicationPort:dataMaster.nodeReplicationPort});
     }
-  });
+  },{username:'backoffice',realmname:'dcp'});
 };

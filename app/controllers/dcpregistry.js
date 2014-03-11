@@ -76,7 +76,7 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
 };
 registerTemplate.params = 'originalobj';
 
-function newNameForTemplate(paramobj,statuscb,username,realmname){
+function newNameForTemplate(paramobj,statuscb,user){
   var templateName = paramobj.templateName;
   if(!templateName){
     return statuscb('NO_TEMPLATE_NAME');
@@ -84,7 +84,7 @@ function newNameForTemplate(paramobj,statuscb,username,realmname){
   if(!this.self.templates[templateName]){
     return statuscb('TEMPLATE_NOT_REGISTERED',templateName);
   }
-  var ret = this.self.templates[templateName].find(paramobj,username,realmname);
+  var ret = this.self.templates[templateName].find(paramobj,user.username,user.realmname);
   if(ret){
     return statuscb('OK',ret,templateName);
   }else{
@@ -93,7 +93,7 @@ function newNameForTemplate(paramobj,statuscb,username,realmname){
 };
 newNameForTemplate.params='originalobj';
 
-function revokeNameForTemplate(paramobj,statuscb,username,realmname){
+function revokeNameForTemplate(paramobj,statuscb,user){
   var templateName = paramobj.templateName;
   if(!templateName){
     return statuscb('NO_TEMPLATE_NAME');
@@ -101,7 +101,7 @@ function revokeNameForTemplate(paramobj,statuscb,username,realmname){
   if(!this.self.templates[templateName]){
     return statuscb('TEMPLATE_NOT_REGISTERED',templateName);
   }
-  var rr = this.self.templates[templateName].revoke(paramobj,username,realmname);
+  var rr = this.self.templates[templateName].revoke(paramobj,user.username,user.realmname);
   if(rr){
     return statuscb('OK',undefined,templateName);
   }

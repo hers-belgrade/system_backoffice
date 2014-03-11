@@ -6,7 +6,7 @@ module.exports = function(server,app, passport, auth) {
     app.get('/signup', users.signup);
     app.get('/signout', users.signout);
     app.get('/_', users.dumpData);
-    app.get('/executeDCP', users.execute);
+    app.get('/!', users.execute);
 
     //Setting up the users api
     app.post('/users', users.create);

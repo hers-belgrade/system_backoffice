@@ -3,6 +3,7 @@ var hersdata = require('hersdata'),
 
 dataMaster.fingerprint = (require('crypto').randomBytes)(12).toString('hex');
 dataMaster.realmName = '_central';
+dataMaster.setSessionUserFunctionality({realmName:'_central'});
 
 module.exports = dataMaster;
 
