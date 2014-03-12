@@ -2,6 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -18,6 +19,25 @@
    sodipodi:docname="server.svg">
   <defs
      id="defs4">
+    <linearGradient
+       id="linearGradient5509"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#505050;stop-opacity:1;"
+         offset="0"
+         id="stop5511" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient4059">
+      <stop
+         id="stop4061"
+         offset="0"
+         style="stop-color:#000000;stop-opacity:1;" />
+      <stop
+         id="stop4063"
+         offset="1"
+         style="stop-color:#808080;stop-opacity:1;" />
+    </linearGradient>
     <linearGradient
        id="linearGradient3955">
       <stop
@@ -377,38 +397,6 @@
        is_visible="false"
        id="path-effect4069"
        effect="skeletal" />
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4770"
-       id="radialGradient4783"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,0.97904573,0,6.2859446)"
-       cx="400.94501"
-       cy="299.98401"
-       fx="400.94501"
-       fy="299.98401"
-       r="12.742" />
-    <radialGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4770"
-       id="radialGradient4785"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1,0,0,0.97904573,0,6.2859446)"
-       cx="400.94501"
-       cy="299.98401"
-       fx="400.94501"
-       fy="299.98401"
-       r="12.742" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3955"
-       id="linearGradient4787"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.0810935,-0.0313839,-0.0313839,1.0121459,-346.95589,134.3891)"
-       x1="395.4826"
-       y1="288.85605"
-       x2="471.60889"
-       y2="288.85605" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3955"
@@ -418,6 +406,108 @@
        y1="288.85605"
        x2="471.60889"
        y2="288.85605" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4770"
+       id="radialGradient5600"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.97904573,0,6.2859446)"
+       cx="400.94501"
+       cy="299.98401"
+       fx="400.94501"
+       fy="299.98401"
+       r="12.742" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4770"
+       id="radialGradient5602"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.97904573,0,6.2859446)"
+       cx="400.94501"
+       cy="299.98401"
+       fx="400.94501"
+       fy="299.98401"
+       r="12.742" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3955"
+       id="linearGradient5658"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.0810935,-0.0313839,-0.0313839,1.0121459,-346.30783,136.0635)"
+       x1="395.4826"
+       y1="288.85605"
+       x2="471.60889"
+       y2="288.85605" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4059"
+       id="linearGradient5670"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.89927699,0,0,1.0786122,125.95453,-27.854123)"
+       x1="249.16734"
+       y1="27.898911"
+       x2="266.77188"
+       y2="74.451118" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4059"
+       id="linearGradient5689"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.034194,0,0,1.0771135,-186.33138,-27.73138)"
+       x1="249.16734"
+       y1="27.898911"
+       x2="266.77188"
+       y2="74.451118" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4059"
+       id="linearGradient5701"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.034194,0,0,1.0771135,-83.926415,-27.699788)"
+       x1="249.16734"
+       y1="27.898911"
+       x2="266.77188"
+       y2="74.451118" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4059"
+       id="linearGradient5711"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.82664517,0,0,1.0794669,56.638123,-27.803339)"
+       x1="249.16734"
+       y1="27.898911"
+       x2="266.77188"
+       y2="74.451118" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4059"
+       id="linearGradient5729"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.89927699,0,0,1.0786122,215.34155,-27.771439)"
+       x1="249.16734"
+       y1="27.898911"
+       x2="266.77188"
+       y2="74.451118" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4059"
+       id="linearGradient5739"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.82560802,0,0,1.0794796,318.22535,-27.853251)"
+       x1="249.16734"
+       y1="27.898911"
+       x2="266.77188"
+       y2="74.451118" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4059"
+       id="linearGradient5749"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.82560802,0,0,1.0794796,400.64751,-27.872096)"
+       x1="249.16734"
+       y1="27.898911"
+       x2="266.77188"
+       y2="74.451118" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -427,8 +517,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.99999999"
-     inkscape:cx="12.5014"
-     inkscape:cy="171.90674"
+     inkscape:cx="414.01358"
+     inkscape:cy="103.30958"
      inkscape:document-units="px"
      inkscape:current-layer="server_status"
      showgrid="false"
@@ -438,8 +528,8 @@
      fit-margin-bottom="0"
      inkscape:window-width="1416"
      inkscape:window-height="942"
-     inkscape:window-x="122"
-     inkscape:window-y="35"
+     inkscape:window-x="110"
+     inkscape:window-y="41"
      inkscape:window-maximized="0"
      showguides="false" />
   <metadata
@@ -510,7 +600,7 @@
          id="server_disconnected"
          width="1000"
          height="125"
-         transform="translate(-286,-102)"
+         transform="translate(-193.50001,-103)"
          style="display:none" />
     </g>
     <g
@@ -570,13 +660,30 @@
              id="cpu_usage_pointer"
              width="1000"
              height="125"
-             transform="translate(-298.8528,-6.3859993)" />
+             transform="translate(-298.8528,-4.9860039)" />
         </g>
       </g>
       <g
          inkscape:label="memory_usage"
          id="memory_usage"
          inkscape:groupmode="layer">
+        <rect
+           style="fill:none;stroke:none"
+           id="memory_usage_hotspot"
+           width="100"
+           height="35.185001"
+           x="180"
+           y="26.315001"
+           ry="4.0016208" />
+        <use
+           x="0"
+           y="0"
+           xlink:href="#memory_used_active_bg_static"
+           id="memory_usage_active_bg"
+           width="1000"
+           height="125"
+           transform="translate(177.94975,24.245891)"
+           style="display:none;stroke:none;fill:none" />
         <text
            sodipodi:linespacing="125%"
            id="memory_usage_label"
@@ -598,29 +705,46 @@
              sodipodi:linespacing="125%"
              id="memory_usage_value_default"
              y="55.748001"
-             x="200.43401"
+             x="203.12601"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">10000 MB</text>
+             xml:space="preserve">88888 MB</text>
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="202.612"
+             x="203.12601"
              y="55.748001"
              id="memory_usage_value_green"
-             sodipodi:linespacing="125%">2000 MB</text>
+             sodipodi:linespacing="125%">88888 MB</text>
           <text
              sodipodi:linespacing="125%"
              id="memory_usage_value_red"
              y="55.748001"
-             x="202.612"
+             x="203.12601"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">2000 MB</text>
+             xml:space="preserve">88888 MB</text>
         </g>
       </g>
       <g
          inkscape:groupmode="layer"
          id="memory_available"
          inkscape:label="memory_available">
+        <rect
+           style="fill:none;stroke:none"
+           id="memory_available_hotspot"
+           width="100"
+           height="35.185001"
+           x="283"
+           y="26.315001"
+           ry="0.12683703" />
+        <use
+           x="0"
+           y="0"
+           xlink:href="#memory_available_active_bg_static"
+           id="memory_available_active_bg"
+           width="1000"
+           height="125"
+           transform="translate(178.54448,24.214298)"
+           style="display:none" />
         <text
            xml:space="preserve"
            style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
@@ -641,24 +765,24 @@
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="305.43399"
+             x="308.12601"
              y="55.748001"
              id="memory_available_value_default"
-             sodipodi:linespacing="125%">10000 MB</text>
+             sodipodi:linespacing="125%">88888 MB</text>
           <text
              sodipodi:linespacing="125%"
              id="memory_available_value_green"
              y="55.748001"
-             x="305.43399"
+             x="308.12601"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">10000 MB</text>
+             xml:space="preserve">88888 MB</text>
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="305.43399"
+             x="308.12601"
              y="55.748001"
              id="memory_available_value_red"
-             sodipodi:linespacing="125%">10000 MB</text>
+             sodipodi:linespacing="125%">88888 MB</text>
         </g>
       </g>
       <g
@@ -666,6 +790,23 @@
          inkscape:label="queue"
          id="queue"
          inkscape:groupmode="layer">
+        <rect
+           style="fill:none;stroke:none"
+           id="queue_hotspot"
+           width="80"
+           height="35.185001"
+           x="392"
+           y="26.315001"
+           ry="0.12705369" />
+        <use
+           x="0"
+           y="0"
+           xlink:href="#queue_active_bg_static"
+           id="queue_active_bg"
+           width="1000"
+           height="125"
+           transform="translate(184.82002,24.214298)"
+           style="display:none" />
         <text
            sodipodi:linespacing="125%"
            id="queue_label"
@@ -687,13 +828,13 @@
              sodipodi:linespacing="125%"
              id="queue_value_default"
              y="55.748001"
-             x="417.612"
+             x="418.12601"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">88888</text>
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="417.612"
+             x="418.12601"
              y="55.748001"
              id="queue_value_green"
              sodipodi:linespacing="125%">88888</text>
@@ -701,7 +842,7 @@
              sodipodi:linespacing="125%"
              id="queue_value_red"
              y="55.748001"
-             x="417.612"
+             x="418.12601"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
              xml:space="preserve">88888</text>
         </g>
@@ -711,6 +852,23 @@
          id="delay"
          inkscape:label="delay"
          style="display:inline">
+        <rect
+           style="fill:none;stroke:none"
+           id="delay_hotspot"
+           width="87"
+           height="35.185001"
+           x="475"
+           y="26.315001"
+           ry="0.12681942" />
+        <use
+           x="0"
+           y="0"
+           xlink:href="#delay_active_bg_static"
+           id="delay_active_bg"
+           width="1000"
+           height="125"
+           transform="translate(185.26198,24.302683)"
+           style="display:none" />
         <text
            xml:space="preserve"
            style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
@@ -731,24 +889,24 @@
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="497.612"
+             x="498.12601"
              y="55.748001"
              id="delay_value_default"
-             sodipodi:linespacing="125%">2000 ms</text>
+             sodipodi:linespacing="125%">8888 ms</text>
           <text
              sodipodi:linespacing="125%"
              id="delay_value_green"
              y="55.748001"
-             x="499.612"
+             x="498.12601"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">2000 ms</text>
+             xml:space="preserve">8888 ms</text>
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="497.612"
+             x="498.12601"
              y="55.748001"
              id="delay_value_red"
-             sodipodi:linespacing="125%">2000 ms</text>
+             sodipodi:linespacing="125%">8888 ms</text>
         </g>
       </g>
       <g
@@ -756,6 +914,23 @@
          id="dcp_leaves"
          inkscape:groupmode="layer"
          style="display:inline">
+        <rect
+           style="fill:none;stroke:none"
+           id="dcp_leaves_hotspot"
+           width="87"
+           height="35.185001"
+           x="572"
+           y="26.314999"
+           ry="0.12703605" />
+        <use
+           x="0"
+           y="0"
+           xlink:href="#dcp_leaves_active_bg_static"
+           id="dcp_leaves_active_bg"
+           width="1000"
+           height="125"
+           transform="translate(192.87499,24.219998)"
+           style="display:none" />
         <text
            sodipodi:linespacing="125%"
            id="dcp_leaves_label"
@@ -777,23 +952,23 @@
              sodipodi:linespacing="125%"
              id="dcp_leaves_value_default"
              y="55.748001"
-             x="597.05402"
+             x="598.12598"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">999999</text>
+             xml:space="preserve">888888</text>
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="597.05402"
+             x="598.12598"
              y="55.748001"
              id="dcp_leaves_value_green"
-             sodipodi:linespacing="125%">999999</text>
+             sodipodi:linespacing="125%">888888</text>
           <text
              sodipodi:linespacing="125%"
              id="dcp_leaves_value_red"
              y="55.748001"
-             x="597.05402"
+             x="598.12598"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">999999</text>
+             xml:space="preserve">888888</text>
         </g>
       </g>
       <g
@@ -801,6 +976,23 @@
          id="dcp_branches"
          inkscape:label="dcp_branches"
          style="display:inline">
+        <rect
+           style="fill:none;stroke:none"
+           id="dcp_branches_hotspot"
+           width="79.900002"
+           height="35.185001"
+           x="662"
+           y="26.315001"
+           ry="0.12725306" />
+        <use
+           x="0"
+           y="0"
+           xlink:href="#dcp_branches_active_bg_static"
+           id="dcp_branches_active_bg"
+           width="1000"
+           height="125"
+           transform="translate(193.42206,24.263657)"
+           style="display:none" />
         <text
            xml:space="preserve"
            style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
@@ -821,24 +1013,24 @@
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="685.43402"
+             x="688.12598"
              y="55.748001"
              id="dcp_branches_value_default"
-             sodipodi:linespacing="125%">10000</text>
+             sodipodi:linespacing="125%">88888</text>
           <text
              sodipodi:linespacing="125%"
              id="dcp_branches_value_green"
              y="55.748001"
-             x="685.43402"
+             x="688.12598"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">10000</text>
+             xml:space="preserve">88888</text>
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="685.43402"
+             x="688.12598"
              y="55.748001"
              id="dcp_branches_value_red"
-             sodipodi:linespacing="125%">10000</text>
+             sodipodi:linespacing="125%">88888</text>
         </g>
       </g>
       <g
@@ -846,15 +1038,32 @@
          id="players"
          inkscape:groupmode="layer"
          style="display:inline">
+        <rect
+           style="fill:none;stroke:none"
+           id="players_active_hotspot"
+           width="79.900002"
+           height="35.185001"
+           x="752"
+           y="26.315001"
+           ry="0.12747043" />
+        <use
+           x="0"
+           y="0"
+           xlink:href="#players_active_bg_static"
+           id="players_active_bg"
+           width="1000"
+           height="125"
+           transform="translate(201.00003,24.282502)"
+           style="display:none" />
         <text
            sodipodi:linespacing="125%"
            id="players_label"
            y="36.873047"
-           x="764.4043"
+           x="759.4043"
            style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
            xml:space="preserve">PLAYERS</text>
         <use
-           transform="translate(764,41)"
+           transform="translate(759,41)"
            height="125"
            width="1000"
            id="players_indicator"
@@ -867,23 +1076,23 @@
              sodipodi:linespacing="125%"
              id="players_value_default"
              y="55.748001"
-             x="780.43402"
+             x="778.12598"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">10000</text>
+             xml:space="preserve">88888</text>
           <text
              xml:space="preserve"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="780.43402"
+             x="778.12598"
              y="55.748001"
              id="players_value_green"
-             sodipodi:linespacing="125%">10000</text>
+             sodipodi:linespacing="125%">88888</text>
           <text
              sodipodi:linespacing="125%"
              id="players_value_red"
              y="55.748001"
-             x="780.43402"
+             x="778.12598"
              style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">10000</text>
+             xml:space="preserve">88888</text>
         </g>
       </g>
       <g
@@ -1097,147 +1306,147 @@
             <g
                id="g16">
               <polygon
-                 points="401.658,226.418 400.234,226.418 400.234,226.418 400.234,208.847 401.658,208.847 "
+                 points="400.234,208.847 401.658,208.847 401.658,226.418 400.234,226.418 400.234,226.418 "
                  id="polygon18"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g20">
               <polygon
-                 points="374.578,231.094 368.438,214.582 368.438,214.582 369.775,214.104 375.914,230.617 "
+                 points="369.775,214.104 375.914,230.617 374.578,231.094 368.438,214.582 368.438,214.582 "
                  id="polygon22"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g24">
               <polygon
-                 points="352.1,244.078 340.564,230.617 340.564,230.617 341.654,229.721 353.189,243.183 "
+                 points="341.654,229.721 353.189,243.183 352.1,244.078 340.564,230.617 340.564,230.617 "
                  id="polygon26"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g28">
               <polygon
-                 points="335.515,263.803 319.973,255.016 319.973,255.016 320.685,253.812 336.227,262.597 "
+                 points="320.685,253.812 336.227,262.597 335.515,263.803 319.973,255.016 319.973,255.016 "
                  id="polygon30"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g32">
               <polygon
-                 points="326.824,287.896 309.147,284.844 309.147,284.844 309.394,283.472 327.072,286.521 "
+                 points="309.394,283.472 327.072,286.521 326.824,287.896 309.147,284.844 309.147,284.844 "
                  id="polygon34"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g36">
               <polygon
-                 points="309.394,316.496 309.147,315.123 309.147,315.123 326.824,312.07 327.072,313.443 "
+                 points="326.824,312.07 327.072,313.443 309.394,316.496 309.147,315.123 309.147,315.123 "
                  id="polygon38"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g56">
               <polygon
-                 points="492.494,316.496 474.822,313.441 474.822,313.441 475.072,312.068 492.745,315.123 "
+                 points="475.072,312.068 492.745,315.123 492.494,316.496 474.822,313.441 474.822,313.441 "
                  id="polygon58"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g60">
               <polygon
-                 points="475.069,287.892 474.824,286.519 474.824,286.519 492.496,283.473 492.745,284.846 "
+                 points="492.496,283.473 492.745,284.846 475.069,287.892 474.824,286.519 474.824,286.519 "
                  id="polygon62"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g64">
               <polygon
-                 points="466.375,263.799 465.663,262.593 465.663,262.593 481.207,253.813 481.918,255.019 "
+                 points="481.207,253.813 481.918,255.019 466.375,263.799 465.663,262.593 465.663,262.593 "
                  id="polygon66"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g68">
               <polygon
-                 points="449.791,244.074 448.698,243.176 448.698,243.176 460.234,229.721 461.326,230.619 "
+                 points="460.234,229.721 461.326,230.619 449.791,244.074 448.698,243.176 448.698,243.176 "
                  id="polygon70"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g72">
               <polygon
-                 points="427.314,231.09 425.976,230.611 425.976,230.611 432.115,214.105 433.457,214.582 "
+                 points="432.115,214.105 433.457,214.582 427.314,231.09 425.976,230.611 425.976,230.611 "
                  id="polygon74"
                  style="fill:#ffffff;fill-opacity:1" />
             </g>
             <g
                id="g76">
               <polygon
-                 points="385.859,219.084 384.281,210.315 384.281,210.315 385.279,210.143 386.858,218.912 "
+                 points="385.279,210.143 386.858,218.912 385.859,219.084 384.281,210.315 384.281,210.315 "
                  id="polygon78"
                  style="fill:#696969" />
             </g>
             <g
                id="g80">
               <polygon
-                 points="358.508,229.016 353.96,221.306 353.96,221.306 354.84,220.808 359.385,228.517 "
+                 points="354.84,220.808 359.385,228.517 358.508,229.016 353.96,221.306 353.96,221.306 "
                  id="polygon82"
                  style="fill:#696969" />
             </g>
             <g
                id="g84">
               <polygon
-                 points="336.275,247.505 329.31,241.782 329.31,241.782 329.961,241.021 336.925,246.744 "
+                 points="329.961,241.021 336.925,246.744 336.275,247.505 329.31,241.782 329.31,241.782 "
                  id="polygon86"
                  style="fill:#696969" />
             </g>
             <g
                id="g88">
               <polygon
-                 points="321.843,272.322 313.297,269.279 313.297,269.279 313.645,268.347 322.188,271.389 "
+                 points="313.645,268.347 322.188,271.389 321.843,272.322 313.297,269.279 313.297,269.279 "
                  id="polygon90"
                  style="fill:#696969" />
             </g>
             <g
                id="g92">
               <polygon
-                 points="316.951,300.477 307.856,300.477 307.856,300.477 307.856,299.487 316.951,299.487 "
+                 points="307.856,299.487 316.951,299.487 316.951,300.477 307.856,300.477 307.856,300.477 "
                  id="polygon94"
                  style="fill:#696969" />
             </g>
             <g
                id="g112">
               <polygon
-                 points="494.033,300.479 484.938,300.479 484.938,300.479 484.938,299.487 494.035,299.49 "
+                 points="484.938,299.487 494.035,299.49 494.033,300.479 484.938,300.479 484.938,300.479 "
                  id="polygon114"
                  style="fill:#696969" />
             </g>
             <g
                id="g116">
               <polygon
-                 points="480.046,272.325 479.697,271.393 479.697,271.393 488.246,268.348 488.594,269.28 "
+                 points="488.246,268.348 488.594,269.28 480.046,272.325 479.697,271.393 479.697,271.393 "
                  id="polygon118"
                  style="fill:#696969" />
             </g>
             <g
                id="g120">
               <polygon
-                 points="465.611,247.505 464.963,246.747 464.963,246.747 471.928,241.023 472.584,241.784 "
+                 points="471.928,241.023 472.584,241.784 465.611,247.505 464.963,246.747 464.963,246.747 "
                  id="polygon122"
                  style="fill:#696969" />
             </g>
             <g
                id="g124">
               <polygon
-                 points="443.379,229.016 442.5,228.522 442.5,228.522 447.051,220.808 447.93,221.306 "
+                 points="447.051,220.808 447.93,221.306 443.379,229.016 442.5,228.522 442.5,228.522 "
                  id="polygon126"
                  style="fill:#696969" />
             </g>
             <g
                id="g128">
               <polygon
-                 points="416.029,219.088 415.031,218.916 415.031,218.916 416.613,210.143 417.609,210.316 "
+                 points="416.613,210.143 417.609,210.316 416.029,219.088 415.031,218.916 415.031,218.916 "
                  id="polygon130"
                  style="fill:#696969" />
             </g>
@@ -1332,20 +1541,20 @@
            style="fill:url(#linearGradient4789);fill-opacity:1;stroke:#000000;stroke-opacity:1"
            inkscape:transform-center-x="29.988904">
           <path
-             style="fill:url(#linearGradient4787);fill-opacity:1;stroke:#000000;stroke-width:1.04558086;stroke-opacity:1"
+             style="fill:url(#linearGradient5658);fill-opacity:1;stroke:#000000;stroke-width:1.04558086;stroke-opacity:1"
              inkscape:connector-curvature="0"
              id="path289"
-             d="m 153.13445,396.65666 c 0.56246,-0.23475 0.81814,-0.92173 0.56689,-1.52724 l -0.0292,-0.0699 c -0.25132,-0.60349 -0.92733,-0.92162 -1.49562,-0.70793 L 72.521677,420.8001 c -0.5737,0.21385 -0.83753,0.88488 -0.58411,1.49033 l 3.6851,8.85661 c 0.25132,0.60349 0.9181,0.9057 1.48279,0.66886 L 153.1344,396.6567 z" />
+             d="m 153.78251,398.33106 c 0.56246,-0.23475 0.81814,-0.92173 0.56689,-1.52724 l -0.0292,-0.0699 c -0.25132,-0.60349 -0.92733,-0.92162 -1.49562,-0.70793 L 73.169686,422.4745 c -0.5737,0.21385 -0.83753,0.88488 -0.58411,1.49033 l 3.6851,8.85661 c 0.25132,0.60349 0.9181,0.9057 1.48279,0.66886 l 76.028994,-35.1592 z" />
           <path
-             d="m -6.6043783,458.47701 c -0.573954,0.20506 -1.225489,-0.13082 -1.447321,-0.74772 l -0.02546,-0.0713 c -0.22042,-0.61545 0.06531,-1.30578 0.629394,-1.53033 L 69.259432,422.06265 c 0.56819,-0.22807 1.21502,0.0905 1.43521,0.70884 l 3.23716,9.02997 c 0.22042,0.61544 -0.0692,1.28779 -0.64621,1.4928 l -79.8899023,25.18279 z"
+             d="m -5.9565433,460.15097 c -0.573954,0.20506 -1.225489,-0.13082 -1.447321,-0.74772 l -0.02546,-0.0713 c -0.22042,-0.61545 0.06531,-1.30578 0.629394,-1.53033 L 69.907267,423.73661 c 0.56819,-0.22807 1.21502,0.0905 1.43521,0.70884 l 3.23716,9.02997 c 0.22042,0.61544 -0.0692,1.28779 -0.64621,1.4928 l -79.8899023,25.18279 z"
              id="path4752"
              inkscape:connector-curvature="0"
              style="fill:none;stroke:none" />
         </g>
         <g
-           style="fill:url(#radialGradient4785);fill-opacity:1;stroke:#ffffff;stroke-opacity:1"
+           style="fill:url(#radialGradient5602);fill-opacity:1;stroke:#ffffff;stroke-width:1.00012457;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
            id="g1169"
-           transform="matrix(0.75486955,0,0,0.77102583,-135.66118,-117.0337)">
+           transform="matrix(0.75486596,0,0,0.77102217,-135.65873,-118.4326)">
           <ellipse
              cx="400.94501"
              cy="299.98401"
@@ -1353,7 +1562,7 @@
              ry="12.475"
              id="ellipse1176"
              d="m 413.68701,299.98401 c 0,6.88975 -5.70479,12.475 -12.742,12.475 -7.03721,0 -12.742,-5.58525 -12.742,-12.475 0,-6.88975 5.70479,-12.475 12.742,-12.475 7.03721,0 12.742,5.58525 12.742,12.475 z"
-             style="fill:url(#radialGradient4783);fill-opacity:1;stroke:#ffffff;stroke-opacity:1"
+             style="fill:url(#radialGradient5600);fill-opacity:1;stroke:#ffffff;stroke-width:1.00012457;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
              sodipodi:cx="400.94501"
              sodipodi:cy="299.98401"
              sodipodi:rx="12.742"
@@ -1503,6 +1712,83 @@
              sodipodi:nodetypes="cczcczc" />
         </g>
       </g>
+      <g
+         id="memory_used_active_bg_static">
+        <rect
+           ry="3.9718559"
+           y="2.427799"
+           x="2.4089394"
+           height="34.467625"
+           width="99.282631"
+           id="memory_used_active"
+           style="fill:#000000;fill-opacity:0.55707762;fill-rule:nonzero;stroke:url(#linearGradient5689);stroke-width:0.71737081;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      </g>
+      <g
+         id="memory_available_active_bg_static">
+        <rect
+           style="fill:#000000;fill-opacity:0.55707762;fill-rule:nonzero;stroke:url(#linearGradient5701);stroke-width:0.71737081;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="memory_available_active"
+           width="99.282631"
+           height="34.467625"
+           x="104.81421"
+           y="2.4593921"
+           ry="3.9718561" />
+      </g>
+      <g
+         id="queue_active_bg_static">
+        <rect
+           ry="3.9805343"
+           y="2.4217367"
+           x="207.50101"
+           height="34.542934"
+           width="79.357941"
+           id="queue_active"
+           style="fill:#000000;fill-opacity:0.55707762;fill-rule:nonzero;stroke:url(#linearGradient5711);stroke-width:0.64206088;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      </g>
+      <g
+         id="delay_active_bg_static">
+        <rect
+           style="fill:#000000;fill-opacity:0.55707762;fill-rule:nonzero;stroke:url(#linearGradient5670);stroke-width:0.6694088;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="delay_active"
+           width="86.330589"
+           height="34.515594"
+           x="290.07272"
+           y="2.3470185"
+           ry="3.9773831" />
+      </g>
+      <g
+         id="dcp_leaves_active_bg_static">
+        <rect
+           ry="3.9773831"
+           y="2.4297028"
+           x="379.45972"
+           height="34.515594"
+           width="86.330589"
+           id="dcp_leaves_active"
+           style="fill:#000000;fill-opacity:0.55707762;fill-rule:nonzero;stroke:url(#linearGradient5729);stroke-width:0.6694088;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      </g>
+      <g
+         id="dcp_branches_active_bg_static">
+        <rect
+           style="fill:#000000;fill-opacity:0.55707762;fill-rule:nonzero;stroke:url(#linearGradient5739);stroke-width:0.6416617;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="dcp_branches_active"
+           width="79.258339"
+           height="34.543335"
+           x="468.89877"
+           y="2.3721771"
+           ry="3.9805806" />
+      </g>
+      <g
+         id="players_active_bg_static">
+        <rect
+           ry="3.9805806"
+           y="2.3533325"
+           x="551.3208"
+           height="34.543335"
+           width="79.258339"
+           id="players_active"
+           style="fill:#000000;fill-opacity:0.55707762;fill-rule:nonzero;stroke:url(#linearGradient5749);stroke-width:0.6416617;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      </g>
     </g>
     <g
        inkscape:groupmode="layer"
@@ -1517,12 +1803,12 @@
          x="1.499977"
          y="59.499977" />
       <rect
-         style="fill:none;stroke:#000000;stroke-width:1.00021946;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#000000;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="cpu_usage_pointer_static_area"
-         width="107.99478"
-         height="18.999781"
-         x="325.6041"
-         y="104.50011" />
+         width="112.52986"
+         height="21.659863"
+         x="324.02405"
+         y="101.79507" />
       <rect
          style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
          id="red_up_static_area"
@@ -1571,6 +1857,62 @@
          width="16.999798"
          id="disconnected_static_area"
          style="fill:none;stroke:#000000;stroke-width:1.00020313;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.76300001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="memory_used_active_bg_static_area"
+         width="101.39645"
+         height="36.631283"
+         x="1.3815"
+         y="1.4755"
+         ry="0" />
+      <rect
+         ry="0"
+         y="1.4755"
+         x="103.8815"
+         height="36.631283"
+         width="101.39645"
+         id="memory_available_active_bg_static_area"
+         style="fill:none;stroke:#000000;stroke-width:0.76300001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.76300001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="queue_active_bg_static_area"
+         width="81.332291"
+         height="36.631283"
+         x="206.58147"
+         y="1.4755"
+         ry="0" />
+      <rect
+         ry="0"
+         y="1.4755"
+         x="289.18149"
+         height="36.542896"
+         width="88.226585"
+         id="delay_active_bg_static_area"
+         style="fill:none;stroke:#000000;stroke-width:0.76300001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.76300001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="dcp_leaves_active_bg_static_area"
+         width="88.226585"
+         height="36.542896"
+         x="378.58142"
+         y="1.4755"
+         ry="0" />
+      <rect
+         ry="0"
+         y="1.4755"
+         x="467.98151"
+         height="36.410313"
+         width="81.11132"
+         id="dcp_branches_active_bg_static_area"
+         style="fill:none;stroke:#000000;stroke-width:0.76300001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         style="fill:none;stroke:#000000;stroke-width:0.76300001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="players_active_bg_static_area"
+         width="81.11132"
+         height="36.410313"
+         x="550.38147"
+         y="1.4755"
+         ry="0" />
     </g>
   </g>
 </svg>
