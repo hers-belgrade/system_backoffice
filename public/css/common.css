@@ -145,3 +145,16 @@ border-bottom-color: #8f8f8f;
 	font-size:37px;
 	line-height:45px;
 	}
+
+html {
+  height:100%;
+}
+body {
+  height:100%;
+}
+
+section.content {
+  position:relative;
+  height:95%;
+  background-color:#282828;
+}
