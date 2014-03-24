@@ -136,7 +136,7 @@ exports.setup = function(app){
     var sess = handshakeData.query[dataMaster.functionalities.sessionuserfunctionality.f.fingerprint];
     console.log('sock.io incoming',username,sess);
     if(username && sess){
-      var u = UserBase.findUser(username,dataMaster.functionalities.sessionuserfunctionality.f.realmName);
+      var u = dataMaster.functionalities.sessionuserfunctionality.f._findUser(username);
       if(!u){
         callback(null,false);
       }else{
@@ -151,7 +151,7 @@ exports.setup = function(app){
   io.sockets.on('connection',function(sock){
     var username = sock.handshake.username,
       session = sock.handshake.session,
-      u = UserBase.findUser(username,dataMaster.functionalities.sessionuserfunctionality.f.realmName);
+      u = dataMaster.functionalities.sessionuserfunctionality.f._findUser(username);
     //console.log(username,'sockio connected',session,'session',u.sessions);
     u.makeSession(session);
     u.sessions[session].setSocketIO(sock);

@@ -150,30 +150,30 @@ exports.all = function(req,res) {
   });
 };
 
-function findAndEngage(type,servreplica,autocreate){
+function findAndEngage(type,servreplica){
   var servname = servreplica.replicaToken.name;
   var servaddress = servreplica.socket.remoteAddress;
-  //console.log('finding',servname,servaddress,'to engage with autocreate',autocreate);
+  console.log('finding',servname,servaddress,'to engage');
   if(!portMap[servaddress]){
     portMap[servaddress]=16100;
   }
   var servcontel = dataMaster.element(['cluster',type,servname]);
   if(servcontel){
-    console.log(servname,'found');
+    console.log(servname,'found',servcontel.dataDebug());
     servreplica.replicaToken.type=type;
     if(!servcontel.element(['status'])){
-      //console.log('replica',type,servname,'logged in');
+      console.log('replica',type,servname,'logged in');
       portMap[servaddress]++;
       ReplicateServer(type,servname,servaddress);
-      //console.log(servname,'engaged');
+      console.log(servname,'engaged');
       return true;
     }
-  }else if(autocreate){
-    //console.log('autocreating');
+  }else{
+    console.log('autocreating');
     servcontel = dataMaster.commit('new_server',[
       ['set',['cluster',type,servname]]
     ]);
-    //console.log('replica',type,servname,'ressurected');
+    console.log('replica',type,servname,'ressurected');
     portMap[servaddress]++;
     ReplicateServer(type,servname,servaddress);
     return true;
@@ -182,35 +182,12 @@ function findAndEngage(type,servreplica,autocreate){
 
 dataMaster.element(['cluster_interface']).newReplica.attach(function(servreplica){
   console.log('incoming (node) replica',servreplica.replicaToken);
-  var reptype = servreplica.replicaToken.type;
-  if(reptype){
-    findAndEngage(reptype,servreplica,true);
-  }else{
-    if(!findAndEngage('nodes',servreplica)){
-      //console.log(servreplica.replicaToken,'could not be engaged');
-    }
-  }
-  console.log('replica processed',servreplica.replicaToken);
-  return;
-  /*
-  var servel = dataMaster.element(['cluster',servname]);
-  if(!servel){
-    dataMaster.commit('server_accepted',[
-      ['set',['cluster',servname],'dcp'],
-      [
-    ]);
-  }
-  */
+  findAndEngage('nodes',servreplica);
 });
 
 dataMaster.element(['cluster_interface','servers']).newReplica.attach(function(servreplica){
   console.log('incoming (realm) replica',servreplica.replicaToken);
-  var reptype = servreplica.replicaToken.type;
-  if(reptype){
-    findAndEngage(reptype,servreplica,true);
-  }else{
-    findAndEngage('realms',servreplica);
-  }
+  findAndEngage('realms',servreplica);
 });
 
 exports.accept = function(req,res) {
