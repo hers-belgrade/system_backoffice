@@ -77,6 +77,7 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
 registerTemplate.params = 'originalobj';
 
 function newNameForTemplate(paramobj,statuscb,user){
+  console.log('newNameForTemplate',paramobj);
   var templateName = paramobj.templateName;
   if(!templateName){
     return statuscb('NO_TEMPLATE_NAME');

@@ -104,9 +104,11 @@ PokerTemplate.find({},function(err,pts){
   }
 });
 
-dataMaster.element(['cluster','nodes']).waitFor(['*'],function(servname,servel){
-  servel.waitFor(['server','rooms','*',['class=Poker','templatename']],function(roomname,map){
-    console.log(servname,roomname,map);
+dataMaster.getSuperUser(function(user){
+  user.waitFor(['cluster','nodes','*'],function(servname,servel){
+    user.waitFor(['server','rooms','*',['class=Poker','templatename']],function(roomname,map){
+      console.log(servname,roomname,map);
+    });
   });
 });
 

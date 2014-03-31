@@ -70,7 +70,6 @@ function ReplicateServer(type,servname,servaddress){
     statsel.commit('status_change',[
       ['set',[type,servname,'status'],[status,undefined,'dcp']]
     ]);
-    //console.log(servname,status,servcontel.dataDebug());
   });
   servel.replicationInitiated.attach(function(){
     var sn = servname, se = statsel, _type = type;
