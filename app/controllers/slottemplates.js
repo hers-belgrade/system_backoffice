@@ -40,7 +40,7 @@ function newTemplateInstance(el,name,searchobj,username,realmname){
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
-  console.log('new slot template',username,el.element([username]).dataDebug());
+  //console.log('new slot template',username,el.element([username]).dataDebug());
 };
 
 function deleteTemplateInstance(el,name,searchobj,username,realmname){
@@ -50,7 +50,7 @@ function deleteTemplateInstance(el,name,searchobj,username,realmname){
 };
 
 function availabilityFunc(tplel,name,searchobj,username,realmname){
-  console.log('slotTemplate availability',username,realmname);
+  //console.log('slotTemplate availability',username,realmname);
   //console.log('availability of',tplel.element([username,'server','rooms']).dataDebug(),'for',name,'?');
   var ret = !!tplel.element([username,'server','rooms',name,'brand_new']);
   if(ret){

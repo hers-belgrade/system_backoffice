@@ -71,34 +71,36 @@ function ReplicateServer(type,servname,servaddress){
       ['set',[type,servname,'status'],[status,undefined,'dcp']]
     ]);
   });
-  servel.replicationInitiated.attach(function(){
+  servel.getReplicatingUser(function(user){
     var sn = servname, se = statsel, _type = type;
-    servel.waitFor([['memoryusage','memoryavailable','network_in','network_out','CPU','exec_delay','exec_queue','dcp_branches','dcp_leaves']],function(map){
+    user.waitFor([['memoryusage','memoryavailable','network_in','network_out','CPU','exec_delay','exec_queue','dcp_branches','dcp_leaves']],function(map){
       var actions = [];
       for(var i in map){
         actions.push(['set',[_type,sn,i],[map[i],undefined,'dcp']]);
       }
       se.commit('system_change',actions);
     });
-    servel.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
-      var oldplaying = oldmap ? oldmap.playing : 0;
-      var actions = [
-        ['set',['players'],[se.element(['players']).value()+map.playing-oldplaying,undefined,'dcp']]
-      ];
-      var gcse = se.element(['players_by_gameclass',map.class]);
-      if(!gcse){
-        actions.push(['set',['players_by_gameclass',map.class],[map.playing-oldplaying,undefined,'dcp']]);
-      }else{
-        actions.push(['set',['players_by_gameclass',map.class],[gcse.value()+map.playing-oldplaying,undefined,'dcp']]);
-      }
-      var sse = se.element([_type,sn,'players']);
-      if(!sse){
-        actions.push(['set',[_type,sn,'players'],[map.playing-oldplaying,undefined,'dcp']]);
-      }else{
-        actions.push(['set',[_type,sn,'players'],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
-      }
-      Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
-    });
+    if(type==='nodes'){
+      user.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
+        var oldplaying = oldmap ? oldmap.playing : 0;
+        var actions = [
+          ['set',['players'],[se.element(['players']).value()+map.playing-oldplaying,undefined,'dcp']]
+        ];
+        var gcse = se.element(['players_by_gameclass',map.class]);
+        if(!gcse){
+          actions.push(['set',['players_by_gameclass',map.class],[map.playing-oldplaying,undefined,'dcp']]);
+        }else{
+          actions.push(['set',['players_by_gameclass',map.class],[gcse.value()+map.playing-oldplaying,undefined,'dcp']]);
+        }
+        var sse = se.element([_type,sn,'players']);
+        if(!sse){
+          actions.push(['set',[_type,sn,'players'],[map.playing-oldplaying,undefined,'dcp']]);
+        }else{
+          actions.push(['set',[_type,sn,'players'],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
+        }
+        Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
+      });
+    }
   });
 };
 
