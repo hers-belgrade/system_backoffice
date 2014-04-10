@@ -63,6 +63,7 @@ angular.module('mean.pokertemplates').controller('PokerTemplatesController',['$s
     }});
   };
   $scope.setTemplate = function(t){
+		if (!t['class']) t['class'] = 'Poker';
     $scope.template = t;
     $scope.setup.editable = true;
   };
