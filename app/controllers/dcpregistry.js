@@ -84,7 +84,7 @@ function newNameForTemplate(paramobj,statuscb,user){
   if(!this.self.templates[templateName]){
     return statuscb('TEMPLATE_NOT_REGISTERED',templateName);
   }
-  var ret = this.self.templates[templateName].find(paramobj,user.username,user.realmname);
+  var ret = this.self.templates[templateName].find(paramobj,user.username(),user.realmname());
   if(ret){
     return statuscb('OK',ret,templateName);
   }else{
@@ -101,7 +101,7 @@ function revokeNameForTemplate(paramobj,statuscb,user){
   if(!this.self.templates[templateName]){
     return statuscb('TEMPLATE_NOT_REGISTERED',templateName);
   }
-  var rr = this.self.templates[templateName].revoke(paramobj,user.username,user.realmname);
+  var rr = this.self.templates[templateName].revoke(paramobj,user.username(),user.realmname());
   if(rr){
     return statuscb('OK',undefined,templateName);
   }

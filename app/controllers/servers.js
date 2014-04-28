@@ -82,6 +82,10 @@ function ReplicateServer(type,servname,servaddress){
     });
     if(type==='nodes'){
       user.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
+        if(roomname==='DISCARD_THIS'){
+          //clean up all from server named sn
+          return;
+        }
         var oldplaying = oldmap ? oldmap.playing : 0;
         var actions = [
           ['set',['players'],[se.element(['players']).value()+map.playing-oldplaying,undefined,'dcp']]
@@ -117,6 +121,13 @@ var portAvailability = function(el,name,searchobj){
   return true;
 };
 
+function fakeServerUser(user){
+  return {
+    username:function(){return user.username},
+    realmname:function(){return user.realmname}
+  };
+};
+
 exports.authCallback = function(req, res, next){
   if(!portMap[req.connection.remoteAddress]){
     portMap[req.connection.remoteAddress] = 16100;
@@ -131,7 +142,7 @@ exports.authCallback = function(req, res, next){
       console.log(servname,'should be logged in');
       res.jsonp({name:servname,domain:servdomain,replicationPort:dataMaster.realmReplicationPort});
     }
-  },req.user);
+  },fakeServerUser(req.user));
 };
 
 exports.save = function(req, res) {
@@ -202,5 +213,5 @@ exports.accept = function(req,res) {
       console.log(servname,'should be logged in');
       res.jsonp({name:servname,replicationPort:dataMaster.nodeReplicationPort});
     }
-  },{username:'backoffice',realmname:'dcp'});
+  },{username:function(){return 'backoffice'},realmname:function(){return 'dcp'}});
 };
