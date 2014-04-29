@@ -1,10 +1,19 @@
-<section data-ng-controller="SlotTemplatesController" data-ng-init="list()">
+<style>
+.slot_templates_list {
+  color: white;
+}
+
+.slot_templates_list .gridStyle {
+  color:black;
+}
+</style>
+
+<section data-ng-controller="SlotTemplatesController" data-ng-init="list()" class="slot_templates_list">
   <button class='btn' data-ng-click="createNew()">Create New</button>
   <section data-ng-include="'/views/slottemplates/create.html'"></section>
   <table>
     <tr>
       <th>Name</th>
-      <th>Label</th>
       <th>Columns</th>
       <th>Rows</th>
       <th>Double up probability</th>
@@ -13,7 +22,6 @@
     </tr>
     <tr data-ng-repeat="pt in templates" data-ng-click="setTemplate(pt)">
       <td>{{pt.name}}</td>
-      <td>{{pt.eng_name}}</td>
       <td>{{pt.columns}}</td>
       <td>{{pt.rows}}</td>
       <td>{{pt.double_up_prob}}</td>

@@ -35,8 +35,8 @@ function templateSearch(el,name,searchobj){
 function newTemplateInstance(el,name,searchobj,username,realmname){
   el.commit('new_slottemplate_instance',[
 		['set',[username]],
-		['set',[username, 'server']],
-		['set',[username, 'server', 'rooms']],
+		['set',[username,'server']],
+		['set',[username,'server', 'rooms']],
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
