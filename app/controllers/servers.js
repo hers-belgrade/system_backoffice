@@ -73,12 +73,14 @@ function ReplicateServer(type,servname,servaddress){
   });
   servel.getReplicatingUser(function(user){
     var sn = servname, se = statsel, _type = type;
-    user.waitFor([['memoryusage','memoryavailable','network_in','network_out','CPU','exec_delay','exec_queue','dcp_branches','dcp_leaves']],function(map){
-      var actions = [];
-      for(var i in map){
-        actions.push(['set',[_type,sn,i],[map[i],undefined,'dcp']]);
+    servel.communication.masterSays.attach(function(item){
+      var p = item[0];
+      var d = item[1];
+      if(p&&p.length===0){
+        dataMaster.element(['stats',_type,sn]).commit('slave_system_change',[
+          ['set',[d[0]],[d[1],undefined,'dcp']]
+        ]);
       }
-      se.commit('system_change',actions);
     });
     if(type==='nodes'){
       user.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
