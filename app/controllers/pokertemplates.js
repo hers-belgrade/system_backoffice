@@ -42,13 +42,13 @@ function templateSearch(el,name,searchobj){
 
 function newTemplateInstance(el,name,searchobj,username,realmname){
   return roomMap[searchobj.templateName][name] = {server:username,brand_new:true};
-  //console.log('new pt',name,username,el.dataDebug());
+  console.log('new pt',name,username,el.dataDebug());
   if(!el.element([username,'server','rooms'])){return;}
   el.commit('new_pokertemplate_instance',[
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
-  //console.log('new pokerroom template',username,el.element([username]).dataDebug());
+  console.log('new pokerroom template',username,el.element([username]).dataDebug());
 };
 
 function deleteTemplateInstance(el,name,searchobj,username,realmname){

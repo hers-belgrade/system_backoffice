@@ -3,7 +3,8 @@ var mongoose = require('mongoose'),
     Server = mongoose.model('Server'),
     dataMaster = require('./datamaster'),
     hersdata = require('hersdata'),
-    Timeout = require('herstimeout');
+    Timeout = require('herstimeout'),
+    __handId = 0;
 
 dataMaster.commit('servers_init',[
   ['set',['cluster_interface'],'dcp'],
@@ -25,7 +26,12 @@ dataMaster.element(['cluster_interface']).openReplication(nodeReplicationPort);
 dataMaster.element(['cluster_interface','servers']).openReplication(realmReplicationPort);
 
 var portMap = {};
-var roomsHook = new (hersdata.HookCollection);
+
+function handHistoryWait(user){
+  var handHistoryWaitFunc = function(){
+  };
+  return handHistoryWaitFunc;
+}
 
 function ReplicateServer(type,servname,servaddress){
   console.log('ReplicateServer',type,servname,servaddress);
@@ -106,6 +112,24 @@ function ReplicateServer(type,servname,servaddress){
         }
         Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
       });
+      user.waitForever(['rooms','*','__requirements','storeHandHistory','offers','*','data'],function(roomname,offerid,data){
+        if(roomname==='DISCARD_THIS'){
+          handHistoryWaitFunc();
+          return;
+        }
+        if(!data){return;}
+        data = JSON.parse(data);
+        console.log('room',roomname,'needs storeHandHistory',offerid,data);
+        __handId++;
+        this.offer(['rooms',roomname,'storeHandHistory'],{offerid:offerid,dbid:1});
+      });
+      user.waitForever(['rooms','*','__requirements','handId'], function(roomname,room){
+        if(!room){return;}
+        console.log('room',roomname,'needs handId');
+        __handId++;
+        this.bid(['rooms',roomname,'handId'],{handId:__handId});
+      });
+      (handHistoryWait(user))();
     }
   });
 };
