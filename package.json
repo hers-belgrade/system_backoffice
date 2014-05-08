@@ -56,7 +56,9 @@
       "grunt-contrib-watch": "latest",
       "grunt-env": "^0.4.1",
       "grunt-nodemon": "0.2.0",
-      "load-grunt-tasks": "^0.4.0"
+      "load-grunt-tasks": "^0.4.0",
+      "underscore":"latest",
+      "socket.io":"latest"
     },
     "devDependencies": {
       "assetmanager": "^0.1.1",
