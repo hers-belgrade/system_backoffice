@@ -48,12 +48,7 @@ function triStateValueWNeedle(svgelem,config){
   config.cb = function(val,oldval){
     needle.set({localAngle:(-angleOffs+(180+2*angleOffs)*val/100)});
   };
-  window.testNeedle = function (val) {
-    var la = (-angleOffs+(180+2*angleOffs)*val/100);
-    console.log(la);
-    needle.set({localAngle:la});
-  }
-
+  
   return triStateValue(svgelem,config);
 }
 function serverFollower(servname,follower,canvas){
