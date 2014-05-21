@@ -48,6 +48,12 @@ function triStateValueWNeedle(svgelem,config){
   config.cb = function(val,oldval){
     needle.set({localAngle:(-angleOffs+(180+2*angleOffs)*val/100)});
   };
+  window.testNeedle = function (val) {
+    var la = (-angleOffs+(180+2*angleOffs)*val/100);
+    console.log(la);
+    needle.set({localAngle:la});
+  }
+
   return triStateValue(svgelem,config);
 }
 function serverFollower(servname,follower,canvas){
@@ -59,6 +65,7 @@ function serverFollower(servname,follower,canvas){
     var s = loaded.server;
     canvas.add(s);
     var server = s.server;
+    server.getSvgEl().activate();
     server.server_name.set({text:servname});
     var stats = server.statistics;
     server.server_status.forEachObject(function(el){
