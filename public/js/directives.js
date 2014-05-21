@@ -23,7 +23,12 @@ function triStateValue(svgelem,config){
         break;
       }
     }
+
     if(indicator && indicator.usedObj){
+      if (!indicator.inited) {
+        fabric.DynamicUse(indicator);
+        indicator.indited = true;
+      }
       if(val===oldval){indicator.hide();return}
       var direction = (val>oldval) ? 'up' : 'down';
       var color = (config.preferences && config.preferences[direction]) ? config.preferences[direction] : 'green';
