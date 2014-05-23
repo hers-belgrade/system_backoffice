@@ -117,7 +117,7 @@ function ReplicateServer(type,servname,servaddress){
         }else{
           actions.push(['set',[_type,sn,'players'],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
         }
-        Timeout.next(function(se,a){console.log('commiting',a);se.commit('room_stats_change',a);},se,actions);
+        Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
       });
       user.waitForever(['rooms','*','__requirements','storeHandHistory','offers','*','data'],function(roomname,offerid,data){
         if(roomname==='DISCARD_THIS'){

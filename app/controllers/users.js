@@ -107,6 +107,7 @@ exports.dumpData = function(req, res, next) {
   }
   req.query.name = req.user.username;
   req.query.roles = req.user.roles;
+  req.query.address = req.connection.remoteAddress;
   dataMaster.functionalities.sessionuserfunctionality.f.dumpData(req.query,function(errc,errp,errm){
     if(errc==='OK'){
       res.jsonp(errp[0]);
@@ -123,6 +124,8 @@ exports.execute = function(req, res, next) {
   }
   req.query.name = req.user.username;
   req.query.roles = req.user.roles;
+  req.query.address = req.connection.remoteAddress;
+  console.log('execute?',req.query);
   dataMaster.functionalities.sessionuserfunctionality.f.produceAndExecute(req.query,function(errc,errp,errm){
     if(errc==='OK'){
       res.jsonp(errp[0]);
