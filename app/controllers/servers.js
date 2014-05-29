@@ -6,10 +6,112 @@ var mongoose = require('mongoose'),
     dataMaster = require('./datamaster'),
     hersdata = require('hersdata'),
     Timeout = require('herstimeout'),
-    RacingLogger = require('./RacingLogger');
+    RacingLogger = require('./RacingLogger'),
+    DeStreamer = hersdata.DeStreamer;
 
 var HandIdLogger = new RacingLogger(HandId),
   HandHistoryLogger = new RacingLogger(HandHistory);
+
+function handlePlaying(roomname,flwr,newplaying){
+  flwr.playing = flwr.playing || 0;
+  if(!flwr.klass){return;}
+  var se = flwr._parent._parent.data.statsBranch,
+    le = flwr._parent._parent.data.localStatsBranch;
+  var gactions = [
+    ['set',['players'],[se.element(['players']).value()+newplaying-flwr.playing,undefined,'dcp']]
+  ];
+  var gcse = se.element(['players_by_gameclass',flwr.klass]);
+  if(!gcse){
+    gactions.push(['set',['players_by_gameclass',flwr.klass],[newplaying-flwr.playing,undefined,'dcp']]);
+  }else{
+    gactions.push(['set',['players_by_gameclass',flwr.klass],[gcse.value()+newplaying-flwr.playing,undefined,'dcp']]);
+  }
+  Timeout.next(se,'commit','room_stats_change',gactions);
+  var lactions = [];
+  var sse = le.elementRaw('players');
+  if(!sse){
+    lactions.push(['set',['players'],[newplaying-flwr.playing,undefined,'dcp']]);
+  }else{
+    lactions.push(['set',['players'],[sse.value()+newplaying-flwr.playing,undefined,'dcp']]);
+  }
+  Timeout.next(le,'commit','room_stats_change',lactions);
+  flwr.playing = newplaying;
+}
+
+function followRoom(roomsfollower,roomname){
+  console.log('following',roomname);
+  var f = roomsfollower.follow([roomname],function(stts){
+  },function(item){
+    //console.log(item);
+    if(item && item[1]){
+      switch(item[1][0]){
+        case 'class':
+          f.klass = item[1][1];
+          break;
+        case 'playing':
+          handlePlaying(item[0][0],f,parseInt(item[1][1]) || 0);
+          break;
+      }
+    }
+  });
+  f.handleOffer('storeHandHistory',function(offerid,data){
+    console.log('storeHandHistory',offerid,data);
+    if(!data){return;}
+    data = JSON.parse(data);
+    if(data[0][1]!==1){
+      console.log('first hand event needs to have id 1',data[0]);
+      return;
+    }
+    var dbdata = data[0][2];
+    data[0][2] = '';
+    dbdata.events = data;
+    data = dbdata;
+    console.log('room',roomname,'needs storeHandHistory',offerid,data);
+    var rn = roomname;
+    HandHistoryLogger.getId(function(id){
+      var _data = data;
+      f.offer(['storeHandHistory'],{offerid:offerid,dbid:id},function(errc){
+        console.log('storeHandHistory said',arguments);
+        if(errc==='ACCEPTED'){
+          HandHistoryLogger.saveId(id,_data);
+        }
+      });
+    });
+  });
+  f.handleOffer('handId',function(offerid,data){
+    if(!data){return;}
+    data = JSON.parse(data);
+    data.server = f._parent._parent.serverName;
+    console.log('saving',data);
+    HandIdLogger.getId(function(id){
+      if(!id){
+        console.trace();
+        console.log('RacingLogger gave me no id',id);
+        process.exit(0);
+      }
+      var _data = data;
+      f.offer(['handId'],{offerid:offerid,handId:id},function(errc){
+        //console.log('offer said',arguments);
+        if(errc==='ACCEPTED'){
+          _data.created = Date.now();
+          HandIdLogger.saveId(id,_data);
+        }else{
+          HandIdLogger.rollback(id);
+        }
+      });
+    });
+  });
+}
+
+function followRooms(user){
+  var f = user.follow(['rooms'],function(stts){
+  },function(item){
+    //console.log(item);
+    if(item && item[1] && item[1][1]===null){
+      followRoom(f,item[1][0]);
+    }
+  });
+};
 
 dataMaster.commit('servers_init',[
   ['set',['cluster_interface'],'dcp'],
@@ -73,6 +175,8 @@ function ReplicateServer(type,servname,servaddress){
   servcontel = dataMaster.element(['cluster',type,servname]);
   servcontel.createRemoteReplica('server','dcp','dcp',{address:servaddress,port:replicationport},true);
   var servel = dataMaster.element(['cluster',type,servname,'server']);
+  servel.statsBranch = statsel;
+  servel.localStatsBranch = statsel.element([type,servname]);
   servel.go(function(status){
     console.log(servname,status);
     servcontel.commit('status_change',[
@@ -83,103 +187,13 @@ function ReplicateServer(type,servname,servaddress){
     ]);
   });
   servel.getReplicatingUser(function(user){
-    var sn = servname, se = statsel, _type = type;
-    servel.communication.masterSays.attach(function(item){
-      var p = item[0];
-      var d = item[1];
-      if(p&&p.length===0){
-        dataMaster.element(['stats',_type,sn]).commit('slave_system_change',[
-          ['set',[d[0]],[d[1],undefined,'dcp']]
-        ]);
-      }
+    user.serverName = servname;
+    user.follow([],function(stts){
+    },function(item){
+      DeStreamer.prototype.destream.call(this.data.localStatsBranch,item);
     });
     if(type==='nodes'){
-      var u = user;
-      user.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
-        if(roomname==='DISCARD_THIS'){
-          //clean up all from server named sn
-          return;
-        }
-        var oldplaying = oldmap ? oldmap.playing : 0;
-        if(!(map && map.class)){return;}
-        var actions = [
-          ['set',['players'],[se.element(['players']).value()+map.playing-oldplaying,undefined,'dcp']]
-        ];
-        var gcse = se.element(['players_by_gameclass',map.class]);
-        if(!gcse){
-          actions.push(['set',['players_by_gameclass',map.class],[map.playing-oldplaying,undefined,'dcp']]);
-        }else{
-          actions.push(['set',['players_by_gameclass',map.class],[gcse.value()+map.playing-oldplaying,undefined,'dcp']]);
-        }
-        var sse = se.element([_type,sn,'players']);
-        if(!sse){
-          actions.push(['set',[_type,sn,'players'],[map.playing-oldplaying,undefined,'dcp']]);
-        }else{
-          actions.push(['set',[_type,sn,'players'],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
-        }
-        Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
-      });
-      user.waitForever(['rooms','*','__requirements','storeHandHistory','offers','*','data'],function(roomname,offerid,data){
-        if(roomname==='DISCARD_THIS'){
-          handHistoryWaitFunc();
-          return;
-        }
-        if(!data){return;}
-        data = JSON.parse(data);
-        if(data[0][1]!==1){
-          console.log('first hand event needs to have id 1',data[0]);
-          return;
-        }
-        var dbdata = data[0][2];
-        data[0][2] = '';
-        dbdata.events = data;
-        data = dbdata;
-        console.log('room',roomname,'needs storeHandHistory',offerid,data);
-        var rn = roomname;
-        HandHistoryLogger.getId(function(id){
-          var _u = u, _data = data;
-          _u.offer(['rooms',rn,'storeHandHistory'],{offerid:offerid,dbid:id},function(errc){
-            console.log('storeHandHistory said',arguments);
-            if(errc==='ACCEPTED'){
-              HandHistoryLogger.saveId(id,_data);
-            }
-          });
-        });
-      });
-      user.waitForever(['rooms','*','__requirements','handId','offers','*','data'], function(roomname,offerid,data){
-        if(roomname==='DISCARD_THIS'){return;}
-        if(!data){return;}
-        data = JSON.parse(data);
-        data.server = sn;
-        var _u = u;
-        HandIdLogger.getId(function(id){
-          if(!id){
-            console.trace();
-            console.log('RacingLogger gave me no id',id);
-            process.exit(0);
-          }
-          var __u = _u, _data = data;
-          _u.offer(['rooms',data.room,'handId'],{offerid:offerid,handId:id},function(errc){
-            //console.log('offer said',arguments);
-            if(errc==='ACCEPTED'){
-              _data.created = Date.now();
-              HandIdLogger.saveId(id,_data);
-            }else{
-              HandIdLogger.rollback(id);
-            }
-          });
-        });
-        /*
-        HandId.create(data,(function(t,oid){
-          return function(err,handid){
-            if(!err){
-              t.offer(['rooms',handid.room,'handId'],{offerid:oid,handId:handid._id});
-            }
-          };
-        })(this,offerid));
-        */
-      });
-      (handHistoryWait(user))();
+      followRooms(user);
     }
   });
 };
