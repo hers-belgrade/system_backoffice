@@ -43,10 +43,13 @@ RacingLogger.prototype.getId = function(cb){
 RacingLogger.prototype.saveId = function(id,data){
   var t = this;
   console.log('saving',data);
-  this.model.findByIdAndUpdate(id,data,{select:[]},function(error){
+  this.model.findByIdAndUpdate(id,data,{select:[]},function(error,d){
     if(error){
       console.log('error in updating mongo',error);
       process.exit(0);
+    }
+    if(d){
+      console.log('saved data',d);
     }
     t.createId();
   });

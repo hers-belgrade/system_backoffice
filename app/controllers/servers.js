@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
     _ = require('underscore'),
     Server = mongoose.model('Server'),
     HandId = mongoose.model('HandId'),
+    RakeAccounting = mongoose.model('RakeAccounting'),
     HandHistory = mongoose.model('HandHistory'),
     dataMaster = require('./datamaster'),
     hersdata = require('hersdata'),
@@ -10,6 +11,7 @@ var mongoose = require('mongoose'),
     DeStreamer = hersdata.DeStreamer;
 
 var HandIdLogger = new RacingLogger(HandId),
+  RakeAccountingLogger = new RacingLogger(RakeAccounting),
   HandHistoryLogger = new RacingLogger(HandHistory);
 
 function handlePlaying(roomname,flwr,newplaying){
@@ -41,6 +43,10 @@ function handlePlaying(roomname,flwr,newplaying){
 function followRoom(roomsfollower,roomname){
   console.log('following',roomname);
   var f = roomsfollower.follow([roomname],function(stts){
+    if(stts==='RETREATING'){
+      console.log('unfollowing',roomname);
+      this.destroy();
+    }
   },function(item){
     //console.log(item);
     if(item && item[1]){
@@ -54,8 +60,24 @@ function followRoom(roomsfollower,roomname){
       }
     }
   });
+  f.handleOffer('storeRakeAccounting',function(offerid,data){
+    //console.log('storeRakeAccounting',offerid,data);
+    if(!data){return;}
+    data = JSON.parse(data);
+    data.handId = offerid;
+    console.log('room',roomname,'needs storeRakeAccounting',offerid,data);
+    RakeAccountingLogger.getId(function(id){
+      var _data = data;
+      f.offer(['storeRakeAccounting'],{offerid:offerid,dbid:id},function(errc){
+        //console.log('storeHandHistory said',arguments);
+        if(errc==='ACCEPTED'){
+          RakeAccountingLogger.saveId(id,_data);
+        }
+      });
+    });
+  });
   f.handleOffer('storeHandHistory',function(offerid,data){
-    console.log('storeHandHistory',offerid,data);
+    //console.log('storeHandHistory',offerid,data);
     if(!data){return;}
     data = JSON.parse(data);
     if(data[0][1]!==1){
@@ -66,12 +88,11 @@ function followRoom(roomsfollower,roomname){
     data[0][2] = '';
     dbdata.events = data;
     data = dbdata;
-    console.log('room',roomname,'needs storeHandHistory',offerid,data);
-    var rn = roomname;
+    //console.log('room',roomname,'needs storeHandHistory',offerid,data);
     HandHistoryLogger.getId(function(id){
       var _data = data;
       f.offer(['storeHandHistory'],{offerid:offerid,dbid:id},function(errc){
-        console.log('storeHandHistory said',arguments);
+        //console.log('storeHandHistory said',arguments);
         if(errc==='ACCEPTED'){
           HandHistoryLogger.saveId(id,_data);
         }
@@ -82,7 +103,7 @@ function followRoom(roomsfollower,roomname){
     if(!data){return;}
     data = JSON.parse(data);
     data.server = f._parent._parent.serverName;
-    console.log('saving',data);
+    //console.log('saving',data);
     HandIdLogger.getId(function(id){
       if(!id){
         console.trace();
@@ -174,17 +195,34 @@ function ReplicateServer(type,servname,servaddress){
   dataMaster.element(['cluster_interface','servers']).commit('new_server',clusterinterfaceactions);
   servcontel = dataMaster.element(['cluster',type,servname]);
   servcontel.createRemoteReplica('server','dcp','dcp',{address:servaddress,port:replicationport},true);
+  servcontel.commit('init_server',[['set',['status'],['initialized',undefined,'dcp']]]);
   var servel = dataMaster.element(['cluster',type,servname,'server']);
   servel.statsBranch = statsel;
   servel.localStatsBranch = statsel.element([type,servname]);
   servel.go(function(status){
     console.log(servname,status);
-    servcontel.commit('status_change',[
-      ['set',['status'],[status,undefined,'dcp']]
-    ]);
-    statsel.commit('status_change',[
-      ['set',[type,servname,'status'],[status,undefined,'dcp']]
-    ]);
+    var scstatus = servcontel.elementRaw('status').value(), newscstatus;
+    switch(scstatus){
+      case 'initialized':
+      case 'reconnecting':
+        if(status==='connected'){
+          newscstatus=status;
+        }
+        break;
+      case 'connected':
+        if(status!=='connected'){
+          newscstatus='reconnecting';
+        }
+        break;
+    }
+    if(newscstatus){
+      servcontel.commit('status_change',[
+        ['set',['status'],[newscstatus,undefined,'dcp']]
+      ]);
+      statsel.commit('status_change',[
+        ['set',[type,servname,'status'],[newscstatus,undefined,'dcp']]
+      ]);
+    }
   });
   servel.getReplicatingUser(function(user){
     user.serverName = servname;
@@ -199,11 +237,10 @@ function ReplicateServer(type,servname,servaddress){
 };
 
 var portAvailability = function(el,name,searchobj){
-  console.log('checking',el.dataDebug());
   var servaddress = searchobj.servaddress;
   var st = el.element(['status']);
   if(st){
-    return st.value()==='disconnected';
+    return st.value()!=='connected';
   }
   console.log(el.dataDebug(),'has no status',portMap[servaddress]);
   portMap[servaddress]++;
