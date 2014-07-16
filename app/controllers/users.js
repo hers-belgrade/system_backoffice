@@ -108,7 +108,7 @@ exports.dumpData = function(req, res, next) {
   req.query.name = req.user.username;
   req.query.roles = req.user.roles;
   req.query.address = req.connection.remoteAddress;
-  dataMaster.functionalities.sessionuserfunctionality.f.dumpData(req.query,function(errc,errp,errm){
+  dataMaster.functionalities.sessionuserfunctionality.dumpData(req.query,function(errc,errp,errm){
     if(errc==='OK'){
       res.jsonp(errp[0]);
     }else{
@@ -126,7 +126,7 @@ exports.execute = function(req, res, next) {
   req.query.roles = req.user.roles;
   req.query.address = req.connection.remoteAddress;
   console.log('execute?',req.query);
-  dataMaster.functionalities.sessionuserfunctionality.f.produceAndExecute(req.query,function(errc,errp,errm){
+  dataMaster.functionalities.sessionuserfunctionality.produceAndExecute(req.query,function(errc,errp,errm){
     if(errc==='OK'){
       res.jsonp(errp[0]);
     }else{
@@ -140,10 +140,10 @@ exports.setup = function(app){
   console.log('socket.io listening');
   io.set('authorization', function(handshakeData, callback){
     var username = handshakeData.query.username;
-    var sess = handshakeData.query[dataMaster.functionalities.sessionuserfunctionality.f.fingerprint];
+    var sess = handshakeData.query[dataMaster.functionalities.sessionuserfunctionality.fingerprint];
     console.log('sock.io incoming',username,sess);
     if(username && sess){
-      var u = dataMaster.functionalities.sessionuserfunctionality.f._findUser(username);
+      var u = dataMaster.functionalities.sessionuserfunctionality._findUser(username);
       if(!u){
         callback(null,false);
       }else{
@@ -158,12 +158,12 @@ exports.setup = function(app){
   io.sockets.on('connection',function(sock){
     var username = sock.handshake.username,
       session = sock.handshake.session,
-      u = dataMaster.functionalities.sessionuserfunctionality.f._findUser(username);
+      u = dataMaster.functionalities.sessionuserfunctionality._findUser(username);
     //console.log(username,'sockio connected',session,'session',u.sessions);
     u.makeSession(session);
     u.sessions[session].setSocketIO(sock);
     sock.on('!',function(data){
-      dataMaster.functionalities.sessionuserfunctionality.f.executeOnUser({user:u,session:session,commands:data},function(errc,errp,errm){
+      dataMaster.functionalities.sessionuserfunctionality.executeOnUser({user:u,session:session,commands:data},function(errc,errp,errm){
         sock.emit('=',errc==='OK' ? errp[0] : {errorcode:errc,errorparams:errp,errormessage:errm});
       });
     });
