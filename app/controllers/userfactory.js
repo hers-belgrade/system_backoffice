@@ -41,4 +41,6 @@ function userFactory(data,username,realmname,roles,cb){
   cb(new Admin(data,username,realmname,roles));
 }
 
-module.exports = userFactory;
+module.exports = {
+  _produceUser:userFactory
+};

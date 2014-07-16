@@ -16,6 +16,21 @@ var HandIdLogger = new RacingLogger(HandId),
   RakeAccountingLogger = new RacingLogger(RakeAccounting),
   HandHistoryLogger = new RacingLogger(HandHistory);
 
+function ServerDescription(name,address,port,type,realmname){
+  this.name = name;
+  this.address = address;
+  this.port = parseInt(port);
+  this.type = type;
+  this.realm = realmname;
+  this.taken = false;
+};
+ServerDescription.prototype.equals = function(other){
+  return this.address === other.address
+    &&this.port === other.port
+    &&this.type === other.type
+    &&this.realm === other.realm;
+};
+
 var __maps = {};
 var __servernames = {};
 
@@ -87,12 +102,7 @@ function mapForTypeRealm(type,realmname){
 
 function attachServer(address,port,type,realmname,cb,index,name){
   var map = mapForTypeRealm(type,realmname);
-  var servdesc = {
-    address:address,
-    port:port,
-    type:type,
-    realm:realmname
-  };
+  var servdesc = new ServerDescription(name,address,port,type,realmname);
   switch(typeof index){
   case 'number': //initial allocation from db, before requests start coming in
     console.log('allocating',index,name);
@@ -108,7 +118,18 @@ function attachServer(address,port,type,realmname,cb,index,name){
     }
     if(!servdesc.taken){ //ok, grace period expired
       servdesc.taken = true;
-      cb(index);
+      servdesc.address = address;
+      servdesc.port = port;
+      servdesc.realm = realmname;
+      servdesc.type = type;
+      ServerLease.findOneAndUpdate({name:index},servdesc,{upsert:true},function(err,data){
+        if(!err){
+          cb(data.name);
+        }else{
+          console.log('mongo error',err);
+          cb();
+        }
+      });
     }else{
       console.log('back to square one',address,port,type,realmname,cb);
       Timeout.next(attachServer,address,port,type,realmname,cb); //back to square one
@@ -117,23 +138,24 @@ function attachServer(address,port,type,realmname,cb,index,name){
   case 'undefined': //real request from physical server
     var name = unusedServerName(type,realmname);
     if(name){
-      console.log('server',name,'is in __servernames',__servernames);
-      Timeout.set(attachServer,30000,address,port,type,realmname,cb,name); //30 secs of grace period for name to be taken by an already attached server 
-      return;
+      //console.log('server',name,'is in __servernames',__servernames);
+      var sd = __servernames[name];
+      console.log(name,'=>',sd,'is unused');
+      if(!sd.equals(servdesc)){
+        console.log(sd,'<>',servdesc);
+        Timeout.set(attachServer,30000,address,port,type,realmname,cb,name); //30 secs of grace period for name to be taken by an already attached server 
+        return;
+      }
+    }else{
+      name = type+map.add(address+':'+port);
+      if(realmname){
+        name = realmname+name;
+      }
     }
-    name = type+map.add(address+':'+port);
-    if(realmname){
-      name = realmname+name;
-    }
+    servdesc.name = name;
     servdesc.taken = true;
     __servernames[name] = servdesc;
-    ServerLease.findOneAndUpdate({name:name},{
-      name:name,
-      address:address,
-      port:port,
-      type:type,
-      realm:realmname
-    },{upsert:true},function(err,data){
+    ServerLease.findOneAndUpdate({name:name},servdesc,{upsert:true},function(err,data){
       if(!err){
         cb(data.name);
       }else{
@@ -209,7 +231,7 @@ function followRoom(roomsfollower,roomname){
   f.handleOffer('gameEvent',function(offerid,data){
     if(!data){return;}
     data = JSON.parse(data);
-    console.log('gameEvent',data);
+    console.log('id',offerid,'gameEvent',data);
     f.offer(['gameEvent'],{offerid:offerid,ok:true});
   });
   f.handleOffer('storeHandHistory',function(offerid,data){
@@ -233,8 +255,8 @@ function followRoom(roomsfollower,roomname){
     });
   });
   f.handleOffer('handId',function(offerid,data){
-    console.log('handId needed',offerid,data);
     if(!data){return;}
+    //console.log('handId needed',offerid,data);
     data = JSON.parse(data);
     data.server = f._parent._parent.serverName;
     HandIdLogger.getId(function(id){
