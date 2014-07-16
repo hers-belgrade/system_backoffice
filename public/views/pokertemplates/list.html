@@ -1,32 +1,60 @@
-<section data-ng-controller="PokerTemplatesController" data-ng-init="list()">
-  <button class='btn' data-ng-click="createNew()">Create New</button>
-  <section data-ng-include="'/views/pokertemplates/create.html'"></section>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Type</th>
-      <th>Capacity</th>
-      <th>Limit</th>
-      <th>Ante</th>
-      <th>Big Blind</th>
-      <th>Speed</th>
-      <th>Flavor</th>
-      <th>Timeout</th>
-      <th>Bots</th>
-      <th>Instances</th>
-    </tr>
-    <tr data-ng-repeat="pt in templates" data-ng-click="setTemplate(pt)">
-      <td>{{pt.name}}</td>
-      <td>{{pt.type}}</td>
-      <td>{{pt.capacity}}</td>
-      <td>{{pt.bettingpolicy}} {{pt.fixedlimitvalue}}</td>
-      <td>{{pt.ante}}</td>
-      <td>{{pt.bigblind}}</td>
-      <td>{{pt.speed}}</td>
-      <td>{{pt.flavor}}</td>
-      <td>{{pt.timeoutValue}}</td>
-      <td>{{pt.bots}}</td>
-      <td>{{pt.instances}}</td>
-    </tr>
-  </table>
-</section>
+<div id="breadcrumbs" class="breadcrumbs ng-scope">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home home-icon"></i>
+			<a href="/">Home</a>
+			<span class="divider">
+				<i class="icon-angle-right arrow-icon"></i>
+			</span>
+		</li>
+			<li class="active">Poker templates</li>
+	</ul>
+		<div id="nav-search" class="nav-search"></div>
+</div>
+<div class="page-content">
+	<div class="page-header position-relative">
+		<h1>
+			Poker templates
+			<small>
+				<i class="icon-double-angle-right"></i>
+				Create new or edit existing template
+			</small>
+		</h1>
+	</div>	
+	<section data-ng-controller="PokerTemplatesController" data-ng-init="list()">
+	  <button class='btn' data-ng-click="createNew()">Create New</button>
+	  <section data-ng-include="'/views/pokertemplates/create.html'"></section>
+	  <table class="table table-striped table-bordered table-hover">
+			<thead>
+		    <tr>
+		      <th>Name</th>
+		      <th>Type</th>
+		      <th>Capacity</th>
+		      <th>Limit</th>
+		      <th>Ante</th>
+		      <th>Big Blind</th>
+		      <th>Speed</th>
+		      <th>Flavor</th>
+		      <th>Timeout</th>
+		      <th>Bots</th>
+		      <th>Instances</th>
+		    </tr>
+	    </thead>
+			<tbody>
+		    <tr data-ng-repeat="pt in templates" data-ng-click="setTemplate(pt)">
+		      <td>{{pt.name}}</td>
+		      <td>{{pt.type}}</td>
+		      <td>{{pt.capacity}}</td>
+		      <td>{{pt.bettingpolicy}} {{pt.fixedlimitvalue}}</td>
+		      <td>{{pt.ante}}</td>
+		      <td>{{pt.bigblind}}</td>
+		      <td>{{pt.speed}}</td>
+		      <td>{{pt.flavor}}</td>
+		      <td>{{pt.timeoutValue}}</td>
+		      <td>{{pt.bots}}</td>
+		      <td>{{pt.instances}}</td>
+		    </tr>
+	    </tbody>
+	  </table>
+	</section>
+</div>
