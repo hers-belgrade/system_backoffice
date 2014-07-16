@@ -1,3 +1,18 @@
+body:before {
+	position:relative;
+	}
+body {
+	background-color:#282828;
+	}
+h1 {
+	color:white;
+	}
+.page-header {
+	border-bottom:1px solid #5a5a5a;
+	}
+.hr.dotted, .hr-dotted {
+	border-top: 1px dotted #5a5a5a;
+	}				
 ul.articles li:not(:last-child) {
     border-bottom:1px solid #ccc
 }

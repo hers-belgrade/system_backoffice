@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
     _ = require('underscore'),
     SlotTemplate = mongoose.model('SlotTemplate'),
-    dataMaster = require('./datamaster');
+    dataMaster = require('./datamaster'),
+    roomMap = {};
 
 function slotTemplateToDCPInsert(pt){
   var to = pt.toObject();
@@ -22,6 +23,12 @@ SlotTemplate.find({},function(err,pts){
 });
 
 function templateSearch(el,name,searchobj){
+  var te = roomMap[searchobj.templateName];
+  if(!te){
+    te = {};
+    roomMap[searchobj.templateName] = te;
+  }
+  return te[name];
   var ret;
   el.traverseElements(function(_name,_el){
     if(_el.element(['server','rooms',name])){
@@ -33,10 +40,11 @@ function templateSearch(el,name,searchobj){
 };
 
 function newTemplateInstance(el,name,searchobj,username,realmname){
+  return roomMap[searchobj.templateName][name] = {server:username,brand_new:true};
   el.commit('new_slottemplate_instance',[
 		['set',[username]],
-		['set',[username, 'server']],
-		['set',[username, 'server', 'rooms']],
+		['set',[username,'server']],
+		['set',[username,'server', 'rooms']],
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
@@ -50,7 +58,15 @@ function deleteTemplateInstance(el,name,searchobj,username,realmname){
 };
 
 function availabilityFunc(tplel,name,searchobj,username,realmname){
-  console.log('slotTemplate availability',username,realmname);
+  var tn = searchobj.templateName;
+  var el = roomMap[tn] && roomMap[tn][name];
+  var ret = (el.server===username && el.brand_new);
+  if(ret){
+    delete el.brand_new;
+    return dataMaster.element(['cluster','nodes',username,'status']).value()==='connected';
+  }
+  return ret;
+  //console.log('slotTemplate availability',username,realmname);
   //console.log('availability of',tplel.element([username,'server','rooms']).dataDebug(),'for',name,'?');
   var ret = !!tplel.element([username,'server','rooms',name,'brand_new']);
   if(ret){
@@ -75,7 +91,7 @@ exports.save = function(req, res) {
       return;
     }
     dataMaster.commit('new_slot_template',[slotTemplateToDCPInsert(pt)]);
-    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
     res.jsonp(pt);
   });
 };
@@ -83,7 +99,7 @@ exports.save = function(req, res) {
 SlotTemplate.find({},function(err,pts){
   for(var i in pts){
     var pt = pts[i];
-    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
   }
 });
 

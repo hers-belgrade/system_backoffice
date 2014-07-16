@@ -23,7 +23,12 @@ function triStateValue(svgelem,config){
         break;
       }
     }
+
     if(indicator && indicator.usedObj){
+      if (!indicator.inited) {
+        fabric.DynamicUse(indicator);
+        indicator.indited = true;
+      }
       if(val===oldval){indicator.hide();return}
       var direction = (val>oldval) ? 'up' : 'down';
       var color = (config.preferences && config.preferences[direction]) ? config.preferences[direction] : 'green';
@@ -48,6 +53,7 @@ function triStateValueWNeedle(svgelem,config){
   config.cb = function(val,oldval){
     needle.set({localAngle:(-angleOffs+(180+2*angleOffs)*val/100)});
   };
+  
   return triStateValue(svgelem,config);
 }
 function serverFollower(servname,follower,canvas){
@@ -59,6 +65,7 @@ function serverFollower(servname,follower,canvas){
     var s = loaded.server;
     canvas.add(s);
     var server = s.server;
+    server.getSvgEl().activate();
     server.server_name.set({text:servname});
     var stats = server.statistics;
     server.server_status.forEachObject(function(el){

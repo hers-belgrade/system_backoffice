@@ -80,6 +80,9 @@ script(type='text/javascript', src='/lib/ace/js/flot/jquery.flot.min.js')
 script(type='text/javascript', src='/lib/ace/js/flot/jquery.flot.pie.min.js')
 script(type='text/javascript', src='/lib/ace/js/flot/jquery.flot.resize.min.js')
 
+script(type='text/javascript').
+  function show_box(id) { $('.widget-box.visible').removeClass('visible'); $('#'+id).addClass('visible');}
+
 script(type='text/javascript', src='/lib/ace/js/ace-elements.min.js')
 script(type='text/javascript', src='/lib/ace/js/ace.min.js')
 script(type='text/javascript', src='/lib/fabric.js/dist/all.js')

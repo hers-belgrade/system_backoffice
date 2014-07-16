@@ -2,8 +2,8 @@ var hersdata = require('hersdata'),
     dataMaster = new (hersdata.DataMaster)();
 
 dataMaster.fingerprint = (require('crypto').randomBytes)(12).toString('hex');
-dataMaster.realmName = '_central';
-dataMaster.setSessionUserFunctionality({realmName:'_central'});
+dataMaster.createSuperUser('_central','_central');
+dataMaster.setSessionUserFunctionality({realmName:'_central',userFactory:require('./userfactory')});
 
 module.exports = dataMaster;
 

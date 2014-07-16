@@ -15,6 +15,7 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
       });
     };
 
+    /*
     follower.follow('cluster').follow('realms').listenToCollections($scope.rtrealms,{activator:function(name){
       console.log('new server',name);
       this[name] = {
@@ -25,6 +26,7 @@ angular.module('mean.servers').controller('ServersController', ['$scope', '$rout
     },deactivator:function(name){
       delete this[name];
     }});
+    */
     var rf = follower.follow('stats').follow('realms');
     rf.listenToCollections($scope.realmstats,{activator:function(name){
       console.log('new realm',name);

@@ -42,13 +42,13 @@ function templateSearch(el,name,searchobj){
 
 function newTemplateInstance(el,name,searchobj,username,realmname){
   return roomMap[searchobj.templateName][name] = {server:username,brand_new:true};
-  //console.log('new pt',name,username,el.dataDebug());
+  console.log('new pt',name,username,el.dataDebug());
   if(!el.element([username,'server','rooms'])){return;}
   el.commit('new_pokertemplate_instance',[
     ['set',[username,'server','rooms',name]],
     ['set',[username,'server','rooms',name,'brand_new'],[true]]
   ]);
-  //console.log('new pokerroom template',username,el.element([username]).dataDebug());
+  console.log('new pokerroom template',username,el.element([username]).dataDebug());
 };
 
 function deleteTemplateInstance(el,name,searchobj,username,realmname){
@@ -92,7 +92,7 @@ exports.save = function(req, res) {
       return;
     }
     dataMaster.commit('new_poker_template',[pokerTemplateToDCPInsert(pt)]);
-    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
     res.jsonp(pt);
   });
 };
@@ -100,14 +100,8 @@ exports.save = function(req, res) {
 PokerTemplate.find({},function(err,pts){
   for(var i in pts){
     var pt = pts[i];
-    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
+    dataMaster.element(['cluster_interface']).functionalities.dcpregistry.registerTemplate({templateName:pt.name,registryelementpath:['cluster','nodes'],availabilityfunc:availabilityFunc,searchfunc:templateSearch,newfunc:newTemplateInstance,deletefunc:deleteTemplateInstance});
   }
-});
-
-dataMaster.element(['cluster','nodes']).waitFor(['*'],function(servname,servel){
-  servel.waitFor(['server','rooms','*',['class=Poker','templatename']],function(roomname,map){
-    console.log(servname,roomname,map);
-  });
 });
 
 exports.all = function(req,res) {

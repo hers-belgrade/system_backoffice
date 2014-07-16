@@ -7,7 +7,6 @@ var SlotTemplateSchema = new Schema({
     unique: true
   },
   class: String,
-  eng_name: String,
   columns: Number,
   rows: Number,
   double_up_prob: Number,
