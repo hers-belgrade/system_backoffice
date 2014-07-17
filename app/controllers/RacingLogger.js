@@ -1,3 +1,8 @@
+var hersdata = require('hersdata'),
+  executable = hersdata.executable,
+  isExecutable = executable.isA,
+  execCall = executable.call;
+
 function RacingLogger(model){
   this.model = model;
   this.waiters = [];
@@ -19,8 +24,8 @@ RacingLogger.prototype.createId = function(){
 };
 RacingLogger.prototype.useId = function(id){
   var cb = this.waiters.shift();
-  if(typeof cb === 'function'){
-    cb(id);
+  if(cb){
+    execCall(cb,id);
   }else{
     if(!this._id){
       this._id = id;
@@ -30,17 +35,20 @@ RacingLogger.prototype.useId = function(id){
   }
 };
 RacingLogger.prototype.getId = function(cb){
+  if(!isExecutable(cb)){
+    return;
+  }
   if(this._id){
     var id = this._id;
     //console.log('will give out',id,'because',this._id);
     delete this._id;
-    cb(id);
+    execCall(cb,id);
   }else{
     this.waiters.push(cb);
     this.createId();
   }
 };
-RacingLogger.prototype.saveId = function(id,data){
+RacingLogger.prototype.saveId = function(id,data,cb){
   var t = this;
   //console.log('saving',data);
   this.model.findByIdAndUpdate(id,data,{select:[]},function(error,d){
@@ -50,6 +58,9 @@ RacingLogger.prototype.saveId = function(id,data){
     }
     if(d){
       //console.log('saved data',d);
+    }
+    if(isExecutable(cb)){
+      execCall(cb,d);
     }
     t.createId();
   });
