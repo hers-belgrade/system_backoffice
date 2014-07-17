@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
     hersdata = require('hersdata'),
     ArrayMap = hersdata.ArrayMap,
     Timeout = require('herstimeout'),
-    RacingLogger = require('./RacingLogger'),
+    RacingLogger = require('hersdb').RacingLogger,
     DeStreamer = hersdata.DeStreamer;
 
 var HandIdLogger = new RacingLogger(HandId),
@@ -193,6 +193,34 @@ function handlePlaying(roomname,flwr,newplaying){
   flwr.playing = newplaying;
 }
 
+function onRakeAccountingWritten(flavor,roomname,data){
+  var pf = dataMaster.element(['cluster_interface','servers']).functionalities.profitfunctionality;
+  if(!pf){return;}
+  var timestamp = data.created.getTime(),handId=data.handId;
+  for(var i in data.breakdown){
+    var bd = data.breakdown[i];
+    if(typeof bd.rake === 'undefined'){continue;}
+    pf._account(timestamp,handId,bd.rake,'Poker','CashTable',flavor,roomname,bd.name,bd.realm);
+  }
+};
+
+function onRakeAccountingOffererResponded(flavor,roomname,dbid,data,errc){
+  if(errc==='ACCEPTED'){
+    RakeAccountingLogger.saveId(dbid,data,[null,onRakeAccountingWritten,[flavor,roomname]]);
+  }
+};
+
+function onRakeAccountingWriteReady(roomname,f,offerid,data,dbid){
+  f.offer(['storeRakeAccounting'],{offerid:offerid,dbid:dbid},[null,onRakeAccountingOffererResponded,[f.flavor,roomname,dbid,data]]);
+};
+
+function onRakeAccountingNeeded(roomname,f,offerid,data){
+  if(!data){return;}
+  data = JSON.parse(data);
+  data.handId = offerid;
+  RakeAccountingLogger.getId([null,onRakeAccountingWriteReady,[roomname,f,offerid,data]]);
+};
+
 function followRoom(roomsfollower,roomname){
   console.log('following',roomname);
   var f = roomsfollower.follow([roomname],function(stts){
@@ -212,22 +240,13 @@ function followRoom(roomsfollower,roomname){
         case 'playing':
           Timeout.next(handlePlaying,item[0][0],this,parseInt(item[1][1]) || 0);
           break;
+        case 'flavor':
+          this.flavor = item[1][1];
+          break;
       }
     }
   });
-  f.handleOffer('storeRakeAccounting',function(offerid,data){
-    if(!data){return;}
-    data = JSON.parse(data);
-    data.handId = offerid;
-    RakeAccountingLogger.getId(function(id){
-      var _data = data;
-      f.offer(['storeRakeAccounting'],{offerid:offerid,dbid:id},function(errc){
-        if(errc==='ACCEPTED'){
-          RakeAccountingLogger.saveId(id,_data);
-        }
-      });
-    });
-  });
+  f.handleOffer('storeRakeAccounting',[null,onRakeAccountingNeeded,[roomname,f]]);
   f.handleOffer('gameEvent',function(offerid,data){
     if(!data){return;}
     data = JSON.parse(data);
@@ -300,8 +319,9 @@ dataMaster.commit('servers_init',[
 ]);
 
 dataMaster.element(['cluster_interface']).attach(__dirname+'/dcpregistry',{targetdata:dataMaster});
+dataMaster.element(['cluster_interface','servers']).attach(__dirname+'/profitfunctionality',{});
 
-function ReplicateServer(servname){
+function replicateServer(servname){
   var clusteractions = [], 
     clusterinterfaceactions = [], 
     servdesc = __servernames[servname];
@@ -425,12 +445,12 @@ exports.all = function(req,res) {
 
 dataMaster.element(['cluster_interface']).newReplica.attach(function(servreplica){
   console.log('incoming (node) replica',servreplica.replicaToken);
-  ReplicateServer(servreplica.replicaToken.name);
+  replicateServer(servreplica.replicaToken.name);
 });
 
 dataMaster.element(['cluster_interface','servers']).newReplica.attach(function(servreplica){
   console.log('incoming (realm) replica',servreplica.replicaToken);
-  ReplicateServer(servreplica.replicaToken.name);
+  replicateServer(servreplica.replicaToken.name);
 });
 
 exports.accept = function(req,res) {
