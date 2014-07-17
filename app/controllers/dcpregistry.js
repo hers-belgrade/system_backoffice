@@ -1,10 +1,11 @@
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var hersdata = require('hersdata'),
+  ArrayMap = hersdata.ArrayMap;
 
 var errors = {
   'OK' : {message:'Counter for [templateName] is [counter]',params:['counter','templateName']},
   'TEMPLATE_NOT_REGISTERED' : {message:'Template name [templateName] is not registered',params:['templateName']},
   'TEMPLATE_INSTANCE_NOT_REVOKED' : {message:'Instance [instanceName] could not be revoked for template name [templateName]', params:['templateName','instanceName']},
+  'INVALID_INSTANCE_NAME' : {message:'Instance name [instanceName] is not a name from template [templateName]',params:['instanceName','templateName']},
   'UNDEFINED' : {message:'Template name [templateName] could not be resolved at the time',params:['templateName']}
 };
 
@@ -14,65 +15,11 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
   if(!paramobj.templateName){
     return cb('NO_TEMPLATE_NAME');
   }
-  this.self.templates[paramobj.templateName] = {
-    find:(function(_t,po){
-      var _this = _t;
-      return function(searchobj,username,realmname){
-        var templateName = searchobj.templateName,
-          registryelementpath = po.registryelementpath || [],
-          availabilityfunc = po.availabilityfunc || function(){return true;},
-          searchfunc = po.searchfunc || function(el,name){return el.element([name])},
-          newfunc = po.newfunc || function(el,name){
-            el.commit('new_resource',[
-              ['set',[name]]//,'dcp']
-            ]);
-          };
-        var datael = _this.self.targetdata.element(registryelementpath);
-        if(!datael){
-          console.log('no element on',registryelementpath);
-          return;
-        }
-        var ret=1, resourceel, elname;
-        while(true){
-          elname = templateName+ret;
-          //console.log('Trying',elname);
-          resourceel = searchfunc(datael,elname,searchobj,username,realmname);
-          //console.log('got',resourceel);
-          if(!resourceel){
-            newfunc(datael,elname,searchobj,username,realmname);
-            resourceel = searchfunc(datael,elname,searchobj,username,realmname);
-            if(!resourceel){return;}
-          }
-          if(availabilityfunc(resourceel,elname,searchobj,username,realmname)){
-            return elname;
-          }
-          ret++;
-        }
-      };
-    })(this,paramobj),
-    revoke:(function(_t,po){
-      var _this = _t;
-      return function(searchobj,username,realmname){
-        var templateName = searchobj.templateName,
-          instanceName = searchobj.instanceName,
-          registryelementpath = po.registryelementpath || [],
-          searchfunc = po.searchfunc || function(el,name){return el.element([name])},
-          deletefunc = po.deletefunc || function(el,name){el.remove(name);};
-        var datael = _this.self.targetdata.element(registryelementpath);
-        if(!datael){
-          console.log('no element on',registryelementpath);
-          return;
-        }
-        resourceel = searchfunc(datael,instanceName,searchobj,username,realmname);
-        if(resourceel){
-          deletefunc(datael,instanceName,searchobj,username,realmname);
-          return true;
-        }else{
-          console.log('No template for',instanceName,'on',datael.dataDebug());
-        }
-      };
-    })(this,paramobj)
-  };
+  var t = this.self.templates[paramobj.templateName];
+  if(!t){
+    t = new ArrayMap();
+    this.self.templates[paramobj.templateName] = t;
+  }
 };
 registerTemplate.params = 'originalobj';
 
@@ -81,10 +28,11 @@ function newNameForTemplate(paramobj,statuscb,user){
   if(!templateName){
     return statuscb('NO_TEMPLATE_NAME');
   }
-  if(!this.self.templates[templateName]){
+  var t = this.self.templates[templateName];
+  if(!t){
     return statuscb('TEMPLATE_NOT_REGISTERED',templateName);
   }
-  var ret = this.self.templates[templateName].find(paramobj,user.username,user.realmname);
+  var ret = templateName+(parseInt(t.add(true))+1);
   if(ret){
     return statuscb('OK',ret,templateName);
   }else{
@@ -98,14 +46,22 @@ function revokeNameForTemplate(paramobj,statuscb,user){
   if(!templateName){
     return statuscb('NO_TEMPLATE_NAME');
   }
-  if(!this.self.templates[templateName]){
+  var t = this.self.templates[templateName];
+  if(!t){
     return statuscb('TEMPLATE_NOT_REGISTERED',templateName);
   }
-  var rr = this.self.templates[templateName].revoke(paramobj,user.username,user.realmname);
-  if(rr){
-    return statuscb('OK',undefined,templateName);
+  var name = paramobj.instanceName;
+  if(name.indexOf(templateName)!==0){
+    return statuscb('INVALID_INSTANCE_NAME',name,templateName);
   }
-  return statuscb('TEMPLATE_INSTANCE_NOT_REVOKED',templateName,paramobj.instanceName);
+  var index = parseInt(name.substr(templateName.length));
+  if(isNaN(index)){
+    return statuscb('INVALID_INSTANCE_NAME',name,templateName);
+  }
+  index--;
+  console.log(templateName,'removing',index,'because',name);
+  t.remove(index);
+  return statuscb('OK',name,templateName);
 };
 revokeNameForTemplate.params='originalobj';
 

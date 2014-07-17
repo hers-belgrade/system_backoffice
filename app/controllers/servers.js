@@ -1,9 +1,311 @@
 var mongoose = require('mongoose'),
     _ = require('underscore'),
     Server = mongoose.model('Server'),
+    ServerLease = mongoose.model('ServerLease'),
+    HandId = mongoose.model('HandId'),
+    RakeAccounting = mongoose.model('RakeAccounting'),
+    HandHistory = mongoose.model('HandHistory'),
     dataMaster = require('./datamaster'),
     hersdata = require('hersdata'),
-    Timeout = require('herstimeout');
+    ArrayMap = hersdata.ArrayMap,
+    Timeout = require('herstimeout'),
+    RacingLogger = require('hersdb').RacingLogger,
+    DeStreamer = hersdata.DeStreamer;
+
+var HandIdLogger = new RacingLogger(HandId),
+  RakeAccountingLogger = new RacingLogger(RakeAccounting),
+  HandHistoryLogger = new RacingLogger(HandHistory);
+
+function ServerDescription(name,address,port,type,realmname){
+  this.name = name;
+  this.address = address;
+  this.port = parseInt(port);
+  this.type = type;
+  this.realm = realmname;
+  this.taken = false;
+};
+ServerDescription.prototype.equals = function(other){
+  return this.address === other.address
+    &&this.port === other.port
+    &&this.type === other.type
+    &&this.realm === other.realm;
+};
+
+var __maps = {};
+var __servernames = {};
+
+var nodeReplicationPort = 16020, realmReplicationPort = 16021;
+dataMaster.nodeReplicationPort = nodeReplicationPort;
+dataMaster.realmReplicationPort = realmReplicationPort;
+
+function unusedServerName(type,realm){
+  for(var i in __servernames){
+    console.log('testing server',i);
+    var servdesc = __servernames[i];
+    if(servdesc.type===type && !servdesc.taken){
+      if(realm&&servdesc.realm!==realm){
+        continue;
+      }
+      return i;
+    }
+  }
+}
+
+function indexForNameTypeRealm(name,type,realm){
+  var ret = name;
+  if(!type){
+    return;
+  }
+  if(realm){
+    ret = ret.substring(realm.length);
+  }
+  ret = ret.substring(type.length);
+  return parseInt(ret);
+}
+
+ServerLease.find({},function(err,data){
+  console.log('ServerLeases',data);
+  for(var i in data){
+    var servdesc = data[i];
+    var index = indexForNameTypeRealm(servdesc.name,servdesc.type,servdesc.realm);
+    if(isNaN(index)){
+      continue;
+    }
+    attachServer(servdesc.address,servdesc.port,servdesc.type,servdesc.realm,null,index,servdesc.name);
+  }
+  dataMaster.element(['cluster_interface']).openReplication(nodeReplicationPort);
+  dataMaster.element(['cluster_interface','servers']).openReplication(realmReplicationPort);
+});
+
+function mapForTypeRealm(type,realmname){
+  var map = __maps[type];
+  if(!map){
+    if(realmname){
+      map = {};
+      __maps[type] = map;
+    }else{
+      map = new ArrayMap();
+      __maps[type] = map;
+      return map;
+    }
+  }
+  if(realmname){
+    var realmmap = map[realmname];
+    if(!realmmap){
+      realmmap = new ArrayMap();
+      map[realmname] = realmmap;
+    }
+    return realmmap;
+  }
+  return map;
+}
+
+function attachServer(address,port,type,realmname,cb,index,name){
+  var map = mapForTypeRealm(type,realmname);
+  var servdesc = new ServerDescription(name,address,port,type,realmname);
+  switch(typeof index){
+  case 'number': //initial allocation from db, before requests start coming in
+    console.log('allocating',index,name);
+    map.allocate(index,name);
+    __servernames[name] = servdesc;
+    console.log(__servernames);
+    break;
+  case 'string': //retry taking an unused name slot
+    var servdesc = __servernames[index];
+    if(!__servernames[index]){
+      console.log('no server named',index,'in __servernames');
+      process.exit(0);
+    }
+    if(!servdesc.taken){ //ok, grace period expired
+      servdesc.taken = true;
+      servdesc.address = address;
+      servdesc.port = port;
+      servdesc.realm = realmname;
+      servdesc.type = type;
+      ServerLease.findOneAndUpdate({name:index},servdesc,{upsert:true},function(err,data){
+        if(!err){
+          cb(data.name);
+        }else{
+          console.log('mongo error',err);
+          cb();
+        }
+      });
+    }else{
+      console.log('back to square one',address,port,type,realmname,cb);
+      Timeout.next(attachServer,address,port,type,realmname,cb); //back to square one
+    }
+    break;
+  case 'undefined': //real request from physical server
+    var name = unusedServerName(type,realmname);
+    if(name){
+      //console.log('server',name,'is in __servernames',__servernames);
+      var sd = __servernames[name];
+      console.log(name,'=>',sd,'is unused');
+      if(!sd.equals(servdesc)){
+        console.log(sd,'<>',servdesc);
+        Timeout.set(attachServer,30000,address,port,type,realmname,cb,name); //30 secs of grace period for name to be taken by an already attached server 
+        return;
+      }
+    }else{
+      name = type+map.add(address+':'+port);
+      if(realmname){
+        name = realmname+name;
+      }
+    }
+    servdesc.name = name;
+    servdesc.taken = true;
+    __servernames[name] = servdesc;
+    ServerLease.findOneAndUpdate({name:name},servdesc,{upsert:true},function(err,data){
+      if(!err){
+        cb(data.name);
+      }else{
+        console.log('mongo error',err);
+        cb();
+      }
+    });
+    break;
+  }
+}
+
+function handlePlaying(roomname,flwr,newplaying){
+  flwr.playing = flwr.playing || 0;
+  if(!flwr.klass){return;}
+  var se = flwr._parent._parent.data.statsBranch,
+    le = flwr._parent._parent.data.localStatsBranch;
+  var gactions = [
+    ['set',['players'],[se.element(['players']).value()+newplaying-flwr.playing,undefined,'dcp']]
+  ];
+  var gcse = se.element(['players_by_gameclass',flwr.klass]);
+  if(!gcse){
+    gactions.push(['set',['players_by_gameclass',flwr.klass],[newplaying-flwr.playing,undefined,'dcp']]);
+  }else{
+    gactions.push(['set',['players_by_gameclass',flwr.klass],[gcse.value()+newplaying-flwr.playing,undefined,'dcp']]);
+  }
+  Timeout.next(se,'commit','room_stats_change',gactions);
+  var lactions = [];
+  var sse = le.elementRaw('players');
+  if(!sse){
+    lactions.push(['set',['players'],[newplaying-flwr.playing,undefined,'dcp']]);
+  }else{
+    lactions.push(['set',['players'],[sse.value()+newplaying-flwr.playing,undefined,'dcp']]);
+  }
+  le.commit('room_stats_change',lactions);
+  flwr.playing = newplaying;
+}
+
+function onRakeAccountingWritten(flavor,roomname,data){
+  var pf = dataMaster.element(['cluster_interface','servers']).functionalities.profitfunctionality;
+  if(!pf){return;}
+  var timestamp = data.created.getTime(),handId=data.handId;
+  for(var i in data.breakdown){
+    var bd = data.breakdown[i];
+    if(typeof bd.rake === 'undefined'){continue;}
+    pf._account(timestamp,handId,bd.rake,'Poker','CashTable',flavor,roomname,bd.name,bd.realm);
+  }
+};
+
+function onRakeAccountingOffererResponded(flavor,roomname,dbid,data,errc){
+  if(errc==='ACCEPTED'){
+    RakeAccountingLogger.saveId(dbid,data,[null,onRakeAccountingWritten,[flavor,roomname]]);
+  }
+};
+
+function onRakeAccountingWriteReady(roomname,f,offerid,data,dbid){
+  f.offer(['storeRakeAccounting'],{offerid:offerid,dbid:dbid},[null,onRakeAccountingOffererResponded,[f.flavor,roomname,dbid,data]]);
+};
+
+function onRakeAccountingNeeded(roomname,f,offerid,data){
+  if(!data){return;}
+  data = JSON.parse(data);
+  data.handId = offerid;
+  RakeAccountingLogger.getId([null,onRakeAccountingWriteReady,[roomname,f,offerid,data]]);
+};
+
+function followRoom(roomsfollower,roomname){
+  console.log('following',roomname);
+  var f = roomsfollower.follow([roomname],function(stts){
+    if(stts==='RETREATING'){
+      if(this.playing){
+        console.log('unfollowing',roomname,'with',this.playing,'players');
+        process.exit(0);
+      }
+      this.destroy();
+    }
+  },function(item){
+    if(item && item[1]){
+      switch(item[1][0]){
+        case 'class':
+          this.klass = item[1][1];
+          break;
+        case 'playing':
+          Timeout.next(handlePlaying,item[0][0],this,parseInt(item[1][1]) || 0);
+          break;
+        case 'flavor':
+          this.flavor = item[1][1];
+          break;
+      }
+    }
+  });
+  f.handleOffer('storeRakeAccounting',[null,onRakeAccountingNeeded,[roomname,f]]);
+  f.handleOffer('gameEvent',function(offerid,data){
+    if(!data){return;}
+    data = JSON.parse(data);
+    console.log('id',offerid,'gameEvent',data);
+    f.offer(['gameEvent'],{offerid:offerid,ok:true});
+  });
+  f.handleOffer('storeHandHistory',function(offerid,data){
+    if(!data){return;}
+    data = JSON.parse(data);
+    if(data[0][1]!==1){
+      console.log('first hand event needs to have id 1',data[0]);
+      return;
+    }
+    var dbdata = data[0][2];
+    data[0][2] = '';
+    dbdata.events = data;
+    data = dbdata;
+    HandHistoryLogger.getId(function(id){
+      var _data = data;
+      f.offer(['storeHandHistory'],{offerid:offerid,dbid:id},function(errc){
+        if(errc==='ACCEPTED'){
+          HandHistoryLogger.saveId(id,_data);
+        }
+      });
+    });
+  });
+  f.handleOffer('handId',function(offerid,data){
+    if(!data){return;}
+    //console.log('handId needed',offerid,data);
+    data = JSON.parse(data);
+    data.server = f._parent._parent.serverName;
+    HandIdLogger.getId(function(id){
+      if(!id){
+        console.trace();
+        console.log('RacingLogger gave me no id',id);
+        process.exit(0);
+      }
+      var _data = data;
+      f.offer(['handId'],{offerid:offerid,handId:id},function(errc){
+        if(errc==='ACCEPTED'){
+          _data.created = Date.now();
+          HandIdLogger.saveId(id,_data);
+        }else{
+          HandIdLogger.rollback(id);
+        }
+      });
+    });
+  });
+}
+
+function followRooms(user){
+  var f = user.follow(['rooms'],function(stts){
+  },function(item){
+    //console.log(item);
+    if(item && item[1] && item[1][1]===null){
+      followRoom(f,item[1][0]);
+    }
+  });
+};
 
 dataMaster.commit('servers_init',[
   ['set',['cluster_interface'],'dcp'],
@@ -17,21 +319,21 @@ dataMaster.commit('servers_init',[
 ]);
 
 dataMaster.element(['cluster_interface']).attach(__dirname+'/dcpregistry',{targetdata:dataMaster});
+dataMaster.element(['cluster_interface','servers']).attach(__dirname+'/profitfunctionality',{});
 
-var nodeReplicationPort = 16020, realmReplicationPort = 16021;
-dataMaster.nodeReplicationPort = nodeReplicationPort;
-dataMaster.realmReplicationPort = realmReplicationPort;
-dataMaster.element(['cluster_interface']).openReplication(nodeReplicationPort);
-dataMaster.element(['cluster_interface','servers']).openReplication(realmReplicationPort);
-
-var portMap = {};
-var roomsHook = new (hersdata.HookCollection);
-
-function ReplicateServer(type,servname,servaddress){
-  console.log('ReplicateServer',type,servname,servaddress);
+function replicateServer(servname){
   var clusteractions = [], 
     clusterinterfaceactions = [], 
-    replicationport=portMap[servaddress];
+    servdesc = __servernames[servname];
+  if(!servdesc){
+    console.log('no servdesc for',servname,'in',__servernames);
+    return;
+  }
+  servdesc.taken = true;
+  var servaddress = servdesc.address,
+    replicationport = servdesc.port,
+    type = servdesc.type+'s';
+  console.log('replicating',servname,servaddress,replicationport,type);
   var servcontel = dataMaster.element(['cluster',type,servname]);
   if(!servcontel){
     clusteractions.push(['set',[type,servname]]);
@@ -60,77 +362,68 @@ function ReplicateServer(type,servname,servaddress){
   dataMaster.element(['cluster']).commit('new_server',clusteractions);
   dataMaster.element(['cluster_interface','servers']).commit('new_server',clusterinterfaceactions);
   servcontel = dataMaster.element(['cluster',type,servname]);
+  console.log('creating RemoteReplica',servaddress,replicationport);
   servcontel.createRemoteReplica('server','dcp','dcp',{address:servaddress,port:replicationport},true);
+  servcontel.commit('init_server',[['set',['status'],['initialized',undefined,'dcp']]]);
   var servel = dataMaster.element(['cluster',type,servname,'server']);
+  servel.statsBranch = statsel;
+  servel.localStatsBranch = statsel.element([type,servname]);
   servel.go(function(status){
-    console.log(servname,status);
-    servcontel.commit('status_change',[
-      ['set',['status'],[status,undefined,'dcp']]
-    ]);
-    statsel.commit('status_change',[
-      ['set',[type,servname,'status'],[status,undefined,'dcp']]
-    ]);
-    //console.log(servname,status,servcontel.dataDebug());
+    var scstatus = servcontel.elementRaw('status').value(), newscstatus;
+    switch(scstatus){
+      case 'initialized':
+        if(status!=='initialized'){
+          newscstatus=status;
+        }
+        break;
+      case 'connected':
+        if(status!=='connected'){
+          newscstatus='reconnecting';
+          var servdesc = __servernames[servname];
+          if(servdesc){
+            var map = mapForTypeRealm(servdesc.type,servdesc.realm);
+            map.remove(indexForNameTypeRealm(servname,servdesc.type,servdesc.realm));
+            delete __servernames[servname];
+            ServerLease.findOneAndRemove({name:servname},function(){});
+          }
+        }
+      default:
+        if(status==='connected'){
+          newscstatus=status;
+        }
+        break;
+        break;
+    }
+    //console.log(servname,scstatus,'+',status,'=',newscstatus);
+    if(newscstatus){
+      servcontel.commit('status_change',[
+        ['set',['status'],[newscstatus,undefined,'dcp']]
+      ]);
+      statsel.commit('status_change',[
+        ['set',[type,servname,'status'],[newscstatus,undefined,'dcp']]
+      ]);
+    }
   });
-  servel.replicationInitiated.attach(function(){
-    var sn = servname, se = statsel, _type = type;
-    servel.waitFor([['memoryusage','memoryavailable','network_in','network_out','CPU','exec_delay','exec_queue','dcp_branches','dcp_leaves']],function(map){
-      var actions = [];
-      for(var i in map){
-        actions.push(['set',[_type,sn,i],[map[i],undefined,'dcp']]);
-      }
-      se.commit('system_change',actions);
+  servel.getReplicatingUser(function(user){
+    user.serverName = servname;
+    user.follow([],function(stts){
+    },function(item){
+      DeStreamer.prototype.destream.call(this.data.localStatsBranch,item);
     });
-    servel.waitFor(['rooms','*',['class','playing']],function(roomname,map,oldmap){
-      var oldplaying = oldmap ? oldmap.playing : 0;
-      var actions = [
-        ['set',['players'],[se.element(['players']).value()+map.playing-oldplaying,undefined,'dcp']]
-      ];
-      var gcse = se.element(['players_by_gameclass',map.class]);
-      if(!gcse){
-        actions.push(['set',['players_by_gameclass',map.class],[map.playing-oldplaying,undefined,'dcp']]);
-      }else{
-        actions.push(['set',['players_by_gameclass',map.class],[gcse.value()+map.playing-oldplaying,undefined,'dcp']]);
-      }
-      var sse = se.element([_type,sn,'players']);
-      if(!sse){
-        actions.push(['set',[_type,sn,'players'],[map.playing-oldplaying,undefined,'dcp']]);
-      }else{
-        actions.push(['set',[_type,sn,'players'],[sse.value()+map.playing-oldplaying,undefined,'dcp']]);
-      }
-      Timeout.next(function(se,a){se.commit('room_stats_change',a);},se,actions);
-    });
+    if(type==='nodes'){
+      followRooms(user);
+    }
   });
-};
-
-var portAvailability = function(el,name,searchobj){
-  console.log('checking',el.dataDebug());
-  var servaddress = searchobj.servaddress;
-  var st = el.element(['status']);
-  if(st){
-    return st.value()==='disconnected';
-  }
-  console.log(el.dataDebug(),'has no status',portMap[servaddress]);
-  portMap[servaddress]++;
-  ReplicateServer(searchobj.type,name,servaddress);
-  return true;
 };
 
 exports.authCallback = function(req, res, next){
-  if(!portMap[req.connection.remoteAddress]){
-    portMap[req.connection.remoteAddress] = 16100;
-  };
-  var servname = req.user.name;
-  var servdomain = req.user.domain;
-  var realmtemplatename = '*'+servname+'Realm';
-  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:realmtemplatename,registryelementpath:['cluster','realms'],availabilityfunc:portAvailability});
-  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.newNameForTemplate({templateName:realmtemplatename,type:'realms',servaddress:req.connection.remoteAddress},function(errcode,errparams){
-    if(errcode==='OK'){
-      var servname = errparams[0];
-      console.log(servname,'should be logged in');
-      res.jsonp({name:servname,domain:servdomain,replicationPort:dataMaster.realmReplicationPort});
-    }
-  },req.user);
+  attachServer(req.connection.remoteAddress,req.query.port,req.query.type,req.user.name,function(name){
+    res.jsonp({
+      name:name,
+      domain:req.user.domain,
+      replicationPort:dataMaster.realmReplicationPort
+    });
+  });
 };
 
 exports.save = function(req, res) {
@@ -150,79 +443,21 @@ exports.all = function(req,res) {
   });
 };
 
-function findAndEngage(type,servreplica,autocreate){
-  var servname = servreplica.replicaToken.name;
-  var servaddress = servreplica.socket.remoteAddress;
-  //console.log('finding',servname,servaddress,'to engage with autocreate',autocreate);
-  if(!portMap[servaddress]){
-    portMap[servaddress]=16100;
-  }
-  var servcontel = dataMaster.element(['cluster',type,servname]);
-  if(servcontel){
-    console.log(servname,'found');
-    servreplica.replicaToken.type=type;
-    if(!servcontel.element(['status'])){
-      //console.log('replica',type,servname,'logged in');
-      portMap[servaddress]++;
-      ReplicateServer(type,servname,servaddress);
-      //console.log(servname,'engaged');
-      return true;
-    }
-  }else if(autocreate){
-    //console.log('autocreating');
-    servcontel = dataMaster.commit('new_server',[
-      ['set',['cluster',type,servname]]
-    ]);
-    //console.log('replica',type,servname,'ressurected');
-    portMap[servaddress]++;
-    ReplicateServer(type,servname,servaddress);
-    return true;
-  }
-};
-
 dataMaster.element(['cluster_interface']).newReplica.attach(function(servreplica){
   console.log('incoming (node) replica',servreplica.replicaToken);
-  var reptype = servreplica.replicaToken.type;
-  if(reptype){
-    findAndEngage(reptype,servreplica,true);
-  }else{
-    if(!findAndEngage('nodes',servreplica)){
-      //console.log(servreplica.replicaToken,'could not be engaged');
-    }
-  }
-  console.log('replica processed',servreplica.replicaToken);
-  return;
-  /*
-  var servel = dataMaster.element(['cluster',servname]);
-  if(!servel){
-    dataMaster.commit('server_accepted',[
-      ['set',['cluster',servname],'dcp'],
-      [
-    ]);
-  }
-  */
+  replicateServer(servreplica.replicaToken.name);
 });
 
 dataMaster.element(['cluster_interface','servers']).newReplica.attach(function(servreplica){
   console.log('incoming (realm) replica',servreplica.replicaToken);
-  var reptype = servreplica.replicaToken.type;
-  if(reptype){
-    findAndEngage(reptype,servreplica,true);
-  }else{
-    findAndEngage('realms',servreplica);
-  }
+  replicateServer(servreplica.replicaToken.name);
 });
 
 exports.accept = function(req,res) {
-  if(!portMap[req.connection.remoteAddress]){
-    portMap[req.connection.remoteAddress] = 16100;
-  };
-  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.registerTemplate({templateName:'*Node',registryelementpath:['cluster','nodes'],availabilityfunc:portAvailability});
-  dataMaster.element(['cluster_interface']).functionalities.dcpregistry.f.newNameForTemplate({templateName:'*Node',type:'nodes',servaddress:req.connection.remoteAddress},function(errcode,errparams){
-    if(errcode==='OK'){
-      var servname = errparams[0];
-      console.log(servname,'should be logged in');
-      res.jsonp({name:servname,replicationPort:dataMaster.nodeReplicationPort});
-    }
-  },{username:'backoffice',realmname:'dcp'});
+  attachServer(req.connection.remoteAddress,req.query.port,req.query.type,'',function(name){
+    res.jsonp({
+      name:name,
+      replicationPort:dataMaster.nodeReplicationPort
+    });
+  });
 };
