@@ -1,5 +1,4 @@
 var mongoose = require('mongoose'),
-    _ = require('underscore'),
     Server = mongoose.model('Server'),
     ServerLease = mongoose.model('ServerLease'),
     HandId = mongoose.model('HandId'),
@@ -9,8 +8,13 @@ var mongoose = require('mongoose'),
     hersdata = require('hersdata'),
     ArrayMap = hersdata.ArrayMap,
     Timeout = require('herstimeout'),
-    RacingLogger = require('hersdb').RacingLogger,
-    DeStreamer = hersdata.DeStreamer;
+    hersdb = require('hersdb'),
+    RacingLogger = hersdb.RacingLogger,
+    OfferHandler = hersdb.OfferHandler,
+    DeStreamer = hersdata.DeStreamer,
+    executable = hersdata.executable,
+    execRun = executable.run,
+    execCall = executable.call;
 
 var HandIdLogger = new RacingLogger(HandId),
   RakeAccountingLogger = new RacingLogger(RakeAccounting),
@@ -193,33 +197,31 @@ function handlePlaying(roomname,flwr,newplaying){
   flwr.playing = newplaying;
 }
 
-function onRakeAccountingWritten(flavor,roomname,data){
+function handHistoryOfferShaper(offerid,data,cb){
+  var dbdata = data[0][2];
+  data[0][2] = '';
+  dbdata.events = data;
+  data = dbdata;
+  execCall(cb,data);
+}
+function handIdReplyShaper(replyobj,offerobj,dbid,cb){
+  replyobj.handId = dbid;
+  execRun(cb);
+}
+function rakeAccountingOfferShaper(offerid,data,cb){
+  data.handId = offerid;
+  execCall(cb,data);
+}
+function rakeAccountingWritten(f,roomname,data){
   var pf = dataMaster.element(['cluster_interface','servers']).functionalities.profitfunctionality;
   if(!pf){return;}
   var timestamp = data.created.getTime(),handId=data.handId;
   for(var i in data.breakdown){
     var bd = data.breakdown[i];
     if(typeof bd.rake === 'undefined'){continue;}
-    pf._account(timestamp,handId,bd.rake,'Poker','CashTable',flavor,roomname,bd.name,bd.realm);
+    pf._account(timestamp,handId,bd.rake,'Poker','CashTable',f.flavor,f.template,roomname,bd.name,bd.realm);
   }
-};
-
-function onRakeAccountingOffererResponded(flavor,roomname,dbid,data,errc){
-  if(errc==='ACCEPTED'){
-    RakeAccountingLogger.saveId(dbid,data,[null,onRakeAccountingWritten,[flavor,roomname]]);
-  }
-};
-
-function onRakeAccountingWriteReady(roomname,f,offerid,data,dbid){
-  f.offer(['storeRakeAccounting'],{offerid:offerid,dbid:dbid},[null,onRakeAccountingOffererResponded,[f.flavor,roomname,dbid,data]]);
-};
-
-function onRakeAccountingNeeded(roomname,f,offerid,data){
-  if(!data){return;}
-  data = JSON.parse(data);
-  data.handId = offerid;
-  RakeAccountingLogger.getId([null,onRakeAccountingWriteReady,[roomname,f,offerid,data]]);
-};
+}
 
 function followRoom(roomsfollower,roomname){
   console.log('following',roomname);
@@ -240,61 +242,24 @@ function followRoom(roomsfollower,roomname){
         case 'playing':
           Timeout.next(handlePlaying,item[0][0],this,parseInt(item[1][1]) || 0);
           break;
+        case 'templatename':
+          this.template = item[1][1];
+          break;
         case 'flavor':
           this.flavor = item[1][1];
           break;
       }
     }
   });
-  f.handleOffer('storeRakeAccounting',[null,onRakeAccountingNeeded,[roomname,f]]);
   f.handleOffer('gameEvent',function(offerid,data){
     if(!data){return;}
     data = JSON.parse(data);
     console.log('id',offerid,'gameEvent',data);
     f.offer(['gameEvent'],{offerid:offerid,ok:true});
   });
-  f.handleOffer('storeHandHistory',function(offerid,data){
-    if(!data){return;}
-    data = JSON.parse(data);
-    if(data[0][1]!==1){
-      console.log('first hand event needs to have id 1',data[0]);
-      return;
-    }
-    var dbdata = data[0][2];
-    data[0][2] = '';
-    dbdata.events = data;
-    data = dbdata;
-    HandHistoryLogger.getId(function(id){
-      var _data = data;
-      f.offer(['storeHandHistory'],{offerid:offerid,dbid:id},function(errc){
-        if(errc==='ACCEPTED'){
-          HandHistoryLogger.saveId(id,_data);
-        }
-      });
-    });
-  });
-  f.handleOffer('handId',function(offerid,data){
-    if(!data){return;}
-    //console.log('handId needed',offerid,data);
-    data = JSON.parse(data);
-    data.server = f._parent._parent.serverName;
-    HandIdLogger.getId(function(id){
-      if(!id){
-        console.trace();
-        console.log('RacingLogger gave me no id',id);
-        process.exit(0);
-      }
-      var _data = data;
-      f.offer(['handId'],{offerid:offerid,handId:id},function(errc){
-        if(errc==='ACCEPTED'){
-          _data.created = Date.now();
-          HandIdLogger.saveId(id,_data);
-        }else{
-          HandIdLogger.rollback(id);
-        }
-      });
-    });
-  });
+  new OfferHandler('HandHistory',f,'storeHandHistory',{onOffer:handHistoryOfferShaper});
+  new OfferHandler('HandId',f,'handId',{onReplyReady:handIdReplyShaper});
+  new OfferHandler('RakeAccounting',f,'storeRakeAccounting',{onOffer:rakeAccountingOfferShaper,onDataWritten:[null,rakeAccountingWritten,[f,roomname]]});
 }
 
 function followRooms(user){
