@@ -158,3 +158,34 @@ section.content {
   height:95%;
   background-color:#282828;
 }
+
+
+
+/* IMPORTANT: CHECK if this has some better place to be placed in .... */
+/* PATCHES FROM bootstrap */
+.table.table-hover tbody tr td {
+  background-color: #f1f1f1;
+}
+
+table tbody tr td.actions {
+  font-size: 14px;
+}
+
+table tbody tr td i.actions {
+  float:right;
+  margin-left:7px;
+}
+
+table tbody tr td i.actions.icon-edit {
+  color:green;
+}
+table tbody tr td i.actions.icon-copy {
+  color:orange;
+}
+table tbody tr td i.actions.icon-trash{
+  color:red;
+}
+
+table tbody tr td i.actions:hover {
+  color:grey;
+}

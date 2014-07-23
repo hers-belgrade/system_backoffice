@@ -11,6 +11,10 @@ function slotTemplateToDCPInsert(pt){
   return ['set',['cluster_interface','templates','slotgames',to.name],[JSON.stringify(to),undefined,'dcp']];
 }
 
+function slotTemplateToDCPRemove(pt) {
+  return ['remove', ['cluster_interface', 'templates', 'slotgames', pt.name]];
+}
+
 SlotTemplate.find({},function(err,pts){
   var actions = [
     ['set',['cluster_interface','templates'],'dcp'],
@@ -80,6 +84,14 @@ function availabilityFunc(tplel,name,searchobj,username,realmname){
   return ret;
 };
 
+exports.templateName = function (req, res, next, name) {
+  SlotTemplate.findOne({name:name}, function (err, tpl) {
+    if (err) return next(err);
+    req.slot_template = tpl;
+    next();
+  });
+}
+
 exports.save = function(req, res) {
   var pt = new SlotTemplate(req.body);
   var pto = pt.toObject();
@@ -96,6 +108,19 @@ exports.save = function(req, res) {
   });
 };
 
+exports.remove = function (req, res) {
+  var st = req.slot_template;
+  st.remove(function (err) {
+    if (err) {
+      res.render('error', {status:500});
+    }else{
+      dataMaster.commit ('removing_slot_template', [slotTemplateToDCPRemove(st)]);
+      dataMaster.element(['cluster_interface']).functionalities.dcpregistry.unregisterTemplate({templateName:st.name});
+      res.jsonp(st);
+    }
+  });
+}
+
 SlotTemplate.find({},function(err,pts){
   for(var i in pts){
     var pt = pts[i];
@@ -108,3 +133,4 @@ exports.all = function(req,res) {
     res.jsonp(pts);
   });
 };
+

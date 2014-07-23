@@ -78,6 +78,8 @@ module.exports = function(server,app, passport, auth) {
     var slottemplates = require('../app/controllers/slottemplates');
     app.get('/slottemplates', auth.requiresLogin, slottemplates.all);
     app.post('/slottemplates/:templateName', auth.requiresLogin, slottemplates.save);
+    app.del('/slottemplates/:templateName', auth.requiresLogin, slottemplates.remove);
+    app.param('templateName', slottemplates.templateName);
 
     //Article Routes
     var articles = require('../app/controllers/articles');
