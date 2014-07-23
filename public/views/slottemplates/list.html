@@ -1,32 +1,46 @@
-<style>
-.slot_templates_list {
-  color: white;
-}
-
-.slot_templates_list .gridStyle {
-  color:black;
-}
-</style>
-
-<section data-ng-controller="SlotTemplatesController" data-ng-init="list()" class="slot_templates_list">
-  <button class='btn' data-ng-click="createNew()">Create New</button>
-  <section data-ng-include="'/views/slottemplates/create.html'"></section>
-  <table>
-    <tr>
-      <th>Name</th>
-      <th>Columns</th>
-      <th>Rows</th>
-      <th>Double up probability</th>
-      <th>Max. bet per line</th>
-      <th>Max. paylines</th>
-    </tr>
-    <tr data-ng-repeat="pt in templates" data-ng-click="setTemplate(pt)">
-      <td>{{pt.name}}</td>
-      <td>{{pt.columns}}</td>
-      <td>{{pt.rows}}</td>
-      <td>{{pt.double_up_prob}}</td>
-      <td>{{pt.max_bet_per_line}}</td>
-      <td>{{pt.max_paylines}}</td>
-    </tr>
-  </table>
-</section>
+<div id="breadcrumbs" class="breadcrumbs ng-scope">
+	<ul class="breadcrumb">
+		<li>
+			<i class="icon-home home-icon"></i>
+			<a href="/">Home</a>
+			<span class="divider">
+				<i class="icon-angle-right arrow-icon"></i>
+			</span>
+		</li>
+			<li class="active">Slot templates</li>
+	</ul>
+		<div id="nav-search" class="nav-search"></div>
+</div>
+<div class="page-content">
+	<div class="page-header position-relative">
+		<h1>
+			Slot templates
+			<small>
+				<i class="icon-double-angle-right"></i>
+				Create new or edit existing slot template
+			</small>
+		</h1>
+	</div>		
+	<section data-ng-controller="SlotTemplatesController" data-ng-init="list()" class="slot_templates_list">
+	  <button class='btn' data-ng-click="createNew()">Create New</button>
+	  <section data-ng-include="'/views/slottemplates/create.html'"></section>
+	  <table class='table table-striped table-bordered table-hover'>
+	    <thead>
+	      <th>Name</th>
+	      <th>Columns</th>
+	      <th>Rows</th>
+	      <th>Double up probability</th>
+	      <th>Max. bet per line</th>
+	      <th>Max. paylines</th>
+	    </thead>
+	    <tr data-ng-repeat="pt in templates" data-ng-click="setTemplate(pt)">
+	      <td>{{pt.name}}</td>
+	      <td>{{pt.columns}}</td>
+	      <td>{{pt.rows}}</td>
+	      <td>{{pt.double_up_prob}}</td>
+	      <td>{{pt.max_bet_per_line}}</td>
+	      <td>{{pt.max_paylines}}</td>
+	    </tr>
+	  </table>
+	</section>
+</div>

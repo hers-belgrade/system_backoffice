@@ -1,52 +1,54 @@
-<form name="form" class="form-horizontal" data-ng-submit="save($event)" data-ng-show="setup.editable">
-  <label class="control-label" for="name">Name</label>
-  <div class="control">
-    <input type="text" name="name" data-ng-model="template.name" placeholder="Name" required>
-  </div>
-  <label class="control-label" for="columns">Columns</label>
-  <div class="control">
-    <select data-ng-model="template.columns" name="columns" id="columns" placeholder="Columns" required>
-      <option value="3">3</option>
-      <option value="5">5</option>
-    </select>
-  </div>
-  <label class="control-label" for="rows">Rows</label>
-  <div class="control">
-    <select data-ng-model="template.rows" name="rows" id="rows" placeholder="Rows" required>
-      <option value="3">3</option>
-    </select>
-  </div>
-
-  <label class="control-label" for="double_up_prob">Double Up probability</label>
-  <div class="control">
-    <input type="number" step="0.01" min="0" max="0.9" name="double_up_prob" data-ng-model="template.double_up_prob" placeholder="Probability" required>
-  </div>
-
-
-  <label class="control-label" for="max_paylines">Max. paylines</label>
-  <div class="control">
-    <input type="number" step="1" min="1" name="max_paylines" data-ng-model="template.max_paylines" placeholder="Max. paylines" required>
-  </div>
-
-  <label class="control-label" for="max_bet_per_line">Max. bet per line</label>
-  <div class="control">
-    <input type="number" step="1" min="1" name="max_bet_per_line" data-ng-model="template.max_bet_per_line" placeholder="Max. bet per line" required>
-	</div>
-
-  <span>
-  </span>
-  <fieldset>
-
-  <button class='btn' data-ng-click="addSymbol($event)" data-ng-repeat-end data-ng-disabled="!template.columns">Add symbol</button>
-	<button class='btn' data-ng-click="removeSymbol($event)" data-ng-repeat-end data-ng-disabled="template.symbolweightsmults && template.symbolweightsmults.length <= 2">Remove symbol</button>
-  <div class="gridStyle" ng-grid="gridSettings"></div>
-
-  </fieldset>
-		<div class="control-group">
-			<div class="controls">
-				<button data-ng-click="setup.editable=false" class="btn">Cancel</button>
-				<input type="submit" class="btn" value="Save">
-			</div>
+<div class="modal">
+	<form name="form" class="form-horizontal" data-ng-submit="save($event)" data-ng-show="setup.editable">
+	  <label class="control-label" for="name">Name</label>
+	  <div class="control">
+	    <input type="text" name="name" data-ng-model="template.name" placeholder="Name" required>
+	  </div>
+	  <label class="control-label" for="columns">Columns</label>
+	  <div class="control">
+	    <select data-ng-model="template.columns" name="columns" id="columns" placeholder="Columns" required>
+	      <option value="3">3</option>
+	      <option value="5">5</option>
+	    </select>
+	  </div>
+	  <label class="control-label" for="rows">Rows</label>
+	  <div class="control">
+	    <select data-ng-model="template.rows" name="rows" id="rows" placeholder="Rows" required>
+	      <option value="3">3</option>
+	    </select>
+	  </div>
+	
+	  <label class="control-label" for="double_up_prob">Double Up probability</label>
+	  <div class="control">
+	    <input type="number" step="0.01" min="0" max="0.9" name="double_up_prob" data-ng-model="template.double_up_prob" placeholder="Probability" required>
+	  </div>
+	
+	
+	  <label class="control-label" for="max_paylines">Max. paylines</label>
+	  <div class="control">
+	    <input type="number" step="1" min="1" name="max_paylines" data-ng-model="template.max_paylines" placeholder="Max. paylines" required>
+	  </div>
+	
+	  <label class="control-label" for="max_bet_per_line">Max. bet per line</label>
+	  <div class="control">
+	    <input type="number" step="1" min="1" name="max_bet_per_line" data-ng-model="template.max_bet_per_line" placeholder="Max. bet per line" required>
 		</div>
-
-</form>
+	
+	  <span>
+	  </span>
+	  <fieldset>
+	
+	  <button class='btn' data-ng-click="addSymbol($event)" data-ng-repeat-end data-ng-disabled="!template.columns">Add symbol</button>
+		<button class='btn' data-ng-click="removeSymbol($event)" data-ng-repeat-end data-ng-disabled="template.symbolweightsmults && template.symbolweightsmults.length <= 2">Remove symbol</button>
+	  <div class="gridStyle" ng-grid="gridSettings"></div>
+	
+	  </fieldset>
+			<div class="control-group">
+				<div class="controls">
+					<button data-ng-click="setup.editable=false" class="btn">Cancel</button>
+					<input type="submit" class="btn" value="Save">
+				</div>
+			</div>
+	
+	</form>
+</div>

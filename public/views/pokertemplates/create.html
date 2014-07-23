@@ -1,40 +1,63 @@
-<div class="modal">
-  <form name="form" class="form-horizontal" data-ng-submit="save()" data-ng-show="setup.editable">
-    <div class="control-group">
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-ng-click="cancel()">&times;</button>
+		<h4 class="blue bigger">Please fill the following form fields</h4>
+	</div>
+  <div class="modal-body">
+  	<form name="form" class="form-horizontal" data-ng-submit="save()">
       <input type="hidden" name="class" value="Poker">
-      <label class="control-label" for="name">Name</label>
-      <div class="control">
-        <input type="text" data-ng-model="template.name" placeholder="Name" required>
-      </div>
-      <label class="control-label" for="type">Type</label>
-      <div class="control">
-        <select data-ng-model="template.type" name="type" id="type" placeholder="Type" required>
-          <option value="CashTable">CashTable</option>
-          <option value="SitNGo">SitNGo</option>
-          <option value="ScheduledTournament">Scheduled Tournament</option>
-        </select>
-      </div>
-      <label class="control-label" for="capacity">Capacity</label>
-      <div class="control">
+			<div class="control-group">
+				<label class="control-label" for="name">Name</label>
+				<div class="controls">
+					<input type="text" data-ng-model="template.name" placeholder="Name" required ng-disabled="existing">
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label"for="type">Type</label>
+				<div class="controls">
+	        <select data-ng-model="template.type" name="type" id="type" placeholder="Type" required>
+	          <option value="CashTable">CashTable</option>
+	          <option value="SitNGo">SitNGo</option>
+	          <option value="ScheduledTournament">Scheduled Tournament</option>
+	        </select>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="capacity">Capacity</label>
+				<div class="controls">
         <select data-ng-model="template.capacity" name="capacity" id="capacity" placeholder="Capacity" required>
           <option value="2">Heads Up</option>
           <option value="6">Six Max</option>
           <option value="9">Nine Seater</option>
           <option value="10">Ten Seater</option>
         </select>
-      </div>
-      <label class="control-label" for="bettingpolicy">Betting Policy</label>
-      <div class="control">
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="bettingpolicy">Betting Policy</label>
+				<div class="controls">
         <select data-ng-model="template.bettingpolicy" name="bettingpolicy" id="bettingpolicy" placeholder="Betting Policy" required>
           <option value="NL">No Limit</option>
           <option value="PL">Pot Limit</option>
           <option value="FL">Fixed Limit</option>
         </select>
-      </div>
-      <label class="control-label" for="fixedlimitvalue" data-ng-show="needFLValue(template.bettingpolicy)">Fixed Limit Value</label>
-      <div class="control" data-ng-show="needFLValue(template.bettingpolicy)">
-        <input type="number" min="{{bigblind}}" step="{{bigblind}}" data-ng-model="template.fixedlimitvalue" name="fixedlimitvalue" id="fixedlimitvalue" placeholder="Fixed Limit Value" data-ng-required="needFLValue(bettingpolicy)">
-      </div>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label" for="fixedlimitvalue" data-ng-show="needFLValue(template.bettingpolicy)">Fixed Limit Value</label>
+				<div class="controls">
+	        <input type="number" min="{{bigblind}}" step="{{bigblind}}" data-ng-model="template.fixedlimitvalue" name="fixedlimitvalue" id="fixedlimitvalue" placeholder="Fixed Limit Value" data-ng-required="needFLValue(bettingpolicy)">
+				</div>
+			</div>
+
+
+    <div class="control-group">
+
+
       <label class="control-label" for="ante">Ante</label>
       <div class="control">
         <input type="number" data-ng-model="template.ante" name="ante" id="ante" placeholder="Ante">
@@ -68,11 +91,17 @@
         <input type="number" max="{{capacity}}" data-ng-model="template.bots" name="bots" id="bots">
       </div>
     </div>
-		<div class="control-group">
-			<div class="controls">
-				<button data-ng-click="setup.editable=false" class="btn">Cancel</button>
-				<input type="submit" class="btn" value="Save">
-			</div>
-		</div>
   </form>
+  </div>
+	<div class="modal-footer">
+		<button class="btn btn-small" data-ng-click="cancel()">
+			<i class="icon-remove"></i>
+			Cancel
+		</button>
+
+		<button class="btn btn-small btn-primary" data-ng-click="save()">
+			<i class="icon-ok"></i>
+			Save
+		</button>
+	</div>
 </div>
