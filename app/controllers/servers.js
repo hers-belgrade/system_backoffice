@@ -216,7 +216,6 @@ function rakeAccountingWritten(roomname,data){
 }
 
 function singleGameEventWritten(roomname,data){
-  console.log('gameEvent',data);
   if(data.eventcode==='finish'){
     var pf = dataMaster.element(['cluster_interface','servers']).functionalities.profitfunctionality;
     if(!pf){return;}
