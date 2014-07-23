@@ -1,24 +1,16 @@
 var mongoose = require('mongoose'),
     Server = mongoose.model('Server'),
     ServerLease = mongoose.model('ServerLease'),
-    HandId = mongoose.model('HandId'),
-    RakeAccounting = mongoose.model('RakeAccounting'),
-    HandHistory = mongoose.model('HandHistory'),
     dataMaster = require('./datamaster'),
     hersdata = require('hersdata'),
     ArrayMap = hersdata.ArrayMap,
     Timeout = require('herstimeout'),
     hersdb = require('hersdb'),
-    RacingLogger = hersdb.RacingLogger,
     OfferHandler = hersdb.OfferHandler,
     DeStreamer = hersdata.DeStreamer,
     executable = hersdata.executable,
     execRun = executable.run,
     execCall = executable.call;
-
-var HandIdLogger = new RacingLogger(HandId),
-  RakeAccountingLogger = new RacingLogger(RakeAccounting),
-  HandHistoryLogger = new RacingLogger(HandHistory);
 
 function ServerDescription(name,address,port,type,realmname){
   this.name = name;
@@ -212,14 +204,23 @@ function rakeAccountingOfferShaper(offerid,data,cb){
   data.handId = offerid;
   execCall(cb,data);
 }
-function rakeAccountingWritten(f,roomname,data){
+function rakeAccountingWritten(roomname,data){
   var pf = dataMaster.element(['cluster_interface','servers']).functionalities.profitfunctionality;
   if(!pf){return;}
   var timestamp = data.created.getTime(),handId=data.handId;
   for(var i in data.breakdown){
     var bd = data.breakdown[i];
     if(typeof bd.rake === 'undefined'){continue;}
-    pf._account(timestamp,handId,bd.rake,'Poker','CashTable',f.flavor,f.template,roomname,bd.name,bd.realm);
+    pf._account(timestamp,handId,bd.rake,this.klass,this.type,this.flavor,this.template,roomname,bd.name,bd.realm);
+  }
+}
+
+function singleGameEventWritten(roomname,data){
+  if(data.eventcode==='finish'){
+    var pf = dataMaster.element(['cluster_interface','servers']).functionalities.profitfunctionality;
+    if(!pf){return;}
+    var timestamp = data.created.getTime(),handId=data.handId;
+    pf._account(timestamp,handId,data.profit,this.klass,this.type,this.flavor,this.template,roomname,data.name,data.realm);
   }
 }
 
@@ -245,21 +246,20 @@ function followRoom(roomsfollower,roomname){
         case 'templatename':
           this.template = item[1][1];
           break;
+        case 'type':
+          this.type = item[1][1];
+          break;
         case 'flavor':
           this.flavor = item[1][1];
           break;
       }
     }
   });
-  f.handleOffer('gameEvent',function(offerid,data){
-    if(!data){return;}
-    data = JSON.parse(data);
-    console.log('id',offerid,'gameEvent',data);
-    f.offer(['gameEvent'],{offerid:offerid,ok:true});
-  });
+  //f.handleOffer('gameEvent',[f,singleGameEventHandler]);
+  new OfferHandler('SingleGameEvent',f,'gameEvent',{onDataWritten:[f,singleGameEventWritten,[roomname]]});
   new OfferHandler('HandHistory',f,'storeHandHistory',{onOffer:handHistoryOfferShaper});
   new OfferHandler('HandId',f,'handId',{onReplyReady:handIdReplyShaper});
-  new OfferHandler('RakeAccounting',f,'storeRakeAccounting',{onOffer:rakeAccountingOfferShaper,onDataWritten:[null,rakeAccountingWritten,[f,roomname]]});
+  new OfferHandler('RakeAccounting',f,'storeRakeAccounting',{onOffer:rakeAccountingOfferShaper,onDataWritten:[f,rakeAccountingWritten,[roomname]]});
 }
 
 function followRooms(user){

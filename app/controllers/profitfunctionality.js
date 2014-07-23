@@ -7,7 +7,6 @@ var errors = {
 };
 
 function _account(timestamp,handId,amount,klass,type,flavor,template,roomname,username,realm){
-  console.log('accounting flavor',flavor);
   this.offer({
     recordProfit:{
       offer:{
