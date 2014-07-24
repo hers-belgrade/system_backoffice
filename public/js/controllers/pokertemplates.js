@@ -1,26 +1,44 @@
-angular.module('mean.pokertemplates').controller('PokerTemplatesController',['$scope', 'PokerTemplates', 'follower', function($scope, PokerTemplates, follower){
-  $scope.setup = {editable:false};
+angular.module('mean.pokertemplates').controller('PokerTemplatesController',['$scope', 'PokerTemplates', 'follower','$modal', function($scope, PokerTemplates, follower, $modal){
+	
+	function Editor ($scope, $modalInstance, template_data) {
+		$scope.existing = template_data && true;
+		$scope.template = template_data || {};
+		
+		$scope.save = function () {
+			$modalInstance.close($scope.template);
+		}
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		}
+	}
+	
+	$scope.modal_instance = null;
+  $scope.setup = {};
   $scope.template = {};
   $scope.needFLValue = function(bettingpolicy){
     return bettingpolicy==='FL';
   };
-  $scope.save = function(){
-    var pt = new PokerTemplates(this.template);
+  function do_save(ts){
+    var pt = new PokerTemplates(ts);
     pt.$save(function(response){
-      var rn = response.name;
+    	var existing = false;
+      var rn = response._id;
       if(rn){
         for(var i in $scope.templates){
           var t = $scope.templates[i];
-          if(t.name===rn){
+          if(t._id===rn){
+          	existing = true;
             for(var j in response){
               t[j] = response[j];
             }
           }
         }
+        if (!existing) {
+        	$scope.templates.push(ts);
+        }
       }else{
         console.log(response);
       }
-      $scope.setup.editable = false;
     });
   };
   $scope.list = function(){
@@ -62,13 +80,27 @@ angular.module('mean.pokertemplates').controller('PokerTemplatesController',['$s
       }});
     }});
   };
-  $scope.setTemplate = function(t){
-		if (!t['class']) t['class'] = 'Poker';
-    $scope.template = t;
-    $scope.setup.editable = true;
-  };
+  
+  function show_modal (data){
+  	data = data || null;
+  	$scope.modal_instance = $modal.open({
+  		templateUrl:'/views/pokertemplates/create.html'
+  		,size:'lm'
+  		,backdrop: 'static'
+  		,controller:Editor
+  		,resolve: {
+  			template_data: function () {return data;}
+  		}
+  	});
+  	$scope.modal_instance.result.then(function (result) {
+  		do_save(result);
+  		$scope.modal_instance = null;
+  	});
+  }
+  $scope.edit = function (rec) {
+  	show_modal(rec);
+  }
   $scope.createNew = function(){
-    $scope.setTemplate({});
-    $scope.setup.editable = true;
+  	show_modal();
   };
 }]);
