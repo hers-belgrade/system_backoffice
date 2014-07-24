@@ -6,7 +6,7 @@ var hersdata = require('hersdata'),
 var errors = {
 };
 
-function _account(timestamp,handId,amount,klass,type,flavor,template,roomname,username,realm){
+function _account(timestamp,handId,amount,klass,type,flavor,template,roomname,username,realm,usertype){
   this.offer({
     recordProfit:{
       offer:{
@@ -20,6 +20,7 @@ function _account(timestamp,handId,amount,klass,type,flavor,template,roomname,us
           template:template,
           room:roomname,
           username:username,
+          usertype:usertype,
           realm:realm,
           amount:amount
         }

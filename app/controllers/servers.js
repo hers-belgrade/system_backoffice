@@ -211,16 +211,17 @@ function rakeAccountingWritten(roomname,data){
   for(var i in data.breakdown){
     var bd = data.breakdown[i];
     if(typeof bd.rake === 'undefined'){continue;}
-    pf._account(timestamp,handId,bd.rake,this.klass,this.type,this.flavor,this.template,roomname,bd.name,bd.realm);
+    pf._account(timestamp,handId,bd.rake,this.klass,this.type,this.flavor,this.template,roomname,bd.name,bd.realm,bd.usertype);
   }
 }
 
 function singleGameEventWritten(roomname,data){
+  console.log('gameEvent',data);
   if(data.eventcode==='finish'){
     var pf = dataMaster.element(['cluster_interface','servers']).functionalities.profitfunctionality;
     if(!pf){return;}
     var timestamp = data.created.getTime(),handId=data.handId;
-    pf._account(timestamp,handId,data.profit,this.klass,this.type,this.flavor,this.template,roomname,data.name,data.realm);
+    pf._account(timestamp,handId,data.profit,this.klass,this.type,this.flavor,this.template,roomname,data.name,data.realm,data.usertype);
   }
 }
 

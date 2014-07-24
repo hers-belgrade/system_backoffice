@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 var BreakdownSchema = new Schema({
   realm: String,
   name: String,
+  usertype: String,
   rake: Number
 });
 
