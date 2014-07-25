@@ -16,3 +16,6 @@
 [submodule "node_modules/hersdb"]
 	path = node_modules/hersdb
 	url = git@github.com:hers-belgrade/hersdb
+[submodule "public/lib/hers_angular"]
+	path = public/lib/hers_angular
+	url = git@github.com:hers-belgrade/angular.git

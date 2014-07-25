@@ -72,12 +72,16 @@ module.exports = function(server,app, passport, auth) {
     //PokerTemplate Routes
     var pokertemplates = require('../app/controllers/pokertemplates');
     app.get('/pokertemplates', auth.requiresLogin, pokertemplates.all);
-    app.post('/pokertemplates/:templateName', auth.requiresLogin, pokertemplates.save);
+    app.post('/pokertemplates/:ptName', auth.requiresLogin, pokertemplates.save);
+    app.del('/pokertemplates/:ptName', auth.requiresLogin, pokertemplates.remove);
+    app.param('ptName', pokertemplates.templateName);
 
     //SlotTemplateRoutes
     var slottemplates = require('../app/controllers/slottemplates');
     app.get('/slottemplates', auth.requiresLogin, slottemplates.all);
-    app.post('/slottemplates/:templateName', auth.requiresLogin, slottemplates.save);
+    app.post('/slottemplates/:stName', auth.requiresLogin, slottemplates.save);
+    app.del('/slottemplates/:stName', auth.requiresLogin, slottemplates.remove);
+    app.param('stName', slottemplates.templateName);
 
     //Article Routes
     var articles = require('../app/controllers/articles');

@@ -1,8 +1,15 @@
-<div class="modal">
-	<form name="form" class="form-horizontal" data-ng-submit="save($event)" data-ng-show="setup.editable">
+<div class="modal-content">
+	<div class="modal-header">
+		<button type="button" class="close" data-ng-click="cancel()">&times;</button>
+		<h4 class="blue bigger" data-ng-show="state=='new'">Please fill the following form fields to create new template</h4>
+		<h4 class="blue bigger" data-ng-show="state=='editing'">Editing template</h4>
+		<h4 class="blue bigger" data-ng-show="state=='cloning'">Creating template from {{template.clone.name}}</h4>
+	</div>
+  <div class="modal-body">
+	<form name="form" class="form-horizontal" data-ng-submit="save($event)">
 	  <label class="control-label" for="name">Name</label>
 	  <div class="control">
-	    <input type="text" name="name" data-ng-model="template.name" placeholder="Name" required>
+	    <input type="text" name="name" data-ng-model="template.name" placeholder="Name" required ng-disabled="template._id">
 	  </div>
 	  <label class="control-label" for="columns">Columns</label>
 	  <div class="control">
@@ -43,12 +50,16 @@
 	  <div class="gridStyle" ng-grid="gridSettings"></div>
 	
 	  </fieldset>
-			<div class="control-group">
-				<div class="controls">
-					<button data-ng-click="setup.editable=false" class="btn">Cancel</button>
-					<input type="submit" class="btn" value="Save">
-				</div>
-			</div>
-	
 	</form>
+  </div>
+	<div class="modal-footer">
+		<button class="btn btn-small" data-ng-click="cancel()">
+			<i class="icon-remove"></i>
+			Cancel
+		</button>
+		<button class="btn btn-small btn-primary" data-ng-click="save()" ng-disabled="!template.name.length">
+			<i class="icon-ok"></i>
+			Save
+		</button>
+	</div>
 </div>

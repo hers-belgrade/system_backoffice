@@ -13,7 +13,7 @@ var counters = {};
 
 function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,availabilityfunc,searchfunc){
   if(!paramobj.templateName){
-    return cb('NO_TEMPLATE_NAME');
+    return statuscb('NO_TEMPLATE_NAME');
   }
   var t = this.self.templates[paramobj.templateName];
   if(!t){
@@ -22,6 +22,16 @@ function registerTemplate(paramobj,statuscb){//templateName,registryelementpath,
   }
 };
 registerTemplate.params = 'originalobj';
+
+function unregisterTemplate(paramobj, cb) {
+  if (!paramobj.templateName) {
+    return cb && cb('NO_TEMPLATE_NAME');
+  }
+  //da li treba jos nesto da se uradi?
+  delete this.self.templates[paramobj.templateName];
+  cb && cb();
+}
+unregisterTemplate.params='originalobj';
 
 function newNameForTemplate(paramobj,statuscb,user){
   var templateName = paramobj.templateName;
@@ -75,6 +85,7 @@ module.exports = {
   errors:errors,
   init:init,
   registerTemplate:registerTemplate,
+  unregisterTemplate:unregisterTemplate,
   newNameForTemplate:newNameForTemplate,
   revokeNameForTemplate:revokeNameForTemplate
 };

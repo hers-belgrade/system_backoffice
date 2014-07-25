@@ -9,6 +9,7 @@ public/lib/*
 !public/lib/ng-grid
 !public/lib/hers-utils
 !public/lib/fabric.js
+!public/lib/hers_angular
 !node_modules/herstimeout
 test/coverage/
 *.vim

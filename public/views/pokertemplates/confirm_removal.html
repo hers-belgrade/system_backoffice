@@ -1,0 +1,20 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title" id="confirm_removal_label">Confirm template removal</h4>
+  </div>
+  <div class="modal-body">
+    <div class="confirm_removal_1" ng-show="step == 0">
+      <span>Do you want to remove template <strong>{{template.name}}</strong>?</span>
+    </div>
+
+    <div class="confirm_removal_2" ng-show="step == 1 && state=='ok'">
+      <span>Are you sure you want to remove template <strong>{{template.name}}</strong>?</span>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button class="btn btn-danger btn-small confirm_removal_1" ng-click="ok()" ng-show="step == 0">Yes?</button>
+    <button class="btn btn-danger btn-small confirm_removal_2" ng-click="ok()" ng-show="step == 1 && state == 'ok'">Yes, I am sure!</button>
+    <button class="btn btn-primary btn-small" ng-click="cancel()">No</button>
+  </div>
+</div>
