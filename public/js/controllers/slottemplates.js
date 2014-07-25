@@ -1,10 +1,16 @@
 angular.module('mean.slottemplates')
 .controller('SlotTemplatesController',['$scope', 'SlotTemplates', 'follower', '$modal', function($scope, SlotTemplates, follower, $modal){
-	function Editor ($scope, $modalInstance, template_data) {
-		$scope.existing = template_data && template_data._id && true;
-		$scope.template = template_data || {};
 
+  function editor_extension ($scope, $modalInstance, template_data) {
 	  var ininitalization = true;
+
+    function getRowDef (index) {
+      return {
+        field:index+'', 
+        displayName:(index+' x reward'),
+        editableCellTemplate:'<input style="width:90%;" type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" min="0" step="1">'
+      };
+    }
 
     $scope.addSymbol = function (e){
       if (e) {
@@ -26,11 +32,6 @@ angular.module('mean.slottemplates')
       e.stopPropagation();
       if (!$scope.template.symbolweightsmults.length) return;
       $scope.template.symbolweightsmults.pop();
-    }
-
-    if (!$scope.template.symbolweightsmults) $scope.template.symbolweightsmults = [];
-    while($scope.template.symbolweightsmults.length < 2) {
-      $scope.addSymbol();
     }
 
     $scope.gridColumnDefs = [];
@@ -79,18 +80,16 @@ angular.module('mean.slottemplates')
           }
         }
       }
-
     });
-
-
-    function getRowDef (index) {
-      return {
-        field:index+'', 
-        displayName:(index+' x reward'),
-        editableCellTemplate:'<input style="width:90%;" type="number" ng-class="\'colt\' + col.index" ng-input="COL_FIELD" ng-model="COL_FIELD" min="0" step="1">'
-      };
+    if (!$scope.template.symbolweightsmults) $scope.template.symbolweightsmults = [];
+    while($scope.template.symbolweightsmults.length < 2) {
+      $scope.addSymbol();
     }
+  }
 
+	function Editor ($scope, $modalInstance, template_data) {
+		$scope.existing = template_data && template_data._id && true;
+		$scope.template = template_data || {};
 		
 		$scope.save = function () {
 			$modalInstance.close({command:'save', data:$scope.template});
@@ -109,145 +108,39 @@ angular.module('mean.slottemplates')
     }
 	}
 
-  $scope.modal_instance = null;
   $scope.setup = {};
   $scope.template = {};
-	function check_this_out() {
-		return true;
-	}
 
-  function getIndex (data) {
-    if (!data || !data.name) return -1;
-    var index = 0;
-    for (index=0 ; index < $scope.templates.length; index++){
-      if ($scope.templates[index].name === data.name) return index;
+  var CRUDI = CRUDITemplate ($scope ,{
+    template: SlotTemplates
+    ,list_done: monitorRT
+    ,create_template:'/views/slottemplates/create.html'
+    ,removal_confirmation: '/views/slottemplates/confirm_template_removal.html'
+    ,editor_extension:editor_extension
+    ,preSave : function (data){
+      var cp = {};
+      for (var i in data) cp[i] = data[i];
+      delete cp.index;
+      cp.symbolweightsmults = JSON.stringify(cp.symbolweightsmults);
+      return cp;
     }
-    return -1;
-  }
-
-  function do_save(data){
-    var cp = {};
-
-    for (var i in data) {
-      cp[i] = data[i];
+    ,itemProcessor: function (item) {
+      if (item.symbolweightsmults && 'string' === typeof(item.symbolweightsmults)) {
+        item.symbolweightsmults = JSON.parse(item.symbolweightsmults);
+      }
+      return item;
     }
-    delete cp.index;
+  }, $modal);
 
-    cp.symbolweightsmults = JSON.stringify(cp.symbolweightsmults);
-    var pt = new SlotTemplates(cp);
-
-    pt.$save(function(response){
-      var rn = response.name;
-      response.symbolweightsmults = JSON.parse(response.symbolweightsmults);
-      var done = false;
-      if(rn){
-        var index = getIndex({name: rn});
-        if (index > -1) {
-          var t = $scope.templates[index];
-          for(var j in response){
-            t[j] = response[j];
-          }
-          return;
-        }
-      }
-      $scope.templates.push(response);
-      return;
-    });
-  };
-
-  $scope.list = function(){
-    SlotTemplates.query(function(pts){
-      for (var i in pts) {
-        if (pts[i].symbolweightsmults) {
-          pts[i].symbolweightsmults = JSON.parse(pts[i].symbolweightsmults);
-        }
-      }
-      $scope.templates = pts;
-      monitorRT();
-    });
-  };
-  function templateFor(roomname){
-    var matched, matchlen = 0;
-    for(var i in $scope.templates){
-      var t = $scope.templates[i];
-      if(roomname.indexOf(t.name)===0){
-        if(t.name.length>matchlen){
-          matchlen=t.name.length;
-          matched = t;
-        }
-      }
-    }
-    return matched;
-  };
-  function accountFor(roomname){
-    var t = templateFor(roomname);
-    if(t){
-      if(!t.instances){
-        t.instances=1;
-      }else{
-        t.instances++;
-      }
-    }
-  };
   function monitorRT(){
     var nf = follower.follow('cluster').follow('nodes');
     nf.listenToCollections($scope,{activator:function(name){
       rsf = nf.follow(name).follow('server').follow('rooms');
       rsf.listenToCollections(this,{activator:function(name){
-        accountFor(name);
+        CRUDI.accountFor(name);
       }});
     }});
   };
- 
-  function show_modal (data){
-  	data = data || null;
-  	$scope.modal_instance = $modal.open({
-  		templateUrl:'/views/slottemplates/create.html'
-  		,size:'lm'
-  		,backdrop: 'static'
-  		,controller:Editor
-  		,resolve: {
-  			template_data: function () {return data;}
-  		}
-  	});
-
-  	$scope.modal_instance.result.then(function (data) {
-  		$scope.modal_instance = null;
-      switch(data.command){
-        case 'save': {
-          do_save(data.data);
-          break;
-        }
-      }
-  	});
-  }
-
-	////CREATE NEW ACTIONS...
-  $scope.createNew = function(){
-    show_modal();
-  };
-
-  $scope.edit = function (index) {
-    show_modal($scope.templates[index]);
-  }
-
-  $scope.copy = function (index) {
-    var data = {};
-    jQuery.extend(data, $scope.templates[index]);
-    delete data._id;
-    data.clone = data.name;
-    delete data.name; 
-    show_modal(data);
-  }
-
-  $scope.remove = function (index) {
-    var data = $scope.templates[index];
-    data.$remove(function (res) {
-      var index = getIndex(res);
-      if (index < 0) return;
-      $scope.templates.splice(index, 1);
-    });
-  }
 }])
 .directive ('slottemplateSymbol', function () {
 	///TODO: think if I should move rewards to separate column in ng-grid ...

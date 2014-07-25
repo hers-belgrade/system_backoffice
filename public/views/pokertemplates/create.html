@@ -1,7 +1,9 @@
 <div class="modal-content">
 	<div class="modal-header">
 		<button type="button" class="close" data-ng-click="cancel()">&times;</button>
-		<h4 class="blue bigger">Please fill the following form fields</h4>
+		<h4 class="blue bigger" data-ng-show="state=='new'">Please fill the following form fields to create new template</h4>
+		<h4 class="blue bigger" data-ng-show="state=='editing'">Editing template</h4>
+		<h4 class="blue bigger" data-ng-show="state=='cloning'">Creating template from {{template.clone.name}}</h4>
 	</div>
   <div class="modal-body">
   	<form name="form" class="form-horizontal" data-ng-submit="save()">
@@ -9,7 +11,7 @@
 			<div class="control-group">
 				<label class="control-label" for="name">Name</label>
 				<div class="controls">
-					<input type="text" data-ng-model="template.name" placeholder="Name" required ng-disabled="existing">
+					<input type="text" data-ng-model="template.name" placeholder="Name" required ng-disabled="state == 'editing'">
 				</div>
 			</div>
 
@@ -47,10 +49,10 @@
 				</div>
 			</div>
 
-			<div class="control-group">
-				<label class="control-label" for="fixedlimitvalue" data-ng-show="needFLValue(template.bettingpolicy)">Fixed Limit Value</label>
+			<div class="control-group" data-ng-show="template.bettingpolicy == 'FL'">
+				<label class="control-label" for="fixedlimitvalue" >Fixed Limit Value</label>
 				<div class="controls">
-	        <input type="number" min="{{bigblind}}" step="{{bigblind}}" data-ng-model="template.fixedlimitvalue" name="fixedlimitvalue" id="fixedlimitvalue" placeholder="Fixed Limit Value" data-ng-required="needFLValue(bettingpolicy)">
+	        <input type="number" min="{{bigblind}}" step="{{bigblind}}" data-ng-disabled="template.bettingpolicy != 'FL'" data-ng-model="template.fixedlimitvalue" name="fixedlimitvalue" id="fixedlimitvalue" placeholder="Fixed Limit Value" data-ng-required="template.bettingpolicy == 'FL'">
 				</div>
 			</div>
 

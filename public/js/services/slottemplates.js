@@ -1,6 +1,6 @@
 angular.module('mean.slottemplates').factory("SlotTemplates",['$resource',function($resource){
-  return $resource('slottemplates/:templateName',{
-    templateName: '@name'
+  return $resource('slottemplates/:stName',{
+    stName: '@name'
   }, {
     update: {
       method: 'PUT'

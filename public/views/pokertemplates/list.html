@@ -37,10 +37,11 @@
 		      <th>Timeout</th>
 		      <th>Bots</th>
 		      <th>Instances</th>
+          <th>Actions</th>
 		    </tr>
 	    </thead>
 			<tbody>
-		    <tr data-ng-repeat="pt in templates" data-ng-click="edit(pt)">
+		    <tr data-ng-repeat="pt in templates">
 		      <td>{{pt.name}}</td>
 		      <td>{{pt.type}}</td>
 		      <td>{{pt.capacity}}</td>
@@ -52,7 +53,14 @@
 		      <td>{{pt.timeoutValue}}</td>
 		      <td>{{pt.bots}}</td>
 		      <td>{{pt.instances}}</td>
+
+          <td class="actions">
+            <i class="actions icon-trash" data-ng-click="remove($index)"></i>
+            <i class="actions icon-copy" data-ng-click="copy($index)"></i>
+            <i class="actions icon-edit" data-ng-click="edit($index)"></i>
+          </td>
 		    </tr>
+
 	    </tbody>
 	  </table>
 	</section>
