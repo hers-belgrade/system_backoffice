@@ -228,11 +228,20 @@ function singleGameEventWritten(roomname,data){
 function followRoom(roomsfollower,roomname){
   console.log('following',roomname);
   var f = roomsfollower.follow([roomname],function(stts){
+    var lse = this._parent._parent.data.localStatsBranch, rse = lse.elementRaw('roomcount');
+    if(stts==='OK'){
+      lse.commit('new_roomcount',[
+        ['set',['roomcount'],[(rse?rse.value():0) + 1]]
+      ]);
+    }
     if(stts==='RETREATING'){
       if(this.playing){
         console.log('unfollowing',roomname,'with',this.playing,'players');
         process.exit(0);
       }
+      lse.commit('new_roomcount',[
+        ['set',['roomcount'],[(rse?rse.value():0) - 1]]
+      ]);
       this.destroy();
     }
   },function(item){
@@ -372,15 +381,33 @@ function replicateServer(servname){
   });
   servel.getReplicatingUser(function(user){
     user.serverName = servname;
-    user.follow([],function(stts){
+    var f = user.follow([],function(stts){
     },function(item){
       DeStreamer.prototype.destream.call(this.data.localStatsBranch,item);
     });
     if(type==='nodes'){
       followRooms(user);
     }
+    if(type==='realms'){
+      f.follow(['players'],function(){},function(item){
+        if(item && item[1] && item[1][0] === 'playing'){
+          Timeout.next(countCommiter,this,'playercount',item[1][1]);
+        }
+      });
+      f.follow(['bots'],function(){},function(item){
+        if(item && item[1] && item[1][0] === 'engagementcount'){
+          Timeout.next(countCommiter,this,'botcount',item[1][1]);
+        }
+      });
+    }
   });
 };
+
+function countCommiter(t,elementname,cnt){
+  t._parent.data.localStatsBranch.commit('new_'+elementname,[
+    ['set',[elementname],[cnt]]
+  ]);
+}
 
 exports.authCallback = function(req, res, next){
   attachServer(req.connection.remoteAddress,req.query.port,req.query.type,req.user.name,function(name){

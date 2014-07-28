@@ -1,4 +1,5 @@
 function triStateValue(svgelem,config){
+  if(!svgelem || typeof svgelem.id === 'undefined'){return;}
   var pack = {
     dflt : svgelem[svgelem.id+'_value'][svgelem.id+'_value_default'],
     red : svgelem[svgelem.id+'_value'][svgelem.id+'_value_red'],
@@ -56,8 +57,7 @@ function triStateValueWNeedle(svgelem,config){
   
   return triStateValue(svgelem,config);
 }
-function serverFollower(servname,follower,canvas){
-  console.log('serverFollower',follower,canvas);
+function serverFollower(servname,servtype,follower,canvas){
   fabric.loadResources({
     root:'/img/svgs',
     svg:['server']
@@ -68,6 +68,10 @@ function serverFollower(servname,follower,canvas){
     server.getSvgEl().activate();
     server.server_name.set({text:servname});
     var stats = server.statistics;
+    stats.node.hide();
+    stats.realm.hide();
+    stats[servtype].show();
+    console.log(stats[servtype]);
     server.server_status.forEachObject(function(el){
       el.hide();
     });
@@ -146,8 +150,8 @@ function serverFollower(servname,follower,canvas){
       down:'green'
     },suffix:'ms'});
     triStateValue(stats.dcp_branches,{follower:follower,scalarname:'dcp_branches',range:[
-      [1000,'green'],
-      [4000,'dflt'],
+      [5000,'green'],
+      [10000,'dflt'],
       [1000000,'red']
     ],preferences:{
       up:'red',
@@ -161,11 +165,33 @@ function serverFollower(servname,follower,canvas){
       up:'red',
       down:'green'
     },suffix:''});
-    triStateValue(stats.players,{follower:follower,scalarname:'players',range:[
-      [1000,'green'],
-      [2000,'dflt'],
-      [1000000,'red']
-    ],suffix:''});
+    switch(servtype){
+      case 'node':
+      triStateValue(stats[servtype][servtype+'_players'],{follower:follower,scalarname:'players',range:[
+        [1000,'green'],
+        [2000,'dflt'],
+        [1000000,'red']
+      ],suffix:''});
+      triStateValue(stats[servtype]['rooms'],{follower:follower,scalarname:'roomcount',range:[
+        [100,'green'],
+        [300,'dflt'],
+        [100000,'red']
+      ],suffix:''});
+        break;
+      case 'realm':
+      triStateValue(stats[servtype][servtype+'_players'],{follower:follower,scalarname:'playercount',range:[
+        [1000,'green'],
+        [2000,'dflt'],
+        [1000000,'red']
+      ],suffix:''});
+      triStateValue(stats[servtype]['bots'],{follower:follower,scalarname:'botcount',range:[
+        [100,'green'],
+        [300,'dflt'],
+        [100000,'red']
+      ],suffix:''});
+        break;
+        break;
+    }
   });
 }
 
@@ -180,7 +206,8 @@ angular.module('mean.charting').directive('serverindicator',function(follower) {
       elem[0].style.width = '1000px';
       elem[0].style.height = '125px';
       elem[0].appendChild(d);
-      serverFollower(scope.name,follower.follow('stats').follow(attrs.servertype||'nodes').follow(scope.name),new fabric.Canvas(d.id));
+      var st = attrs.servertype||'nodes', stt = st.substring(0,st.length-1);
+      serverFollower(scope.name,stt,follower.follow('stats').follow(st).follow(scope.name),new fabric.Canvas(d.id));
     }
   }
 });

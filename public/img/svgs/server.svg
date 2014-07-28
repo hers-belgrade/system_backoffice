@@ -516,11 +516,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.99999999"
-     inkscape:cx="414.01358"
-     inkscape:cy="103.30958"
+     inkscape:zoom="0.70710677"
+     inkscape:cx="580.13269"
+     inkscape:cy="3.6077991"
      inkscape:document-units="px"
-     inkscape:current-layer="server_status"
+     inkscape:current-layer="statistics"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -528,8 +528,8 @@
      fit-margin-bottom="0"
      inkscape:window-width="1416"
      inkscape:window-height="942"
-     inkscape:window-x="110"
-     inkscape:window-y="41"
+     inkscape:window-x="149"
+     inkscape:window-y="50"
      inkscape:window-maximized="0"
      showguides="false" />
   <metadata
@@ -1034,65 +1034,259 @@
         </g>
       </g>
       <g
-         inkscape:label="players"
-         id="players"
-         inkscape:groupmode="layer"
+         id="realm"
          style="display:inline">
-        <rect
-           style="fill:none;stroke:none"
-           id="players_active_hotspot"
-           width="79.900002"
-           height="35.185001"
-           x="752"
-           y="26.315001"
-           ry="0.12747043" />
-        <use
-           x="0"
-           y="0"
-           xlink:href="#players_active_bg_static"
-           id="players_active_bg"
-           width="1000"
-           height="125"
-           transform="translate(201.00003,24.282502)"
-           style="display:none" />
-        <text
-           sodipodi:linespacing="125%"
-           id="players_label"
-           y="36.873047"
-           x="759.4043"
-           style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
-           xml:space="preserve">PLAYERS</text>
-        <use
-           transform="translate(759,41)"
-           height="125"
-           width="1000"
-           id="players_indicator"
-           xlink:href="#indicator"
-           y="0"
-           x="0" />
         <g
-           id="players_value">
-          <text
-             sodipodi:linespacing="125%"
-             id="players_value_default"
-             y="55.748001"
-             x="778.12598"
-             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">88888</text>
+           style="display:inline"
+           inkscape:groupmode="layer"
+           id="realm_players"
+           inkscape:label="realm_players">
+          <rect
+             ry="0.12747043"
+             y="26.315001"
+             x="752"
+             height="35.185001"
+             width="79.900002"
+             id="realm_players_active_hotspot"
+             style="fill:none;stroke:none" />
+          <use
+             style="display:none"
+             transform="translate(201.00003,24.282502)"
+             height="125"
+             width="1000"
+             id="realm_players_active_bg"
+             xlink:href="#players_active_bg_static"
+             y="0"
+             x="0" />
           <text
              xml:space="preserve"
-             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             x="778.12598"
-             y="55.748001"
-             id="players_value_green"
-             sodipodi:linespacing="125%">88888</text>
+             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+             x="759.4043"
+             y="36.873047"
+             id="realm_players_label"
+             sodipodi:linespacing="125%">PLAYERS</text>
+          <use
+             x="0"
+             y="0"
+             xlink:href="#indicator"
+             id="realm_players_indicator"
+             width="1000"
+             height="125"
+             transform="translate(759,41)" />
+          <g
+             id="realm_players_value">
+            <text
+               xml:space="preserve"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               x="778.12598"
+               y="55.748001"
+               id="realm_players_value_default"
+               sodipodi:linespacing="125%">88888</text>
+            <text
+               sodipodi:linespacing="125%"
+               id="realm_players_value_green"
+               y="55.748001"
+               x="778.12598"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               xml:space="preserve">88888</text>
+            <text
+               xml:space="preserve"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               x="778.12598"
+               y="55.748001"
+               id="realm_players_value_red"
+               sodipodi:linespacing="125%">88888</text>
+          </g>
+        </g>
+        <g
+           inkscape:label="bots"
+           id="bots"
+           inkscape:groupmode="layer"
+           style="display:inline">
+          <rect
+             style="fill:none;stroke:none"
+             id="bots_active_hotspot"
+             width="79.900002"
+             height="35.185001"
+             x="838"
+             y="26.315001"
+             ry="0.12747043" />
+          <use
+             x="0"
+             y="0"
+             xlink:href="#players_active_bg_static"
+             id="bots_active_bg"
+             width="1000"
+             height="125"
+             transform="translate(287.00003,24.282502)"
+             style="display:none" />
           <text
              sodipodi:linespacing="125%"
-             id="players_value_red"
-             y="55.748001"
-             x="778.12598"
-             style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
-             xml:space="preserve">88888</text>
+             id="bots_label"
+             y="36.873047"
+             x="845.4043"
+             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+             xml:space="preserve">BOTS</text>
+          <use
+             transform="translate(845,41)"
+             height="125"
+             width="1000"
+             id="bots_indicator"
+             xlink:href="#indicator"
+             y="0"
+             x="0" />
+          <g
+             id="bots_value">
+            <text
+               sodipodi:linespacing="125%"
+               id="bots_value_default"
+               y="55.748001"
+               x="864.12598"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               xml:space="preserve">88888</text>
+            <text
+               xml:space="preserve"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               x="864.12598"
+               y="55.748001"
+               id="bots_value_green"
+               sodipodi:linespacing="125%">88888</text>
+            <text
+               sodipodi:linespacing="125%"
+               id="bots_value_red"
+               y="55.748001"
+               x="864.12598"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               xml:space="preserve">88888</text>
+          </g>
+        </g>
+      </g>
+      <g
+         id="node"
+         style="display:none">
+        <g
+           inkscape:label="node_players"
+           id="node_players"
+           inkscape:groupmode="layer"
+           style="display:inline">
+          <rect
+             style="fill:none;stroke:none"
+             id="node_players_active_hotspot"
+             width="79.900002"
+             height="35.185001"
+             x="752"
+             y="26.315001"
+             ry="0.12747043" />
+          <use
+             x="0"
+             y="0"
+             xlink:href="#players_active_bg_static"
+             id="node_players_active_bg"
+             width="1000"
+             height="125"
+             transform="translate(201.00003,24.282502)"
+             style="display:none" />
+          <text
+             sodipodi:linespacing="125%"
+             id="node_players_label"
+             y="36.873047"
+             x="759.4043"
+             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+             xml:space="preserve">PLAYERS</text>
+          <use
+             transform="translate(759,41)"
+             height="125"
+             width="1000"
+             id="node_players_indicator"
+             xlink:href="#indicator"
+             y="0"
+             x="0" />
+          <g
+             id="node_players_value">
+            <text
+               sodipodi:linespacing="125%"
+               id="node_players_value_default"
+               y="55.748001"
+               x="778.12598"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               xml:space="preserve">88888</text>
+            <text
+               xml:space="preserve"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               x="778.12598"
+               y="55.748001"
+               id="node_players_value_green"
+               sodipodi:linespacing="125%">88888</text>
+            <text
+               sodipodi:linespacing="125%"
+               id="node_players_value_red"
+               y="55.748001"
+               x="778.12598"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               xml:space="preserve">88888</text>
+          </g>
+        </g>
+        <g
+           style="display:inline"
+           inkscape:groupmode="layer"
+           id="rooms"
+           inkscape:label="rooms">
+          <rect
+             ry="0.12747043"
+             y="26.315001"
+             x="838"
+             height="35.185001"
+             width="79.900002"
+             id="rooms_active_hotspot"
+             style="fill:none;stroke:none" />
+          <use
+             style="display:none"
+             transform="translate(287.00003,24.282502)"
+             height="125"
+             width="1000"
+             id="rooms_active_bg"
+             xlink:href="#players_active_bg_static"
+             y="0"
+             x="0" />
+          <text
+             xml:space="preserve"
+             style="font-size:10px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:Arial Narrow Bold Condensed"
+             x="845.4043"
+             y="36.873047"
+             id="rooms_label"
+             sodipodi:linespacing="125%">ROOMS</text>
+          <use
+             x="0"
+             y="0"
+             xlink:href="#indicator"
+             id="rooms_indicator"
+             width="1000"
+             height="125"
+             transform="translate(845,41)" />
+          <g
+             id="rooms_value">
+            <text
+               xml:space="preserve"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#a29f98;fill-opacity:1;stroke:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               x="864.12598"
+               y="55.748001"
+               id="rooms_value_default"
+               sodipodi:linespacing="125%">88888</text>
+            <text
+               sodipodi:linespacing="125%"
+               id="rooms_value_green"
+               y="55.748001"
+               x="864.12598"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#72e785;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               xml:space="preserve">88888</text>
+            <text
+               xml:space="preserve"
+               style="font-size:18px;font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:-0.01px;word-spacing:0px;fill:#f64343;fill-opacity:1;stroke:none;display:none;font-family:A1012HelvetikaCmprs TYGRA;-inkscape-font-specification:A1012HelvetikaCmprs TYGRA Bold"
+               x="864.12598"
+               y="55.748001"
+               id="rooms_value_red"
+               sodipodi:linespacing="125%">88888</text>
+          </g>
         </g>
       </g>
       <g
