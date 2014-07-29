@@ -28,7 +28,7 @@ function triStateValue(svgelem,config){
     if(indicator && indicator.usedObj){
       if (!indicator.inited) {
         fabric.DynamicUse(indicator);
-        indicator.indited = true;
+        indicator.inited = true;
       }
       if(val===oldval){indicator.hide();return}
       var direction = (val>oldval) ? 'up' : 'down';
@@ -41,6 +41,7 @@ function triStateValue(svgelem,config){
           el.hide();
         }
       });
+      indicator.invokeOnCanvas('renderAll');
     }
     if(config.cb){
       config.cb(val,oldval);
@@ -71,7 +72,6 @@ function serverFollower(servname,servtype,follower,canvas){
     stats.node.hide();
     stats.realm.hide();
     stats[servtype].show();
-    console.log(stats[servtype]);
     server.server_status.forEachObject(function(el){
       el.hide();
     });
