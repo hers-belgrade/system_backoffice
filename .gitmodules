@@ -13,3 +13,6 @@
 [submodule "public/lib/fabric.js"]
 	path = public/lib/fabric.js
 	url = git@github.com:hers-belgrade/fabric.js
+[submodule "node_modules/hersdb"]
+	path = node_modules/hersdb
+	url = git@github.com:hers-belgrade/hersdb

@@ -2,7 +2,8 @@
 .nodemonignore
 .sass-cache/
 node_modules/*
-!node_modules/herstimeout
+!node_modules/hersdata
+!node_modules/hersdb
 public/lib/*
 !public/lib/ace
 !public/lib/ng-grid
