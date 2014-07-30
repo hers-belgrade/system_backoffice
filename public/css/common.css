@@ -95,7 +95,9 @@ div.infobox {
 	background-color:#4f4f4f;
 	color:white;
 	text-shadow: 1px 1px 0px #000 !important;
-	}		
+  border-top: 1px solid #919191;
+}	
+
 .nav-list > li > a:hover,
 .nav-list > li.active > a,
 .nav-list > li > .submenu > li > a:hover,
@@ -113,6 +115,7 @@ div.infobox {
 	}		
 .nav-list > li .submenu {
 	border-top-color:#000;
+  font-size:13px;
 	}
 .nav-list > li > .submenu:before {
 	border-left-color:#8f8f8f;
@@ -121,8 +124,8 @@ div.infobox {
 	border-top-color:#8f8f8f
 	}	
 .nav-list > li .submenu > li a > [class*="icon-"]:first-child {
-	background-color:#8f8f8f;
-	color:white;
+	background-color:transparent;
+	color:black;
 	}
 .sidebar-collapse {	
 background-color: #1e1e1e;
@@ -191,4 +194,7 @@ table tbody tr td i.actions.icon-trash{
 
 table tbody tr td i.actions:hover {
   color:grey;
+}
+.nav-list>li .submenu>li a>[class*="icon-"]:first-child {
+  top:7px;
 }
