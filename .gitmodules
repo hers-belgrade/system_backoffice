@@ -19,3 +19,6 @@
 [submodule "public/lib/hers_angular"]
 	path = public/lib/hers_angular
 	url = git@github.com:hers-belgrade/angular.git
+[submodule "node_modules/hersexecutable"]
+	path = node_modules/hersexecutable
+	url = hersrepos:hers_repos/node_modules/hersexecutable

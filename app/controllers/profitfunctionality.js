@@ -1,5 +1,5 @@
 var hersdata = require('hersdata'),
-  executable = hersdata.executable,
+  executable = require('hersexecutable'),
   isExecutable = executable.isA,
   dummy = executable.dummyFunc;
 

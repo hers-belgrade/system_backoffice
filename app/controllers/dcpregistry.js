@@ -1,5 +1,5 @@
-var hersdata = require('hersdata'),
-  ArrayMap = hersdata.ArrayMap;
+var hersexecutable = require('hersexecutable'),
+  ArrayMap = hersexecutable.ArrayMap;
 
 var errors = {
   'OK' : {message:'Counter for [templateName] is [counter]',params:['counter','templateName']},

@@ -8,7 +8,7 @@ var mongoose = require('mongoose'),
     hersdb = require('hersdb'),
     OfferHandler = hersdb.OfferHandler,
     DeStreamer = hersdata.DeStreamer,
-    executable = hersdata.executable,
+    executable = require('hersexecutable'),
     execRun = executable.run,
     execCall = executable.call;
 

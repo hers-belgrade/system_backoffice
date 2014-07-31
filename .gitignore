@@ -2,6 +2,7 @@
 .nodemonignore
 .sass-cache/
 node_modules/*
+!node_modules/hersexecutable
 !node_modules/hersdata
 !node_modules/hersdb
 public/lib/*
