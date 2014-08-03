@@ -3,12 +3,12 @@ var mongoose = require('mongoose'),
     ServerLease = mongoose.model('ServerLease'),
     dataMaster = require('./datamaster'),
     hersdata = require('hersdata'),
-    ArrayMap = hersdata.ArrayMap,
     Timeout = require('herstimeout'),
     hersdb = require('hersdb'),
     OfferHandler = hersdb.OfferHandler,
     DeStreamer = hersdata.DeStreamer,
     executable = require('hersexecutable'),
+    ArrayMap = executable.ArrayMap,
     execRun = executable.run,
     execCall = executable.call;
 
